@@ -1,0 +1,36 @@
+{
+	"name": "stencil-icon-components",
+	"version": "0.0.9",
+	"description": "Generate Icon Web Components for Stencil",
+	"main": "index.js",
+	"bin": "cli.js",
+	"scripts": {
+		"test": "node cli.js --src test/assets/icons/ --dest temp/components/icons/ --prefix icon --remove-old --optimize"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/silvandiepen/stencil-icon-components.git"
+	},
+	"keywords": [
+		"stencil",
+		"icons",
+		"svg",
+		"components",
+		"generate"
+	],
+	"author": "Sil van Diepen",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/silvandiepen/stencil-icon-components/issues"
+	},
+	"homepage": "https://github.com/silvandiepen/stencil-icon-components#readme",
+	"dependencies": {
+		"kleur": "^3.0.3",
+		"mkdirp": "^0.5.1",
+		"rimraf": "^3.0.0",
+		"svg-to-jsx": "^1.0.2",
+		"svgo": "^1.3.2",
+		"yargs": "^15.0.2"
+	},
+	"devDependencies": {}
+}
