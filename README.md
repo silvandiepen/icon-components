@@ -15,7 +15,7 @@ Add a command (script) to your package.json to create the components like;
 ```json
 scripts: {
     ...
-    "build:icons": "react-icon-components --src assets/icons --dest src/components/icons",
+    "build:icons": "icon-components --src assets/icons --dest src/components/icons --template react",
     ...
 }
 ```
