@@ -1,0 +1,13 @@
+import React from 'react';
+const {PropTypes} = React;
+
+
+const <%= title %> = props => (
+  <%- data %>
+);
+
+<%= title %>.propTypes = {
+  icon: PropTypes.string.isRequired,
+};
+
+export default <%= title %>;

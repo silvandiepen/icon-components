@@ -1,4 +1,4 @@
-# React Icon Components
+# Icon Components
 
 A design system can also incorporate a full set of Icons.
 
@@ -26,8 +26,30 @@ scripts: {
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | `--src`        | Source folder with SVG files                                                                                                                                                                               | `/src/assets/icons`     |
 | `--dest`       | Destination folder for components                                                                                                                                                                          | `/src/components/icons` |
+| `--template`   | Choose output type. Options; stencil, react, react-material                                                                                                                                                |                         |
 | `--prefix`     | Add a prefix to all files, ex; social-network.svg becomes icon-social-network                                                                                                                              | `false`                 |
 | `--remove-old` | Remove the whole destionation folder as set. In order to be sure to not have any old files and create everything new. Don't set this if your destination folder also includes files which arent generated. | `false`                 |
+
+### Using a custom template
+
+At the moment, one command can have one custom template file. The template file can be created in your own project and be used in the CLI.
+
+In the template you can use EJS template strings. The file which will be written will have the same extension as your template file and be written in the set `--dest`.
+
+#### Available options
+
+| Option          | description                         |
+| --------------- | ----------------------------------- |
+| data            | The svg icon file data              |
+| title           | Title of the Svg Icon in PascalCase |
+| name            | Name of the Svg Icon                |
+| title_lowercase | A lowercase version of the title    |
+
+#### Extension .template
+
+You can, if you want. Add `.template` at the end of the file, because it won't be a valid javascript file anyway. The `.template` part will be automatically removed.
+
+For instance; your template file is called. `my-icon-template.js.template` In this case. The files will have `.js` extension.
 
 ## Wishlist
 

@@ -24,4 +24,17 @@ const PascalCase = (str) =>
 		})
 		.join("");
 
-module.exports = { kebabCase, fileName, PascalCase };
+const removeTags = (str, tags) => {
+	if (Array.isArray(tags)) {
+		let value = str;
+		tags.forEach((tag) => {
+			value = removeTags(value, tag);
+		});
+		return value;
+	} else {
+		const regex = new RegExp(`<[\/]{0,1}(${tags}|${tags})[^><]*>`, "g");
+		return str.replace(regex, "");
+	}
+};
+
+module.exports = { kebabCase, fileName, PascalCase, removeTags };

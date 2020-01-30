@@ -1,11 +1,15 @@
 {
-	"name": "react-icon-components",
+	"name": "icon-components",
 	"version": "0.0.1",
-	"description": "Generate React Icon Components",
+	"description": "Generate Icon Components",
 	"main": "index.js",
 	"bin": "cli.js",
 	"scripts": {
-		"test": "node cli.js --src test/assets/icons/ --dest temp/components/icons/ --prefix icon --remove-old --optimize"
+		"test": "npm run test:stencil && npm run test:react && npm run test:react_material && npm run test:external",
+		"test:stencil": "node cli.js --src test/assets/icons/ --dest temp/stencil/icons/ --prefix icon --template stencil --remove-old --optimize",
+		"test:react": "node cli.js --src test/assets/icons/ --dest temp/react/icons/ --prefix icon --template react --remove-old --optimize",
+		"test:react_material": "node cli.js --src test/assets/icons/ --dest temp/react_material/icons/ --prefix icon --template react-material --remove-old --optimize",
+		"test:external": "node cli.js --src test/assets/icons/ --dest temp/external/icons/ --prefix icon --template test/external-template.js --remove-old --optimize"
 	},
 	"repository": {
 		"type": "git",
@@ -25,6 +29,7 @@
 	},
 	"homepage": "https://github.com/silvandiepen/react-icon-components#readme",
 	"dependencies": {
+		"ejs": "^3.0.1",
 		"kleur": "^3.0.3",
 		"mkdirp": "^0.5.1",
 		"rimraf": "^3.0.0",

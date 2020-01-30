@@ -6,7 +6,7 @@ const rimraf = require("rimraf");
 const SVGO = require("svgo");
 const fsp = require("fs").promises;
 const BUILD = require("./build/files.js");
-const { red, yellow, bgWhite, blue, green, bold } = require("kleur");
+const { red, yellow, bgBlue, black, blue, green, bold } = require("kleur");
 const { kebabCase, fileName } = require("./build/helpers.js");
 
 let settings = {
@@ -16,6 +16,8 @@ let settings = {
 	files: [],
 	error: null,
 	options: {
+		template: argv.template ? argv.template : false,
+		inRoot: argv.inRoot ? true : false,
 		removeOld: argv.removeOld ? true : false,
 		prefix: argv.prefix ? `${argv.prefix}-` : ""
 	}
@@ -94,22 +96,72 @@ const getFileData = async function(srcFileName) {
 getSrcFiles(settings).then((result) => setTimeout(() => logResult(), 1000));
 
 const buildFile = async (file, ext, data) => {
-	await fsp.writeFile(
-		path.join(
-			settings.dest,
-			fileName(file.name),
-			kebabCase(fileName(file.name)) + ext
-		),
-		data
-	);
+	if (settings.options.inRoot)
+		await fsp.writeFile(
+			path.join(
+				settings.dest,
+				kebabCase(fileName(file.name)) + (ext ? ext : "")
+			),
+			data
+		);
+	else
+		await fsp.writeFile(
+			path.join(
+				settings.dest,
+				fileName(file.name),
+				kebabCase(fileName(file.name)) + (ext ? ext : "")
+			),
+			data
+		);
 };
 
 const writeComponent = async function(file) {
 	try {
-		await buildFile(file, ".tsx", await BUILD.TSX(file, settings.options));
-		await buildFile(file, ".css", await BUILD.CSS(file, settings.options));
-		await buildFile(file, ".e2e.ts", await BUILD.E2E(file, settings.options));
-		await buildFile(file, ".spec.ts", await BUILD.SPEC(file, settings.options));
+		// Check if the template is a path. If so.. we can try to get those files and run them.
+		if (settings.options.template.indexOf("/") > 0) {
+			await buildFile(
+				file,
+				path.extname(settings.options.template.replace(".template", "")),
+				await BUILD.FROM_TEMPLATE(file, settings.options)
+			);
+		} else if (settings.options.template) {
+			switch (settings.options.template) {
+				case "stencil":
+					await buildFile(
+						file,
+						".tsx",
+						await BUILD.STENCIL.TSX(file, settings.options)
+					);
+					await buildFile(
+						file,
+						".css",
+						await BUILD.STENCIL.CSS(file, settings.options)
+					);
+					await buildFile(
+						file,
+						".e2e.ts",
+						await BUILD.STENCIL.E2E(file, settings.options)
+					);
+					await buildFile(
+						file,
+						".spec.ts",
+						await BUILD.STENCIL.SPEC(file, settings.options)
+					);
+				case "react-material":
+					await buildFile(
+						file,
+						".js",
+						await BUILD.REACT_MATERIAL(file, settings.options)
+					);
+				case "react":
+					await buildFile(
+						file,
+						".js",
+						await BUILD.REACT(file, settings.options)
+					);
+			}
+		}
+
 		console.log(`\t${green("✔")} ${file.name}`);
 	} catch (err) {
 		console.log(`\t${red("×")} ${file.name} ${err}`);
@@ -121,9 +173,9 @@ function logResult() {
 
 	console.log("\n");
 	console.log(
-		`\t${bold("Generating")} ${bgWhite().black(" Stencil ")} ${bold(
-			"web components from svg files."
-		)}`
+		`\t${bold("Generating")} ${bgBlue().black(
+			" " + settings.options.template.toUpperCase() + " "
+		)} ${bold("components from svg files.")}`
 	);
 	console.log("\n");
 
