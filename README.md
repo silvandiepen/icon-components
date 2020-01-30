@@ -1,13 +1,13 @@
-# Stencil Icon Components
+# React Icon Components
 
-A design system can also incorporate a full set of Icons. Preferably those icons can also be web-components just like the rest of the design system set up using Stencil.
+A design system can also incorporate a full set of Icons.
 
 To automatically create the source code for icon web components for a full folder of SVG files, this plugin comes in handy. Just add it to your stencil project and generate the icons.
 
 ### Install
 
 ```bash
-npm install stencil-icon-components
+npm install react-icon-components
 ```
 
 Add a command (script) to your package.json to create the components like;
@@ -15,7 +15,7 @@ Add a command (script) to your package.json to create the components like;
 ```json
 scripts: {
     ...
-    "stencil:icons": "stencil-icon-components --src assets/icons --dest src/components/icons",
+    "build:icons": "react-icon-components --src assets/icons --dest src/components/icons",
     ...
 }
 ```
@@ -47,7 +47,7 @@ Any help to make this package better is very welcome! So if you like this idea a
 
 ## Author
 
-**stencil-icon-components** © [Sil van Diepen](https://github.com/silvandiepen), Released under the [MIT](./LICENSE) License.<br>
-Authored and maintained by Sil van Diepen with help from contributors ([list](https://github.com/silvandiepen/stencil-icon-components/contributors)).
+**react-icon-components** © [Sil van Diepen](https://github.com/silvandiepen), Released under the [MIT](./LICENSE) License.<br>
+Authored and maintained by Sil van Diepen with help from contributors ([list](https://github.com/silvandiepen/react-icon-components/contributors)).
 
 [github.com/silvandiepen](https://github.com/silvandiepen) · GitHub [@Sil van Diepen](https://github.com/silvandiepen) · Twitter [@silvandiepen](https://twitter.com/silvandiepen)

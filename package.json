@@ -1,7 +1,7 @@
 {
-	"name": "stencil-icon-components",
-	"version": "0.0.9",
-	"description": "Generate Icon Web Components for Stencil",
+	"name": "react-icon-components",
+	"version": "0.0.1",
+	"description": "Generate React Icon Components",
 	"main": "index.js",
 	"bin": "cli.js",
 	"scripts": {
@@ -21,9 +21,9 @@
 	"author": "Sil van Diepen",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/silvandiepen/stencil-icon-components/issues"
+		"url": "https://github.com/silvandiepen/react-icon-components/issues"
 	},
-	"homepage": "https://github.com/silvandiepen/stencil-icon-components#readme",
+	"homepage": "https://github.com/silvandiepen/react-icon-components#readme",
 	"dependencies": {
 		"kleur": "^3.0.3",
 		"mkdirp": "^0.5.1",
