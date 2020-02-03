@@ -8,8 +8,7 @@ const ejs = require("ejs");
 const getTemplate = async (srcFileName, external = false) => {
 	let currentPath = external
 		? srcFileName
-		: path.join("build/templates", srcFileName + ".template");
-	console.log(srcFileName, currentPath);
+		: path.join(__dirname, "templates", srcFileName + ".template");
 	try {
 		return fsp.readFile(currentPath).then((file) => {
 			return file.toString();
@@ -91,7 +90,7 @@ BUILD.STENCIL = {
 	}
 };
 
-BUILD.REACT_MATERIAL = async (fileData, options, strip = true) => {
+BUILD.REACT_MATERIAL = async (fileData, options) => {
 	const currentFileName = prefixedName(fileData.name, options.prefix);
 	let template = await getTemplate("react-material");
 

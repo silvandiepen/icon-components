@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 const argv = require("yargs").argv;
 const path = require("path");
-const mkdirp = require("mkdirp");
+// const mkdirp = require("mkdirp");
 const rimraf = require("rimraf");
 const SVGO = require("svgo");
+const ejs = require("ejs");
 const fsp = require("fs").promises;
 const BUILD = require("./build/files.js");
 const { red, yellow, bgBlue, black, blue, green, bold } = require("kleur");
@@ -19,18 +20,19 @@ let settings = {
 		template: argv.template ? argv.template : false,
 		inRoot: argv.inRoot ? true : false,
 		removeOld: argv.removeOld ? true : false,
-		prefix: argv.prefix ? `${argv.prefix}-` : ""
+		prefix: argv.prefix ? `${argv.prefix}-` : "",
+		list: argv.list ? argv.prefix : false
 	}
 };
 
 // If remove old is set, the destination folder will be removed in order to be sure all files are new.
 if (settings.options.removeOld) {
-	rimraf(settings.dest, () => {
-		console.log("Removed destination folder");
+	rimraf(settings.dest + "/*", () => {
+		console.log("Cleaned destination folder");
 	});
 }
 
-const getSrcFiles = async function(log) {
+const getSrcFiles = async (log) => {
 	try {
 		// Get the files
 		await getFileList();
@@ -41,7 +43,7 @@ const getSrcFiles = async function(log) {
 	return log;
 };
 
-const getFileList = async function() {
+const getFileList = async () => {
 	// Genereate a list of svg files from the source folder.
 	let files = await fsp.readdir(settings.src);
 
@@ -55,7 +57,7 @@ const getFileList = async function() {
 		}
 	});
 };
-const getFilesData = async function() {
+const getFilesData = async () => {
 	// Go through each file and write it to the settings.
 	let files = [];
 
@@ -82,9 +84,8 @@ const getFilesData = async function() {
 		})
 	);
 };
-const getFileData = async function(srcFileName) {
+const getFileData = async (srcFileName) => {
 	try {
-		// let fileData = 'hoi';
 		return fsp.readFile(path.join(settings.src, srcFileName)).then((file) => {
 			return file.toString();
 		});
@@ -93,31 +94,56 @@ const getFileData = async function(srcFileName) {
 	}
 };
 
-getSrcFiles(settings).then((result) => setTimeout(() => logResult(), 1000));
+const writeList = async () => {
+	// Set the default template for lists
+	let template = path.join(__dirname, "build/templates/list.json.template");
+	// If the there is a template given. Use that.
+	if (typeof settings.files == "string") template = settings.files;
+
+	// Define the filelist.
+	const files = settings.files.map((file) => (file = file.name));
+
+	// Get the template
+	try {
+		fsp.readFile(template).then(async (file) => {
+			// Get the template and create the file with our components.
+			const contents = ejs.render(file.toString(), {
+				files: files
+			});
+			// Write the File
+			await fsp.writeFile(
+				path.join(
+					settings.dest,
+					path.basename(template.replace(".template", ""))
+				),
+				contents
+			);
+		});
+	} catch (err) {
+		console.warn(err);
+	}
+};
+
+getSrcFiles(settings).then((result) => setTimeout(() => buildComponents(), 0));
 
 const buildFile = async (file, ext, data) => {
+	let filePath = path.join(
+		settings.dest,
+		fileName(file.name),
+		kebabCase(fileName(file.name)) + (ext ? ext : "")
+	);
 	if (settings.options.inRoot)
-		await fsp.writeFile(
-			path.join(
-				settings.dest,
-				kebabCase(fileName(file.name)) + (ext ? ext : "")
-			),
-			data
+		filePath = path.join(
+			settings.dest,
+			kebabCase(fileName(file.name)) + (ext ? ext : "")
 		);
-	else
-		await fsp.writeFile(
-			path.join(
-				settings.dest,
-				fileName(file.name),
-				kebabCase(fileName(file.name)) + (ext ? ext : "")
-			),
-			data
-		);
+
+	await fsp.writeFile(filePath, data);
 };
 
 const writeComponent = async function(file) {
 	try {
-		// Check if the template is a path. If so.. we can try to get those files and run them.
+		// Check if the tedmplate is a path. If so.. we can try to get those files and run them.
 		if (settings.options.template.indexOf("/") > 0) {
 			await buildFile(
 				file,
@@ -125,6 +151,7 @@ const writeComponent = async function(file) {
 				await BUILD.FROM_TEMPLATE(file, settings.options)
 			);
 		} else if (settings.options.template) {
+			console.log(settings.options.template);
 			switch (settings.options.template) {
 				case "stencil":
 					await buildFile(
@@ -147,28 +174,32 @@ const writeComponent = async function(file) {
 						".spec.ts",
 						await BUILD.STENCIL.SPEC(file, settings.options)
 					);
+					break;
 				case "react-material":
+					console.log("HOIIII");
 					await buildFile(
 						file,
 						".js",
 						await BUILD.REACT_MATERIAL(file, settings.options)
 					);
+					break;
 				case "react":
+					console.log("doeiiii");
 					await buildFile(
 						file,
 						".js",
 						await BUILD.REACT(file, settings.options)
 					);
+					break;
 			}
 		}
-
 		console.log(`\t${green("✔")} ${file.name}`);
 	} catch (err) {
 		console.log(`\t${red("×")} ${file.name} ${err}`);
 	}
 };
 
-function logResult() {
+function buildComponents() {
 	// Log it all\
 
 	console.log("\n");
@@ -198,15 +229,24 @@ function logResult() {
 			console.log(
 				`\t${bold("Files")} ${blue().bold("(" + settings.files.length + ")")}`
 			);
-			settings.files.forEach((file, i) => {
-				mkdirp(path.join(settings.dest, fileName(file.name)), function(err) {
-					writeComponent(file);
 
-					if (settings.files.length == i + 1)
-						setTimeout(() => {
-							console.log(`\n`);
-						}, 10);
-				});
+			if (settings.options.list) writeList(settings.files);
+
+			settings.files.forEach(async (file, i) => {
+				if (!settings.options.inRoot)
+					await fsp.mkdir(path.join(settings.dest, fileName(file.name)), {
+						recursive: true,
+						mode: 0o775
+					});
+
+				writeComponent(file);
+
+				if (settings.files.length == i + 1) {
+					setTimeout(() => {
+						console.log(" Done! ");
+						console.log(`\n`);
+					}, 1000);
+				}
 			});
 		}
 	} else {
