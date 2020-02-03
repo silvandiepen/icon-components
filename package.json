@@ -9,7 +9,8 @@
 		"test:stencil": "node cli.js --src test/assets/icons/ --dest temp/stencil/icons/ --prefix icon --template stencil --remove-old --optimize",
 		"test:react": "node cli.js --src test/assets/icons/ --dest temp/react/icons/ --prefix icon --template react --remove-old --optimize",
 		"test:react_material": "node cli.js --src test/assets/icons/ --dest temp/react_material/icons/ --prefix icon --template react-material --remove-old --optimize",
-		"test:external": "node cli.js --src test/assets/icons/ --dest temp/external/icons/ --prefix icon --template test/external-template.js --remove-old --optimize"
+		"test:external": "node cli.js --src test/assets/icons/ --dest temp/external/icons/ --prefix icon --template test/external-template.js --remove-old --optimize",
+		"test:list": "node cli.js --src test/assets/icons/ --dest temp/external/icons/ --prefix icon --template test/external-template.js --list=build/templates/list.json.template --remove-old --optimize"
 	},
 	"repository": {
 		"type": "git",

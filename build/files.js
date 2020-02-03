@@ -1,5 +1,11 @@
 const svgtojsx = require("svg-to-jsx");
-const { kebabCase, PascalCase, fileName, removeTags } = require("./helpers.js");
+const {
+	kebabCase,
+	PascalCase,
+	fileName,
+	removeTags,
+	prefixedName
+} = require("./helpers.js");
 const fsp = require("fs").promises;
 const path = require("path");
 const ejs = require("ejs");
@@ -16,12 +22,6 @@ const getTemplate = async (srcFileName, external = false) => {
 	} catch (err) {
 		console.warn(err);
 	}
-};
-
-const prefixedName = (name, prefix) => {
-	return prefix
-		? `${prefix}-${kebabCase(fileName(name))}`
-		: `icon-${kebabCase(fileName(name))}`;
 };
 
 const BUILD = {};

@@ -5,10 +5,16 @@ const path = require("path");
 const rimraf = require("rimraf");
 const SVGO = require("svgo");
 const ejs = require("ejs");
+const { lstat, readdir } = require("fs");
 const fsp = require("fs").promises;
 const BUILD = require("./build/files.js");
 const { red, yellow, bgBlue, black, blue, green, bold } = require("kleur");
-const { kebabCase, fileName } = require("./build/helpers.js");
+const {
+	kebabCase,
+	fileName,
+	prefixedName,
+	PascalCase
+} = require("./build/helpers.js");
 
 let settings = {
 	src: path.join(argv.src),
@@ -21,7 +27,7 @@ let settings = {
 		inRoot: argv.inRoot ? true : false,
 		removeOld: argv.removeOld ? true : false,
 		prefix: argv.prefix ? `${argv.prefix}-` : "",
-		list: argv.list ? argv.prefix : false
+		list: argv.list ? argv.list : false
 	}
 };
 
@@ -98,30 +104,58 @@ const writeList = async () => {
 	// Set the default template for lists
 	let template = path.join(__dirname, "build/templates/list.json.template");
 	// If the there is a template given. Use that.
-	if (typeof settings.files == "string") template = settings.files;
+	if (typeof settings.options.list == "string")
+		template = settings.options.list;
 
 	// Define the filelist.
-	const files = settings.files.map((file) => (file = file.name));
+	const files = settings.files.map(
+		(file) =>
+			(file = {
+				name: file.name,
+				componentName: PascalCase(
+					prefixedName(file.name, settings.options.prefix)
+				),
+				fileName: prefixedName(file.name, settings.options.prefix)
+			})
+	);
 
 	// Get the template
 	try {
-		fsp.readFile(template).then(async (file) => {
-			// Get the template and create the file with our components.
-			const contents = ejs.render(file.toString(), {
-				files: files
-			});
-			// Write the File
-			await fsp.writeFile(
-				path.join(
-					settings.dest,
-					path.basename(template.replace(".template", ""))
-				),
-				contents
-			);
+		await lstat(template, (err, stats) => {
+			if (err) console.log(err);
+
+			if (stats.isFile()) writeListFile(template, files);
+
+			// If the given template is a folder. Just get all files in the folder and compile them.
+			if (stats.isDirectory()) {
+				readdir(template, (err, templates) => {
+					if (err) console.log(err);
+					templates.forEach((file) => {
+						writeListFile(path.join(template, file), files);
+					});
+				});
+			}
 		});
 	} catch (err) {
 		console.warn(err);
 	}
+};
+const writeListFile = async (template, files) => {
+	fsp.readFile(template).then(async (file) => {
+		// Get the template and create the file with our components.
+		const contents = ejs.render(file.toString(), {
+			files: files,
+			...settings.options
+		});
+		// Write the File
+		await fsp.writeFile(
+			path.join(
+				settings.dest,
+				path.basename(template.replace(".template", ""))
+			),
+			contents
+		);
+	});
 };
 
 getSrcFiles(settings).then((result) => setTimeout(() => buildComponents(), 0));
@@ -151,7 +185,6 @@ const writeComponent = async function(file) {
 				await BUILD.FROM_TEMPLATE(file, settings.options)
 			);
 		} else if (settings.options.template) {
-			console.log(settings.options.template);
 			switch (settings.options.template) {
 				case "stencil":
 					await buildFile(
@@ -176,7 +209,6 @@ const writeComponent = async function(file) {
 					);
 					break;
 				case "react-material":
-					console.log("HOIIII");
 					await buildFile(
 						file,
 						".js",
@@ -184,7 +216,6 @@ const writeComponent = async function(file) {
 					);
 					break;
 				case "react":
-					console.log("doeiiii");
 					await buildFile(
 						file,
 						".js",

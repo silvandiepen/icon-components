@@ -37,4 +37,10 @@ const removeTags = (str, tags) => {
 	}
 };
 
-module.exports = { kebabCase, fileName, PascalCase, removeTags };
+const prefixedName = (name, prefix) => {
+	return prefix
+		? `${prefix}-${kebabCase(fileName(name))}`
+		: `icon-${kebabCase(fileName(name))}`;
+};
+
+module.exports = { kebabCase, fileName, PascalCase, removeTags, prefixedName };

@@ -12,7 +12,7 @@ npm install react-icon-components
 
 Add a command (script) to your package.json to create the components like;
 
-```json
+```
 scripts: {
     ...
     "build:icons": "icon-components --src assets/icons --dest src/components/icons --template react",
@@ -59,7 +59,7 @@ In many cases it can come in handy to also create a list of all components. This
 
 Default template for list;
 
-```json
+```
 {
     "icons": [<% files.forEach(function(file,index) { %>
         "<%= file %>"<% if(index < files.length -1){ %>,<% } %>
