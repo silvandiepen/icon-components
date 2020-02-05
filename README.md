@@ -7,7 +7,7 @@ To automatically create the source code for icon web components for a full folde
 ### Install
 
 ```bash
-npm install react-icon-components
+npm install icon-components
 ```
 
 Add a command (script) to your package.json to create the components like;
@@ -26,7 +26,7 @@ scripts: {
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | `--src`        | Source folder with SVG files                                                                                                                                                                                                                             | `/src/assets/icons`     |
 | `--dest`       | Destination folder for components                                                                                                                                                                                                                        | `/src/components/icons` |
-| `--template`   | Choose output type. Options; stencil, react, react-material                                                                                                                                                                                              |                         |
+| `--template`   | Choose output type. Options; stencil, react, material                                                                                                                                                                                                    |                         |
 | `--prefix`     | Add a prefix to all files, ex; social-network.svg becomes icon-social-network                                                                                                                                                                            | `false`                 |
 | `--remove-old` | Remove the whole destionation folder as set. In order to be sure to not have any old files and create everything new. Don't set this if your destination folder also includes files which arent generated.                                               | `false`                 |
 | `--list`       | In many cases it can come in handy to also create a list of all components. This can be created by setting --list. If set, it will create a default list. It can also contain a path to a template, in that case the template will be used for the list. | `false`                 |
@@ -87,7 +87,7 @@ Any help to make this package better is very welcome! So if you like this idea a
 
 ## Author
 
-**react-icon-components** © [Sil van Diepen](https://github.com/silvandiepen), Released under the [MIT](./LICENSE) License.<br>
-Authored and maintained by Sil van Diepen with help from contributors ([list](https://github.com/silvandiepen/react-icon-components/contributors)).
+**icon-components** © [Sil van Diepen](https://github.com/silvandiepen), Released under the [MIT](./LICENSE) License.<br>
+Authored and maintained by Sil van Diepen with help from contributors ([list](https://github.com/silvandiepen/icon-components/contributors)).
 
 [github.com/silvandiepen](https://github.com/silvandiepen) · GitHub [@Sil van Diepen](https://github.com/silvandiepen) · Twitter [@silvandiepen](https://twitter.com/silvandiepen)

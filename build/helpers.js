@@ -37,10 +37,30 @@ const removeTags = (str, tags) => {
 	}
 };
 
+const removeAttrs = (str, attrs) => {
+	if (Array.isArray(attrs)) {
+		let value = str;
+		attrs.forEach((attr) => {
+			value = removeAttrs(value, attr);
+		});
+		return value;
+	} else {
+		const regex = new RegExp(`/${attrs}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"/gi`, "g");
+		return str.replace(regex, "");
+	}
+};
+
 const prefixedName = (name, prefix) => {
 	return prefix
 		? `${prefix}-${kebabCase(fileName(name))}`
 		: `icon-${kebabCase(fileName(name))}`;
 };
 
-module.exports = { kebabCase, fileName, PascalCase, removeTags, prefixedName };
+module.exports = {
+	kebabCase,
+	fileName,
+	PascalCase,
+	removeTags,
+	removeAttrs,
+	prefixedName
+};

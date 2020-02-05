@@ -13,7 +13,8 @@ const {
 	fileName,
 	prefixedName,
 	PascalCase,
-	removeTags
+	removeTags,
+	removeAttrs
 } = require("./build/helpers.js");
 
 let settings = {
@@ -112,7 +113,10 @@ const writeList = async () => {
 		(file) =>
 			(file = {
 				data: file.data,
-				data_stripped: removeTags(file.data, ["svg", "title"]),
+				data_stripped: removeAttrs(removeTags(file.data, ["svg", "title"]), [
+					"id",
+					"fill"
+				]),
 				name: file.name,
 				componentName: PascalCase(
 					prefixedName(file.name, settings.options.prefix)

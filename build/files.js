@@ -4,6 +4,7 @@ const {
 	PascalCase,
 	fileName,
 	removeTags,
+	removeAttrs,
 	prefixedName
 } = require("./helpers.js");
 const fsp = require("fs").promises;
@@ -31,7 +32,10 @@ BUILD.FROM_TEMPLATE = async (fileData, options) => {
 	return ejs.render(template, {
 		...options,
 		data: fileData,
-		data_stripped: removeTags(fileData, ["svg", "title"]),
+		data_stripped: removeAttrs(removeTags(fileData.data, ["svg", "title"]), [
+			"id",
+			"fill"
+		]),
 		title: PascalCase(fileData.name),
 		name: fileData.name,
 		title_lowercase: fileData.name.toLowerCase()
