@@ -32,13 +32,16 @@ BUILD.FROM_TEMPLATE = async (fileData, options) => {
 	return ejs.render(template, {
 		...options,
 		data: fileData,
+		data_clean: removeAttrs(fileData.data, ["id", "fill"]),
 		data_stripped: removeAttrs(removeTags(fileData.data, ["svg", "title"]), [
 			"id",
 			"fill"
 		]),
-		title: PascalCase(fileData.name),
 		name: fileData.name,
-		title_lowercase: fileData.name.toLowerCase()
+		title: PascalCase(fileData.name),
+		title_lowercase: fileData.name.toLowerCase(),
+		fileName: prefixedName(fileData.name, settings.options.prefix),
+		componentName: PascalCase(prefixedName(fileData.name, options.prefix))
 	});
 };
 

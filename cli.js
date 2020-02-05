@@ -113,15 +113,18 @@ const writeList = async () => {
 		(file) =>
 			(file = {
 				data: file.data,
+				data_clean: removeAttrs(file.data, ["id", "fill"]),
 				data_stripped: removeAttrs(removeTags(file.data, ["svg", "title"]), [
 					"id",
 					"fill"
 				]),
 				name: file.name,
+				title: PascalCase(file.name),
+				title_lowercase: file.name.toLowerCase(),
+				fileName: prefixedName(file.name, settings.options.prefix),
 				componentName: PascalCase(
 					prefixedName(file.name, settings.options.prefix)
-				),
-				fileName: prefixedName(file.name, settings.options.prefix)
+				)
 			})
 	);
 
