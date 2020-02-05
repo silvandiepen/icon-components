@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const argv = require("yargs").argv;
 const path = require("path");
-// const mkdirp = require("mkdirp");
 const rimraf = require("rimraf");
 const SVGO = require("svgo");
 const ejs = require("ejs");
@@ -13,7 +12,8 @@ const {
 	kebabCase,
 	fileName,
 	prefixedName,
-	PascalCase
+	PascalCase,
+	removeTags
 } = require("./build/helpers.js");
 
 let settings = {
@@ -111,6 +111,8 @@ const writeList = async () => {
 	const files = settings.files.map(
 		(file) =>
 			(file = {
+				data: file.data,
+				data_stripped: removeTags(file.data, ["svg", "title"]),
 				name: file.name,
 				componentName: PascalCase(
 					prefixedName(file.name, settings.options.prefix)
