@@ -28,19 +28,10 @@ const BUILD = {};
 
 BUILD.FROM_TEMPLATE = async (fileData, options) => {
 	let template = await getTemplate(options.template, true);
-
-	console.log({
-		...options,
-		data: fileData,
-		title: fileData.name,
-		title: PascalCase(fileData.name),
-		name: fileData.name,
-		title_lowercase: fileData.name.toLowerCase()
-	});
 	return ejs.render(template, {
 		...options,
 		data: fileData,
-		title: fileData.name,
+		data_stripped: removeTags(fileData, ["svg", "title"]),
 		title: PascalCase(fileData.name),
 		name: fileData.name,
 		title_lowercase: fileData.name.toLowerCase()
