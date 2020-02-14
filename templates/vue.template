@@ -1,0 +1,22 @@
+<template>
+	<%- data %>
+</template>
+<script>
+export default {
+	name: '<%= title %>',
+	props: {
+		width: {
+			type: Number,
+			default: 32
+		},
+		height: {
+			type: Number,
+			default: 32
+		},
+		color: {
+			type: String,
+			default: currentColor
+		}
+	}
+};
+</script>
