@@ -8,15 +8,26 @@ To automatically create the source code for icon web components for a full folde
 
 ```bash
 npm install icon-components
+# or
+yarn add icon-components
 ```
 
 Add a command (script) to your package.json to create the components like;
 
-```
+```json
 scripts: {
-    ...
     "build:icons": "icon-components --src assets/icons --dest src/components/icons --template react",
-    ...
+
+}
+```
+
+#### npx
+
+You could also use it using npx, in that case you dont need to install it and you will always use the latest version (which could have it's own risks).
+
+```json
+scripts: {
+    "build:icons": "npx icon-components --src assets/icons --dest src/components/icons --template react",
 }
 ```
 

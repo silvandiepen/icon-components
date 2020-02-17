@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-	name: '<%= title %>',
+	name: '<%= component %>',
 	props: {
 		width: {
 			type: Number,

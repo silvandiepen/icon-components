@@ -1,6 +1,6 @@
-import { Icon } from './<%= filename %>';
+import { Icon } from './<%= name %>';
 
-describe('<%= filename %>', () => {
+describe('<%= name %>', () => {
     it('builds', () => {
     expect(new Template()).toBeTruthy();
     });

@@ -1,11 +1,11 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('<%= filename %>', () => {
+describe('<%= name %>', () => {
     it('renders', async () => {
     const page = await newE2EPage();
-    await page.setContent('<%= filename %>');
+    await page.setContent('<%= name %>');
 
-    const element = await page.find('<%= filename %>');
+    const element = await page.find('<%= name %>');
     expect(element).toHaveClass('hydrated');
     });
 });
