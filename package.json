@@ -5,7 +5,10 @@
 	"main": "index.js",
 	"bin": "cli.js",
 	"scripts": {
-		"test": "sh ./scripts/test.sh"
+		"test": "npm run test:error && npm run test:success",
+		"test:success": "sh ./scripts/test.sh",
+		"test:error": "sh ./scripts/error.sh",
+		"build": "rollup -c"
 	},
 	"repository": {
 		"type": "git",
@@ -25,6 +28,7 @@
 	},
 	"homepage": "https://github.com/silvandiepen/react-icon-components#readme",
 	"dependencies": {
+		"cli-block": "^1.1.2",
 		"ejs": "^3.0.1",
 		"file-type": "^14.1.2",
 		"junk": "^3.1.0",
@@ -36,6 +40,14 @@
 		"yargs": "^15.0.2"
 	},
 	"devDependencies": {
-		"chai": "^4.2.0"
+		"@rollup/plugin-commonjs": "^11.0.2",
+		"@rollup/plugin-node-resolve": "^7.1.1",
+		"@rollup/plugin-url": "^4.0.2",
+		"@svgr/rollup": "^5.2.0",
+		"chai": "^4.2.0",
+		"rollup": "^1.32.0",
+		"rollup-plugin-peer-deps-external": "^2.2.2",
+		"rollup-plugin-preserve-shebangs": "^0.1.2",
+		"rollup-plugin-terser": "^5.2.0"
 	}
 }
