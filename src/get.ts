@@ -1,7 +1,7 @@
-import SVGO from 'svgo';
-import path from 'path';
+const path = require('path');
+const fs = require('fs').promises;
 
-import { promises as fs } from 'fs';
+import SVGO from 'svgo';
 import { kebabCase, asyncForEach, WAIT, fileName } from './helpers';
 
 export const getSourceFiles = async (settings) => {

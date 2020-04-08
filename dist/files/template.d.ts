@@ -1,1 +1,1 @@
-export declare const FROM_TEMPLATE: (fileData: any, settings: any) => Promise<any>;
+export declare const FROM_TEMPLATE: (fileData: any, settings: any) => Promise<string>;

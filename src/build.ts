@@ -1,6 +1,5 @@
-import path from 'path';
-
-import { promises as fs } from 'fs';
+const path = require('path');
+const fs = require('fs').promises;
 import { red, yellow, bgBlue, blue, green, bold } from 'kleur';
 import {
 	STENCIL_CSS,
@@ -30,12 +29,6 @@ const makePath = async (filePath: string) => {
 };
 
 const buildFile = async (data, file: fileType) => {
-	console.log(
-		'jemoeder',
-		data // typeof data.dest,
-		// typeof fileName(file.name),
-		// typeof kebabCase(fileName(file.name)) + (ext ? ext : '')
-	);
 	file.path = path.join(
 		data.dest,
 		fileName(file.name),

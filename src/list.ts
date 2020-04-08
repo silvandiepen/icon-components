@@ -1,6 +1,7 @@
-import { promises as fs } from 'fs';
+const path = require('path');
+const fs = require('fs').promises;
+
 import ejs from 'ejs';
-import path from 'path';
 import { PascalCase, removeTags, removeAttrs, prefixedName } from './helpers';
 
 export const writeList = async (settings) => {

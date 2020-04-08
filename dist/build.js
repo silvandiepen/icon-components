@@ -8,34 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
-const fs_1 = require("fs");
+const path = require('path');
+const fs = require('fs').promises;
 const kleur_1 = require("kleur");
 const files_1 = require("./files");
 const helpers_1 = require("./helpers");
 const list_1 = require("./list");
 const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
-    const dirname = path_1.default.dirname(filePath);
-    if ((yield fs_1.promises.stat(dirname)).isDirectory()) {
+    const dirname = path.dirname(filePath);
+    if ((yield fs.stat(dirname)).isDirectory()) {
         return true;
     }
     makePath(dirname);
-    fs_1.promises.mkdir(dirname);
+    fs.mkdir(dirname);
 });
 const buildFile = (data, file) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('jemoeder', data // typeof data.dest,
-    // typeof fileName(file.name),
-    // typeof kebabCase(fileName(file.name)) + (ext ? ext : '')
-    );
-    file.path = path_1.default.join(data.dest, helpers_1.fileName(file.name), helpers_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
+    file.path = path.join(data.dest, helpers_1.fileName(file.name), helpers_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
     if (data.inRoot)
-        file.path = path_1.default.join(data.dest, helpers_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
+        file.path = path.join(data.dest, helpers_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
     yield makePath(file.path);
-    yield fs_1.promises.writeFile(file.path, file.data, {
+    yield fs.writeFile(file.path, file.data, {
         encoding: 'utf8',
         flag: 'w'
     });
@@ -47,7 +40,7 @@ const writeComponent = function (data, file) {
             if (data.template.indexOf('/') > 0) {
                 yield buildFile(data, {
                     data: yield files_1.FROM_TEMPLATE(file, data),
-                    ext: path_1.default.extname(data.template.replace('.template', '')),
+                    ext: path.extname(data.template.replace('.template', '')),
                     name: file.name
                 });
             }
@@ -118,7 +111,7 @@ exports.buildComponents = (data) => __awaiter(void 0, void 0, void 0, function* 
                 list_1.writeList(data);
             data.files.forEach((file, i) => __awaiter(void 0, void 0, void 0, function* () {
                 if (!data.inRoot)
-                    yield fs_1.promises.mkdir(path_1.default.join(data.dest, helpers_1.fileName(file.name)), {
+                    yield fs.mkdir(path.join(data.dest, helpers_1.fileName(file.name)), {
                         recursive: true,
                         mode: 0o775
                     });

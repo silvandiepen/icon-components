@@ -8,11 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
+const path = require('path');
 exports.WAIT = () => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -32,11 +29,11 @@ exports.kebabCase = (str) => str
     .join('-');
 exports.fileName = (str, settings = null) => {
     if (settings)
-        return `${settings.prefix}${path_1.default
+        return `${settings.prefix}${path
             .basename(str)
-            .replace(path_1.default.extname(str), '')}`;
+            .replace(path.extname(str), '')}`;
     else
-        return `${path_1.default.basename(str).replace(path_1.default.extname(str), '')}`;
+        return `${path.basename(str).replace(path.extname(str), '')}`;
 };
 exports.PascalCase = (str) => str
     .replace('-', ' ')

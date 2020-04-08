@@ -12,9 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path = require('path');
+const fs = require('fs').promises;
 const svgo_1 = __importDefault(require("svgo"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = require("fs");
 const helpers_1 = require("./helpers");
 exports.getSourceFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     yield helpers_1.WAIT();
@@ -22,7 +22,7 @@ exports.getSourceFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
 });
 const getFileData = (filedata, srcFileName) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        return fs_1.promises.readFile(path_1.default.join(filedata.src, srcFileName)).then((file) => {
+        return fs.readFile(path.join(filedata.src, srcFileName)).then((file) => {
             return file.toString();
         });
     }
@@ -32,9 +32,9 @@ const getFileData = (filedata, srcFileName) => __awaiter(void 0, void 0, void 0,
 });
 exports.getFileList = (data) => __awaiter(void 0, void 0, void 0, function* () {
     // Genereate a list of svg files from the source folder.
-    let files = yield fs_1.promises.readdir(data.src);
+    let files = yield fs.readdir(data.src);
     yield helpers_1.asyncForEach(files, (fileName) => __awaiter(void 0, void 0, void 0, function* () {
-        if (path_1.default.extname(fileName) == '.svg') {
+        if (path.extname(fileName) == '.svg') {
             try {
                 data.filelist.push(fileName);
             }
@@ -71,9 +71,9 @@ exports.getDataFromFiles = (data) => __awaiter(void 0, void 0, void 0, function*
 exports.getTemplate = (srcFileName, external = false) => __awaiter(void 0, void 0, void 0, function* () {
     let currentPath = external
         ? srcFileName
-        : path_1.default.join(__dirname, '../src/templates', srcFileName + '.template');
+        : path.join(__dirname, '../src/templates', srcFileName + '.template');
     try {
-        return fs_1.promises.readFile(currentPath).then((file) => {
+        return fs.readFile(currentPath).then((file) => {
             return file.toString();
         });
     }

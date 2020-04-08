@@ -1,5 +1,4 @@
-import path from 'path';
-
+const path = require('path');
 export const WAIT = async () => {
 	return new Promise((resolve) => {
 		setTimeout(() => {

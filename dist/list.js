@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = require("fs");
+const path = require('path');
+const fs = require('fs').promises;
 const ejs_1 = __importDefault(require("ejs"));
-const path_1 = __importDefault(require("path"));
 const helpers_1 = require("./helpers");
 exports.writeList = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     // Set the default template for lists
-    let template = path_1.default.join(__dirname, '../src/templates/list.json.template');
+    let template = path.join(__dirname, '../src/templates/list.json.template');
     // If the there is a template given. Use that.
     if (typeof settings.list == 'string')
         template = settings.list;
@@ -38,15 +38,15 @@ exports.writeList = (settings) => __awaiter(void 0, void 0, void 0, function* ()
     }));
     // Get the template
     try {
-        const stats = yield fs_1.promises.lstat(template);
+        const stats = yield fs.lstat(template);
         // if (err) console.log(err);
         if (stats.isFile())
             exports.writeListFile(template, files, settings);
         // If the given template is a folder. Just get all files in the folder and compile them.
         if (stats.isDirectory()) {
-            const templates = yield fs_1.promises.readdir(template);
+            const templates = yield fs.readdir(template);
             templates.forEach((file) => {
-                exports.writeListFile(path_1.default.join(template, file), files, settings);
+                exports.writeListFile(path.join(template, file), files, settings);
             });
         }
     }
@@ -55,11 +55,11 @@ exports.writeList = (settings) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.writeListFile = (template, files, settings) => __awaiter(void 0, void 0, void 0, function* () {
-    fs_1.promises.readFile(template).then((file) => __awaiter(void 0, void 0, void 0, function* () {
+    fs.readFile(template).then((file) => __awaiter(void 0, void 0, void 0, function* () {
         // Get the template and create the file with our components.
         const contents = ejs_1.default.render(file.toString(), Object.assign({ files: files }, settings));
         // Write the File
-        yield fs_1.promises.writeFile(path_1.default.join(settings.dest, path_1.default.basename(template.replace('.template', ''))), contents);
+        yield fs.writeFile(path.join(settings.dest, path.basename(template.replace('.template', ''))), contents);
     }));
 });
 //# sourceMappingURL=list.js.map
