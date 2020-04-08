@@ -8,6 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require('path');
 const fs = require('fs').promises;
@@ -15,6 +22,7 @@ const kleur_1 = require("kleur");
 const files_1 = require("./files");
 const helpers_1 = require("./helpers");
 const list_1 = require("./list");
+const log = __importStar(require("cli-block"));
 const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     const dirname = path.dirname(filePath);
     if ((yield fs.stat(dirname)).isDirectory()) {
@@ -84,45 +92,51 @@ const writeComponent = function (data, file) {
                         break;
                 }
             }
-            console.log(`\t${kleur_1.green('✔')} ${file.name}`);
+            log.BLOCK_LINE(`${kleur_1.green('✔')} ${file.name}`);
         }
         catch (err) {
-            console.log(`\t${kleur_1.red('×')} ${file.name} ${err}`);
+            log.BLOCK_LINE(`${kleur_1.red('×')} ${file.name} ${err}`);
         }
     });
 };
 exports.buildComponents = (data) => __awaiter(void 0, void 0, void 0, function* () {
     // Log it all\
-    console.log('\n');
-    console.log(`\t${kleur_1.bold('Generating')} ${kleur_1.bgBlue().black(' ' + data.template.toUpperCase() + ' ')} ${kleur_1.bold('components from svg files.')}`);
-    console.log('\n');
+    log.START(`Generating ${data.template}`);
+    log.BLOCK_START(`Settings`);
     if (data.src && data.dest) {
-        if (data.files && data.files.length > 0)
-            console.log(`\tsrc:\t ${kleur_1.green().italic(data.src)} `);
-        else
-            console.log(`\tsrc:\t ${kleur_1.yellow().italic(data.src)} ${kleur_1.red("Your source folder doesn't contain any") +
-                kleur_1.red().bold(' .svg ') +
-                kleur_1.red('files.')}`);
-        console.log(`\tdest:\t ${kleur_1.green().italic(data.dest)}`);
-        console.log(`\n`);
+        yield log.BLOCK_SETTINGS({
+            destination: data.dest,
+            source: data.src,
+            prefix: data.prefix,
+            template: data.template,
+            optimize: data.optimize,
+            removeOld: data.removeOld
+        });
+        if (data.files && data.files.length < 1) {
+            log.BLOCK_MID(`Warnings`);
+            log.BLOCK_ROW_LINE([
+                'src',
+                `${kleur_1.yellow().italic(data.src)} ${kleur_1.red("Your source folder doesn't contain any") +
+                    kleur_1.red().bold(' .svg ') +
+                    kleur_1.red('files.')}`,
+                ''
+            ]);
+        }
+        log.BLOCK_LINE(``);
         if (data.files && data.files.length > 0) {
-            console.log(`\t${kleur_1.bold('Files')} ${kleur_1.blue().bold('(' + data.files.length + ')')}`);
+            log.BLOCK_MID(`${kleur_1.bold('Files')} ${kleur_1.blue().bold('(' + data.files.length + ')')}`);
+            log.BLOCK_LINE();
             if (data.list)
                 list_1.writeList(data);
-            data.files.forEach((file, i) => __awaiter(void 0, void 0, void 0, function* () {
+            yield helpers_1.asyncForEach(data.files, (file, i) => __awaiter(void 0, void 0, void 0, function* () {
                 if (!data.inRoot)
                     yield fs.mkdir(path.join(data.dest, helpers_1.fileName(file.name)), {
                         recursive: true,
                         mode: 0o775
                     });
-                writeComponent(data, file);
-                if (data.files.length == i + 1) {
-                    setTimeout(() => {
-                        console.log(' Done! ');
-                        console.log(`\n`);
-                    }, 1000);
-                }
+                yield writeComponent(data, file);
             }));
+            log.BLOCK_END('Done! ');
         }
     }
     else {
