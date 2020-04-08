@@ -10,8 +10,10 @@ import {
 	FROM_TEMPLATE,
 	REACT
 } from './files';
-import { kebabCase, fileName } from './helpers';
+import { kebabCase, fileName, asyncForEach } from './helpers';
 import { writeList } from './list';
+
+import * as log from 'cli-block';
 
 interface fileType {
 	data: any;
@@ -97,61 +99,61 @@ const writeComponent = async function (data, file) {
 					break;
 			}
 		}
-		console.log(`\t${green('✔')} ${file.name}`);
+		log.BLOCK_LINE(`${green('✔')} ${file.name}`);
 	} catch (err) {
-		console.log(`\t${red('×')} ${file.name} ${err}`);
+		log.BLOCK_LINE(`${red('×')} ${file.name} ${err}`);
 	}
 };
 
 export const buildComponents = async (data) => {
 	// Log it all\
 
-	console.log('\n');
-	console.log(
-		`\t${bold('Generating')} ${bgBlue().black(
-			' ' + data.template.toUpperCase() + ' '
-		)} ${bold('components from svg files.')}`
-	);
-	console.log('\n');
+	log.START(`Generating ${data.template}`);
+
+	log.BLOCK_START(`Settings`);
 
 	if (data.src && data.dest) {
-		if (data.files && data.files.length > 0)
-			console.log(`\tsrc:\t ${green().italic(data.src)} `);
-		else
-			console.log(
-				`\tsrc:\t ${yellow().italic(data.src)} ${
+		await log.BLOCK_SETTINGS({
+			destination: data.dest,
+			source: data.src,
+			prefix: data.prefix,
+			template: data.template,
+			optimize: data.optimize,
+			removeOld: data.removeOld
+		});
+		if (data.files && data.files.length < 1) {
+			log.BLOCK_MID(`Warnings`);
+			log.BLOCK_ROW_LINE([
+				'src',
+				`${yellow().italic(data.src)} ${
 					red("Your source folder doesn't contain any") +
 					red().bold(' .svg ') +
 					red('files.')
-				}`
-			);
+				}`,
+				''
+			]);
+		}
 
-		console.log(`\tdest:\t ${green().italic(data.dest)}`);
-		console.log(`\n`);
+		log.BLOCK_LINE(``);
 
 		if (data.files && data.files.length > 0) {
-			console.log(
-				`\t${bold('Files')} ${blue().bold('(' + data.files.length + ')')}`
+			log.BLOCK_MID(
+				`${bold('Files')} ${blue().bold('(' + data.files.length + ')')}`
 			);
+			log.BLOCK_LINE();
 
 			if (data.list) writeList(data);
 
-			data.files.forEach(async (file, i) => {
+			await asyncForEach(data.files, async (file, i) => {
 				if (!data.inRoot)
 					await fs.mkdir(path.join(data.dest, fileName(file.name)), {
 						recursive: true,
 						mode: 0o775
 					});
 
-				writeComponent(data, file);
-
-				if (data.files.length == i + 1) {
-					setTimeout(() => {
-						console.log(' Done! ');
-						console.log(`\n`);
-					}, 1000);
-				}
+				await writeComponent(data, file);
 			});
+			log.BLOCK_END('Done! ');
 		}
 	} else {
 		console.log(`\tdefine --src and --dest`);
