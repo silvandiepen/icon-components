@@ -1,0 +1,8 @@
+:host {
+    display: block;
+    width: var(--icon-width,20px);
+    height: var(--icon-height,20px);
+}
+svg{
+    fill: var(--icon-color);
+}

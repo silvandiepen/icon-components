@@ -1,0 +1,27 @@
+{
+	"env": {
+		"es6": true,
+		"node": true
+	},
+	"extends": ["prettier", "plugin:prettier/recommended"],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"plugins": ["@typescript-eslint", "prettier"],
+	"rules": {
+		"semi": ["error", "always"],
+		"quotes": ["error", "single"],
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"comma-dangle": ["error", "never"],
+		"no-tabs": 0,
+		"implicit-arrow-linebreak": 0,
+		"object-curly-newline": 0,
+		"nonblock-statement-body-position": ["error", "beside"]
+	}
+}
