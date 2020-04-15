@@ -10,7 +10,13 @@ To automatically create the source code for icon web components for a full folde
 npm install icon-components
 ```
 
+### Usage
+
+#### In your package.json
+
 Add a command (script) to your package.json to create the components like;
+
+_package.json_
 
 ```
 scripts: {
@@ -18,6 +24,53 @@ scripts: {
     "build:icons": "icon-components --src assets/icons --dest src/components/icons --template react",
     ...
 }
+```
+
+#### As a separate bash script
+
+_package.json_
+
+```
+scripts: {
+    ...
+    "build:icons": "sh scripts/icon-components",
+    ...
+}
+```
+
+_scripts/icon-components_
+
+```
+#!/bin/bash
+
+node node_modules/icon-components/dist/cli.js \
+    --src assets/icons \
+    --dest src/components/icons \
+    --template react"
+```
+
+#### Using your own template file
+
+**Single file**
+
+```
+#!/bin/bash
+
+node node_modules/icon-components/dist/cli.js \
+    --src assets/icons \
+    --dest src/components/icons \
+    --template templates/templateFile.tsx.template
+```
+
+**Multiple files / folder**
+
+```
+#!/bin/bash
+
+node node_modules/icon-components/dist/cli.js \
+    --src assets/icons \
+    --dest src/components/icons \
+    --template templates/
 ```
 
 ### Options
