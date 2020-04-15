@@ -10,11 +10,14 @@
 		"test:react": "node dist/cli.js --src test/assets/icons/ --dest temp/react/icons/ --prefix icon --template react --remove-old --optimize",
 		"test:react_material": "node dist/cli.js --src test/assets/icons/ --dest temp/react_material/icons/ --prefix icon --template react-material --remove-old --optimize",
 		"test:external": "node dist/cli.js --src test/assets/icons/ --dest temp/external/icons/ --prefix icon --template test/external-template.js --remove-old --optimize",
-		"test:list": "node dist/cli.js --src test/assets/icons/ --dest temp/external/icons/ --prefix icon --template test/external-template.js --list=build/templates/list.json.template --remove-old --optimize",
+		"test:lists": "sh test-scripts/lists.sh",
+		"test:templates": "sh test-scripts/templates.sh",
+		"test:all": "sh test-scripts/all.sh",
 		"build": "tsc --jsx preserve --declaration",
 		"minify": "terser-folder dist",
 		"lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
-		"lint:fix": "eslint --ext .js,.ts --ignore-path .gitignore . --fix"
+		"lint:fix": "eslint --ext .js,.ts --ignore-path .gitignore . --fix",
+		"dev": "tsc -w"
 	},
 	"repository": {
 		"type": "git",
@@ -34,7 +37,6 @@
 	},
 	"homepage": "https://github.com/silvandiepen/react-icon-components#readme",
 	"dependencies": {
-		"cli-block": "^1.1.3",
 		"ejs": "^3.0.1",
 		"kleur": "^3.0.3",
 		"mkdirp": "^0.5.1",
@@ -48,9 +50,11 @@
 		"@types/ejs": "^3.0.2",
 		"@types/jest": "^25.1.4",
 		"@types/node": "^13.11.0",
+		"@types/svgo": "^1.3.2",
 		"@typescript-eslint/eslint-plugin": "^2.26.0",
 		"@typescript-eslint/parser": "^2.26.0",
 		"chai": "^4.2.0",
+		"cli-block": "^1.1.4",
 		"eslint": "^6.8.0",
 		"eslint-config-prettier": "^6.10.1",
 		"eslint-plugin-import": "^2.20.2",

@@ -1,17 +1,28 @@
 #!/usr/bin/env node
-import rimraf from 'svgo';
+import rimraf from 'rimraf';
+
+import { getFiles } from './get';
+import { buildFiles } from './build';
+import { createLists } from './list';
 
 import { settings } from './settings';
-import { getSourceFiles, getFileList, getDataFromFiles } from './get';
-import { buildComponents } from './build';
+import * as clog from 'cli-block';
 
 // If remove old is set, the destination folder will be removed in order to be sure all files are new.
-if (settings.removeOld)
-	rimraf(settings.dest + '/*', () => {
-		console.log('Cleaned destination folder');
-	});
+() => {
+	if (settings().removeOld)
+		rimraf(settings().dest + '/*', () => {
+			console.log('Cleaned destination folder');
+		});
+};
 
-getSourceFiles(settings)
-	.then(getFileList)
-	.then(getDataFromFiles)
-	.then(buildComponents);
+getFiles(settings())
+	.then(buildFiles)
+	.then(createLists)
+	.then(() => {
+		clog.BLOCK_END('Done!');
+	});
+// console.log(tempSettings);
+
+// getFiles(settings()).then(getTemplates).then(buildFiles);
+// .then(createLists);

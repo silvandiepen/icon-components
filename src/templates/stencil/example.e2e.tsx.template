@@ -1,0 +1,12 @@
+import { newE2EPage } from '@stencil/core/testing';
+
+describe('<%= title %>', () => {
+    it('renders', async () => {
+    const page = await newE2EPage();
+    await page.setContent('<%= title %>');
+
+    const element = await page.find('<%= title %>');
+    expect(element).toHaveClass('hydrated');
+    });
+});
+

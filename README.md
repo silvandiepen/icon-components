@@ -26,7 +26,7 @@ scripts: {
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | `--src`        | Source folder with SVG files                                                                                                                                                                                                                             | `/src/assets/icons`     |
 | `--dest`       | Destination folder for components                                                                                                                                                                                                                        | `/src/components/icons` |
-| `--template`   | Choose output type. Options; stencil, react, material                                                                                                                                                                                                    |                         |
+| `--type`       | Choose output type. Options; stencil, react, material                                                                                                                                                                                                    |                         |  | `--template` | Path to a template file or folder to be used as templates |  |
 | `--prefix`     | Add a prefix to all files, ex; social-network.svg becomes icon-social-network                                                                                                                                                                            | `false`                 |
 | `--remove-old` | Remove the whole destionation folder as set. In order to be sure to not have any old files and create everything new. Don't set this if your destination folder also includes files which arent generated.                                               | `false`                 |
 | `--list`       | In many cases it can come in handy to also create a list of all components. This can be created by setting --list. If set, it will create a default list. It can also contain a path to a template, in that case the template will be used for the list. | `false`                 |
@@ -40,12 +40,16 @@ In the template you can use EJS template strings. The file which will be written
 
 #### Available options
 
-| Option          | description                         |
-| --------------- | ----------------------------------- |
-| data            | The svg icon file data              |
-| title           | Title of the Svg Icon in PascalCase |
-| name            | Name of the Svg Icon                |
-| title_lowercase | A lowercase version of the title    |
+| Option          | description                                         |
+| --------------- | --------------------------------------------------- |
+| og_name         | Original name of the file                           |
+| name            | Name of the Svg Icon                                |
+| title           | Title of the Svg Icon in PascalCase                 |
+| title_lowercase | A lowercase version of the title                    |
+| componentName   | A PascalCase version of the title                   |
+| data            | The svg icon file data                              |
+| data_clean      | Cleaned up version of the data                      |
+| data_stripped   | When given strip options, this is the stripped data |
 
 #### Extension .template
 

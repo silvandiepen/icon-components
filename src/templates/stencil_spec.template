@@ -1,7 +1,0 @@
-import { Icon } from './<%= filename %>';
-
-describe('<%= filename %>', () => {
-    it('builds', () => {
-    expect(new Template()).toBeTruthy();
-    });
-});
