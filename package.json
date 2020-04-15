@@ -21,7 +21,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/silvandiepen/stencil-icon-components.git"
+		"url": "git+https://github.com/silvandiepen/icon-components.git"
 	},
 	"keywords": [
 		"stencil",
@@ -33,9 +33,9 @@
 	"author": "Sil van Diepen",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/silvandiepen/react-icon-components/issues"
+		"url": "https://github.com/silvandiepen/icon-components/issues"
 	},
-	"homepage": "https://github.com/silvandiepen/react-icon-components#readme",
+	"homepage": "https://github.com/silvandiepen/icon-components#readme",
 	"dependencies": {
 		"ejs": "^3.0.1",
 		"kleur": "^3.0.3",
