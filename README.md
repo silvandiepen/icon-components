@@ -4,13 +4,13 @@ A design system can also incorporate a full set of Icons.
 
 To automatically create the source code for icon web components for a full folder of SVG files, this plugin comes in handy. Just add it to your stencil project and generate the icons.
 
-### Install
+## Install
 
 ```bash
 npm install icon-components
 ```
 
-### Usage
+## Usage
 
 #### In your package.json
 
@@ -49,7 +49,7 @@ node node_modules/icon-components/dist/cli.js \
     --template react"
 ```
 
-#### Using your own template file
+### Using your own template file
 
 **Single file**
 
@@ -73,7 +73,7 @@ node node_modules/icon-components/dist/cli.js \
     --template templates/
 ```
 
-### Options
+## Options
 
 | option         | description                                                                                                                                                                                                                                              | default                 |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
@@ -85,7 +85,27 @@ node node_modules/icon-components/dist/cli.js \
 | `--list`       | In many cases it can come in handy to also create a list of all components. This can be created by setting --list. If set, it will create a default list. It can also contain a path to a template, in that case the template will be used for the list. | `false`                 |
 | `--in-root`    | By default there a folders created for every component. In case you want all files just to be in the root dest. You can enable `--in-root`                                                                                                               | `false`                 |
 
-### Using a custom template
+## Clean up files
+
+In some cases you don't want certain tags or attributes in your output. In that case you can use the `--removeAttrs` and `--removeTags` to remove certain tags.
+
+The output won't be done on the data output. But on the data_clean and data_stripped. See [Available options](#available-options).
+
+**example**
+In this case, all svg's will be stripped from their g (group) and style elements and all elements will be stripped from id, fill and style.
+
+```
+#!/bin/bash
+
+node node_modules/icon-components/dist/cli.js \
+    --src assets/icons \
+    --dest src/components/icons \
+    --template templates/ \
+    --removeAttr id, fill, style \
+    --removeTags g, style
+```
+
+## Using a custom template
 
 At the moment, one command can have one custom template file. The template file can be created in your own project and be used in the CLI.
 
@@ -93,16 +113,16 @@ In the template you can use EJS template strings. The file which will be written
 
 #### Available options
 
-| Option          | description                                         |
-| --------------- | --------------------------------------------------- |
-| og_name         | Original name of the file                           |
-| name            | Name of the Svg Icon                                |
-| title           | Title of the Svg Icon in PascalCase                 |
-| title_lowercase | A lowercase version of the title                    |
-| componentName   | A PascalCase version of the title                   |
-| data            | The svg icon file data                              |
-| data_clean      | Cleaned up version of the data                      |
-| data_stripped   | When given strip options, this is the stripped data |
+| Option          | description                                            |
+| --------------- | ------------------------------------------------------ |
+| og_name         | Original name of the file                              |
+| name            | Name of the Svg Icon                                   |
+| title           | Title of the Svg Icon in PascalCase                    |
+| title_lowercase | A lowercase version of the title                       |
+| componentName   | A PascalCase version of the title                      |
+| data            | The svg icon file data                                 |
+| data_clean      | Data with all (specified) attributes removed.          |
+| data_stripped   | Data with all (specified) attributes and tags removed. |
 
 #### Extension .template
 
@@ -110,7 +130,7 @@ You can, if you want. Add `.template` at the end of the file, because it won't b
 
 For instance; your template file is called. `my-icon-template.js.template` In this case. The files will have `.js` extension.
 
-#### Creating the list
+## Creating lists
 
 In many cases it can come in handy to also create a list of all components. This can be created by setting `--list`. If set, it will create a default list. It can also contain a path to a template, in that case the template will be used for the list.
 

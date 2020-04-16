@@ -25,6 +25,10 @@ const clog = __importStar(require("cli-block"));
         });
 };
 get_1.getFiles(settings_1.settings())
+    .then((res) => {
+    console.log(res);
+    return res;
+})
     .then(build_1.buildFiles)
     .then(list_1.createLists)
     .then(() => {

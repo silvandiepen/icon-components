@@ -47,16 +47,13 @@ exports.getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* 
         filelist.push({
             og_name: file,
             name: helpers_1.kebabCase(helpers_1.fileName(file)),
-            data: fileData,
             title: helpers_1.PascalCase(path.basename(file)),
             title_lowercase: path.basename(file).toLowerCase(),
             fileName: helpers_1.prefixedName(file, settings.prefix),
             componentName: helpers_1.PascalCase(helpers_1.prefixedName(file, settings.prefix)),
-            data_clean: helpers_1.removeAttrs(fileData, ['id', 'fill']),
-            data_stripped: helpers_1.removeAttrs(helpers_1.removeTags(fileData, ['svg', 'title']), [
-                'id',
-                'fill'
-            ])
+            data: fileData,
+            data_clean: helpers_1.removeAttrs(fileData, settings.removeAttrs),
+            data_stripped: helpers_1.removeAttrs(helpers_1.removeTags(fileData, settings.removeTags), settings.removeAttrs)
         });
     }));
     return filelist;

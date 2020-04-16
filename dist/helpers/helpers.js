@@ -50,30 +50,18 @@ exports.PascalCase = (str) => str
 })
     .join('');
 exports.removeTags = (str, tags) => {
-    if (Array.isArray(tags)) {
-        let value = str;
-        tags.forEach((tag) => {
-            value = exports.removeTags(value, tag);
-        });
-        return value;
-    }
-    else {
-        const regex = new RegExp(`<[\/]{0,1}(${tags}|${tags})[^><]*>`, 'g');
-        return str.replace(regex, '');
-    }
+    tags.forEach((tag) => {
+        const regex = new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
+        str = str.replace(regex, '');
+    });
+    return str;
 };
 exports.removeAttrs = (str, attrs) => {
-    if (Array.isArray(attrs)) {
-        let value = str;
-        attrs.forEach((attr) => {
-            value = exports.removeAttrs(value, attr);
-        });
-        return value;
-    }
-    else {
-        const regex = new RegExp(`/${attrs}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"/gi`, 'g');
-        return str.replace(regex, '');
-    }
+    attrs.forEach((attr) => {
+        const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
+        str = str.replace(regex, '').replace(' >', '>');
+    });
+    return str;
 };
 exports.prefixedName = (name, prefix) => {
     return prefix
@@ -84,5 +72,10 @@ exports.getExtension = (file) => {
     let names = path_1.default.basename(file.replace('.template', '')).split('.');
     names[0] = '';
     return names.join('.');
+};
+exports.fixJsx = (str) => {
+    return str
+        .replace('xlink:href', 'xlinkHref')
+        .replace('xmlns:xlink', 'xmlnsXlink');
 };
 //# sourceMappingURL=helpers.js.map

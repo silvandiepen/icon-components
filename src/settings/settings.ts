@@ -32,7 +32,18 @@ export const settings = (): SettingsType => {
 			type: 'string',
 			default: null
 		},
-
+		ra: {
+			required: false,
+			type: 'array',
+			default: ['fill', 'id', 'class'],
+			alias: 'removeAttrs'
+		},
+		rt: {
+			required: false,
+			type: 'array',
+			default: ['svg'],
+			alias: 'removeTags'
+		},
 		ro: { type: 'boolean', default: false, alias: 'removeOld' }
 	}).argv;
 
@@ -46,6 +57,8 @@ export const settings = (): SettingsType => {
 		prefix: cs.p,
 		list: cs.lt ? cs.lt : cs.l, // If the listTemplate is set, the list is true otherwise, set the value of list.
 		listTemplate: cs.lt,
-		type: cs.type
+		type: cs.type,
+		removeAttrs: cs.ra,
+		removeTags: cs.rt
 	};
 };

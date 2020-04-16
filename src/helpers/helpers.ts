@@ -42,30 +42,20 @@ export const PascalCase = (str: string): string =>
 		})
 		.join('');
 
-export const removeTags = (str: string, tags: Array<string> | string) => {
-	if (Array.isArray(tags)) {
-		let value = str;
-		tags.forEach((tag) => {
-			value = removeTags(value, tag);
-		});
-		return value;
-	} else {
-		const regex = new RegExp(`<[\/]{0,1}(${tags}|${tags})[^><]*>`, 'g');
-		return str.replace(regex, '');
-	}
+export const removeTags = (str: string, tags: Array<string>): string => {
+	tags.forEach((tag) => {
+		const regex = new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
+		str = str.replace(regex, '');
+	});
+	return str;
 };
 
-export const removeAttrs = (str, attrs: Array<string> | string): string => {
-	if (Array.isArray(attrs)) {
-		let value = str;
-		attrs.forEach((attr) => {
-			value = removeAttrs(value, attr);
-		});
-		return value;
-	} else {
-		const regex = new RegExp(`/${attrs}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"/gi`, 'g');
-		return str.replace(regex, '');
-	}
+export const removeAttrs = (str, attrs: Array<string>): string => {
+	attrs.forEach((attr) => {
+		const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
+		str = str.replace(regex, '').replace(' >', '>');
+	});
+	return str;
 };
 
 export const prefixedName = (name: string, prefix: string): string => {
@@ -78,4 +68,10 @@ export const getExtension = (file: string) => {
 	let names = path.basename(file.replace('.template', '')).split('.');
 	names[0] = '';
 	return names.join('.');
+};
+
+export const fixJsx = (str: string): string => {
+	return str
+		.replace('xlink:href', 'xlinkHref')
+		.replace('xmlns:xlink', 'xmlnsXlink');
 };

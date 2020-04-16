@@ -34,6 +34,18 @@ exports.settings = () => {
             type: 'string',
             default: null
         },
+        ra: {
+            required: false,
+            type: 'array',
+            default: ['fill', 'id', 'class'],
+            alias: 'removeAttrs'
+        },
+        rt: {
+            required: false,
+            type: 'array',
+            default: ['svg'],
+            alias: 'removeTags'
+        },
         ro: { type: 'boolean', default: false, alias: 'removeOld' }
     }).argv;
     return {
@@ -46,7 +58,9 @@ exports.settings = () => {
         prefix: cs.p,
         list: cs.lt ? cs.lt : cs.l,
         listTemplate: cs.lt,
-        type: cs.type
+        type: cs.type,
+        removeAttrs: cs.ra,
+        removeTags: cs.rt
     };
 };
 //# sourceMappingURL=settings.js.map

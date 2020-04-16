@@ -17,6 +17,10 @@ import * as clog from 'cli-block';
 };
 
 getFiles(settings())
+	.then((res) => {
+		console.log(res);
+		return res;
+	})
 	.then(buildFiles)
 	.then(createLists)
 	.then(() => {

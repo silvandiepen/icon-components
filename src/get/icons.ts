@@ -54,16 +54,16 @@ export const getFileList = async (
 		filelist.push({
 			og_name: file,
 			name: kebabCase(fileName(file)),
-			data: fileData,
 			title: PascalCase(path.basename(file)),
 			title_lowercase: path.basename(file).toLowerCase(),
 			fileName: prefixedName(file, settings.prefix),
 			componentName: PascalCase(prefixedName(file, settings.prefix)),
-			data_clean: removeAttrs(fileData, ['id', 'fill']),
-			data_stripped: removeAttrs(removeTags(fileData, ['svg', 'title']), [
-				'id',
-				'fill'
-			])
+			data: fileData,
+			data_clean: removeAttrs(fileData, settings.removeAttrs),
+			data_stripped: removeAttrs(
+				removeTags(fileData, settings.removeTags),
+				settings.removeAttrs
+			)
 		});
 	});
 	return filelist;

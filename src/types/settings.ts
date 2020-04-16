@@ -45,4 +45,6 @@ export interface SettingsType {
 	type: string;
 	files?: FilesType[];
 	error?: Array<string>;
+	removeTags: Array<string>;
+	removeAttrs: Array<string>;
 }
