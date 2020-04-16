@@ -46,7 +46,7 @@ _scripts/icon-components_
 node node_modules/icon-components/dist/cli.js \
     --src assets/icons \
     --dest src/components/icons \
-    --template react"
+    --type react"
 ```
 
 ### Using your own template file
