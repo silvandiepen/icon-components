@@ -26,6 +26,7 @@ const kleur_1 = require("kleur");
 const clog = __importStar(require("cli-block"));
 const helpers = __importStar(require("../helpers"));
 const helpers_1 = require("../helpers");
+const str_convert_1 = require("str-convert");
 /*
 
     Create the path if it doesnt exist.
@@ -46,9 +47,9 @@ const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     */
 exports.writeFile = (settings, file) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let filePath = path.join(settings.dest, helpers_1.kebabCase(helpers_1.fileName(file.name)), helpers_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
+        let filePath = path.join(settings.dest, str_convert_1.kebabCase(helpers_1.fileName(file.name)), str_convert_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
         if (settings.inRoot)
-            filePath = path.join(settings.dest, helpers_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
+            filePath = path.join(settings.dest, str_convert_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
         yield makePath(filePath);
         yield fs.writeFile(filePath, file.data, {
             encoding: 'utf8',
@@ -65,7 +66,8 @@ exports.writeFile = (settings, file) => __awaiter(void 0, void 0, void 0, functi
 
     */
 exports.CombineTemplateWithData = (file, template, settings) => __awaiter(void 0, void 0, void 0, function* () {
-    return ejs_1.default.render(template.data, Object.assign(Object.assign(Object.assign({}, settings), file), helpers));
+    return ejs_1.default.render(template.data, Object.assign(Object.assign(Object.assign(Object.assign({}, settings), file), helpers), { pascalCase: str_convert_1.pascalCase,
+        kebabCase: str_convert_1.kebabCase }));
 });
 /*
 

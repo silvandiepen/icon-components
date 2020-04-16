@@ -5,13 +5,9 @@ import { red, yellow, blue, green, bold } from 'kleur';
 import * as clog from 'cli-block';
 
 import * as helpers from '../helpers';
-import {
-	kebabCase,
-	fileName,
-	asyncForEach,
-	getExtension,
-	WAIT
-} from '../helpers';
+import { fileName, asyncForEach, getExtension, WAIT } from '../helpers';
+import { kebabCase, pascalCase } from 'str-convert';
+
 import {
 	SettingsType,
 	FilesType,
@@ -80,7 +76,9 @@ export const CombineTemplateWithData = async (
 	ejs.render(template.data, {
 		...settings,
 		...file,
-		...helpers
+		...helpers,
+		pascalCase,
+		kebabCase
 	});
 
 /*

@@ -5,14 +5,13 @@ import { SettingsType, FilesType, FilesDataType } from '../types';
 
 // import SVGO from 'svgo';
 import {
-	kebabCase,
-	PascalCase,
 	asyncForEach,
 	fileName,
 	prefixedName,
 	removeAttrs,
 	removeTags
 } from '../helpers';
+import { kebabCase, pascalCase } from 'str-convert';
 
 import { getFileTemplates } from './templates';
 
@@ -54,10 +53,10 @@ export const getFileList = async (
 		filelist.push({
 			og_name: file,
 			name: kebabCase(fileName(file)),
-			title: PascalCase(path.basename(file)),
+			title: pascalCase(path.basename(file)),
 			title_lowercase: path.basename(file).toLowerCase(),
 			fileName: prefixedName(file, settings.prefix),
-			componentName: PascalCase(prefixedName(file, settings.prefix)),
+			componentName: pascalCase(prefixedName(file, settings.prefix)),
 			data: fileData,
 			data_clean: removeAttrs(fileData, settings.removeAttrs),
 			data_stripped: removeAttrs(

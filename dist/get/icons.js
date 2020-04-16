@@ -13,6 +13,7 @@ const path = require('path');
 const fs = require('fs').promises;
 // import SVGO from 'svgo';
 const helpers_1 = require("../helpers");
+const str_convert_1 = require("str-convert");
 const templates_1 = require("./templates");
 exports.getFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -46,11 +47,11 @@ exports.getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* 
         const fileData = yield getFileData(settings, file);
         filelist.push({
             og_name: file,
-            name: helpers_1.kebabCase(helpers_1.fileName(file)),
-            title: helpers_1.PascalCase(path.basename(file)),
+            name: str_convert_1.kebabCase(helpers_1.fileName(file)),
+            title: str_convert_1.pascalCase(path.basename(file)),
             title_lowercase: path.basename(file).toLowerCase(),
             fileName: helpers_1.prefixedName(file, settings.prefix),
-            componentName: helpers_1.PascalCase(helpers_1.prefixedName(file, settings.prefix)),
+            componentName: str_convert_1.pascalCase(helpers_1.prefixedName(file, settings.prefix)),
             data: fileData,
             data_clean: helpers_1.removeAttrs(fileData, settings.removeAttrs),
             data_stripped: helpers_1.removeAttrs(helpers_1.removeTags(fileData, settings.removeTags), settings.removeAttrs)
