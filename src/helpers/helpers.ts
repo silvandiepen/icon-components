@@ -45,10 +45,12 @@ export const fileName = (str: string, settings = null) => {
 // 		})
 // 		.join('');
 
+const tagsRegex = (tag: string): any =>
+	new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
+
 export const removeTags = (str: string, tags: Array<string>): string => {
 	tags.forEach((tag) => {
-		const regex = new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
-		str = str.replace(regex, '');
+		str = str.replace(tagsRegex(tag), '');
 	});
 	return str;
 };
@@ -58,16 +60,16 @@ export const asyncRemoveTags = async (
 	tags: Array<string>
 ): Promise<string> => {
 	await asyncForEach(tags, (tag: string) => {
-		const regex = new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
-		str = str.replace(regex, '');
+		str = str.replace(tagsRegex(tag), '');
 	});
 	return str;
 };
 
+const attrRegex = (attr: string): any => new RegExp(` ${attr}=""[^"]*"`, 'gi');
+
 export const removeAttrs = (str: string, attrs: Array<string>): string => {
 	attrs.forEach((attr) => {
-		const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
-		str = str.replace(regex, '').replace(' >', '>');
+		str = str.replace(attrRegex(attr), '');
 	});
 	return str;
 };
@@ -77,8 +79,7 @@ export const asyncRemoveAttrs = async (
 	attrs: Array<string>
 ): Promise<string> => {
 	await asyncForEach(attrs, (attr: string) => {
-		const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
-		str = str.replace(regex, '').replace(' >', '>');
+		str = str.replace(attrRegex(attr), '');
 	});
 	return str;
 };

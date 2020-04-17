@@ -3,11 +3,11 @@
 		<path d="M22 11.5h-4.094V8.812c0-.5.13-.828.39-.984.261-.156.496-.234.704-.234h2.906V3.187h-4c-2.208 0-3.661.641-4.36 1.922C12.85 6.391 12.5 7.552 12.5 8.594v3H9.906v4.594H12.5v12.906h5.406V16.187H21.5L22 11.5z" id="a" />
 	</defs>
 	<g fill="none" fill-rule="evenodd">
-		<path d="M0 0h32v32H0z" />
+		<path id="some-path" d="M0 0h32v32H0z" />
 		<mask id="b" fill="#fff">
 			<use xlink:href="#a" />
 		</mask>
-		<g mask="url(#b)" fill="#2800A0">
+		<g id="group" mask="url(#b)" fill="#2800A0">
 			<path d="M0 0h32v32H0z" />
 		</g>
 	</g>

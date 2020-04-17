@@ -7,7 +7,9 @@ node dist/cli.js \
     --src test/assets/icons \
     --dest temp/remove-tags/icons \
     --prefix list-icon \
-    --template test/template/external-template.js \
+    --type stencil \
+    --removeTags g \
     --removeTags svg \
+    --removeAttrs fill, id \
     --remove-old \
     --optimize

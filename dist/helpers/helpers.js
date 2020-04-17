@@ -52,31 +52,29 @@ exports.fileName = (str, settings = null) => {
 // 			return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
 // 		})
 // 		.join('');
+const tagsRegex = (tag) => new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
 exports.removeTags = (str, tags) => {
     tags.forEach((tag) => {
-        const regex = new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
-        str = str.replace(regex, '');
+        str = str.replace(tagsRegex(tag), '');
     });
     return str;
 };
 exports.asyncRemoveTags = (str, tags) => __awaiter(void 0, void 0, void 0, function* () {
     yield exports.asyncForEach(tags, (tag) => {
-        const regex = new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
-        str = str.replace(regex, '');
+        str = str.replace(tagsRegex(tag), '');
     });
     return str;
 });
+const attrRegex = (attr) => new RegExp(` ${attr}=""[^"]*"`, 'gi');
 exports.removeAttrs = (str, attrs) => {
     attrs.forEach((attr) => {
-        const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
-        str = str.replace(regex, '').replace(' >', '>');
+        str = str.replace(attrRegex(attr), '');
     });
     return str;
 };
 exports.asyncRemoveAttrs = (str, attrs) => __awaiter(void 0, void 0, void 0, function* () {
     yield exports.asyncForEach(attrs, (attr) => {
-        const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
-        str = str.replace(regex, '').replace(' >', '>');
+        str = str.replace(attrRegex(attr), '');
     });
     return str;
 });

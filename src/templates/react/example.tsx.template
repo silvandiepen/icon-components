@@ -1,12 +1,12 @@
 import React from 'react';
 const {PropTypes} = React;
 
-const <%= title %> = props => (
-  <%- data %>
+const <%= componentName %> = props => (
+  <%- fixJsx(data_clean.attrs) %>
 );
 
 <%= title %>.propTypes = {
   icon: PropTypes.string.isRequired,
 };
 
-export default <%= title %>;
+export default <%= componentName %>;

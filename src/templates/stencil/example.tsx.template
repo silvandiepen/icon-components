@@ -28,7 +28,7 @@ export class <%= title %> {
 
     return (
         <Host>
-            <%- data %>
+            <%- fixJsx(data_clean.both) %>
         </Host>);
   }
 }
