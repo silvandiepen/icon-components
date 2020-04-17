@@ -59,6 +59,13 @@ exports.removeTags = (str, tags) => {
     });
     return str;
 };
+exports.asyncRemoveTags = (str, tags) => __awaiter(void 0, void 0, void 0, function* () {
+    yield exports.asyncForEach(tags, (tag) => {
+        const regex = new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
+        str = str.replace(regex, '');
+    });
+    return str;
+});
 exports.removeAttrs = (str, attrs) => {
     attrs.forEach((attr) => {
         const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
@@ -66,6 +73,13 @@ exports.removeAttrs = (str, attrs) => {
     });
     return str;
 };
+exports.asyncRemoveAttrs = (str, attrs) => __awaiter(void 0, void 0, void 0, function* () {
+    yield exports.asyncForEach(attrs, (attr) => {
+        const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
+        str = str.replace(regex, '').replace(' >', '>');
+    });
+    return str;
+});
 exports.prefixedName = (name, prefix) => {
     return prefix
         ? `${prefix}-${str_convert_1.kebabCase(exports.fileName(name))}`

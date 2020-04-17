@@ -113,16 +113,17 @@ In the template you can use EJS template strings. The file which will be written
 
 #### Available options
 
-| Option          | description                                            |
-| --------------- | ------------------------------------------------------ |
-| og_name         | Original name of the file                              |
-| name            | Name of the Svg Icon                                   |
-| title           | Title of the Svg Icon in PascalCase                    |
-| title_lowercase | A lowercase version of the title                       |
-| componentName   | A PascalCase version of the title                      |
-| data            | The svg icon file data                                 |
-| data_clean      | Data with all (specified) attributes removed.          |
-| data_stripped   | Data with all (specified) attributes and tags removed. |
+| Option           | description                                            |
+| ---------------- | ------------------------------------------------------ |
+| og_name          | Original name of the file                              |
+| name             | Name of the Svg Icon                                   |
+| title            | Title of the Svg Icon in PascalCase                    |
+| title_lowercase  | A lowercase version of the title                       |
+| componentName    | A PascalCase version of the title                      |
+| data             | The svg icon file data                                 |
+| data_clean.attrs | Data with all (specified) attributes removed.          |
+| data_clean.tags  | Data with all (specified) tags removed.                |
+| data_clean.both  | Data with all (specified) attributes and tags removed. |
 
 #### Extension .template
 

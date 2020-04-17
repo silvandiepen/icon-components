@@ -9,7 +9,9 @@ import {
 	fileName,
 	prefixedName,
 	removeAttrs,
-	removeTags
+	asyncRemoveAttrs,
+	removeTags,
+	asyncRemoveTags
 } from '../helpers';
 import { kebabCase, pascalCase } from 'str-convert';
 
@@ -50,6 +52,22 @@ export const getFileList = async (
 	await asyncForEach(files, async (file: string) => {
 		if (path.extname(file) !== '.svg') return;
 		const fileData = await getFileData(settings, file);
+
+		const fileData__clean_attrs = await asyncRemoveAttrs(
+			fileData,
+			settings.removeAttrs
+		);
+
+		const fileData__clean_tags = await asyncRemoveTags(
+			fileData,
+			settings.removeTags
+		);
+
+		const fileData__clean_both = await asyncRemoveTags(
+			fileData__clean_attrs,
+			settings.removeTags
+		);
+
 		filelist.push({
 			og_name: file,
 			name: kebabCase(fileName(file)),
@@ -58,11 +76,11 @@ export const getFileList = async (
 			fileName: prefixedName(file, settings.prefix),
 			componentName: pascalCase(prefixedName(file, settings.prefix)),
 			data: fileData,
-			data_clean: removeAttrs(fileData, settings.removeAttrs),
-			data_stripped: removeAttrs(
-				removeTags(fileData, settings.removeTags),
-				settings.removeAttrs
-			)
+			data_clean: {
+				attrs: fileData__clean_attrs,
+				tags: fileData__clean_tags,
+				both: fileData__clean_both
+			}
 		});
 	});
 	return filelist;

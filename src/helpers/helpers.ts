@@ -53,8 +53,30 @@ export const removeTags = (str: string, tags: Array<string>): string => {
 	return str;
 };
 
-export const removeAttrs = (str, attrs: Array<string>): string => {
+export const asyncRemoveTags = async (
+	str: string,
+	tags: Array<string>
+): Promise<string> => {
+	await asyncForEach(tags, (tag: string) => {
+		const regex = new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
+		str = str.replace(regex, '');
+	});
+	return str;
+};
+
+export const removeAttrs = (str: string, attrs: Array<string>): string => {
 	attrs.forEach((attr) => {
+		const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
+		str = str.replace(regex, '').replace(' >', '>');
+	});
+	return str;
+};
+
+export const asyncRemoveAttrs = async (
+	str: string,
+	attrs: Array<string>
+): Promise<string> => {
+	await asyncForEach(attrs, (attr: string) => {
 		const regex = new RegExp(`${attr}="[a-zA-Z0-9:;\.\s\(\)\-\,]*"`, 'gi');
 		str = str.replace(regex, '').replace(' >', '>');
 	});
