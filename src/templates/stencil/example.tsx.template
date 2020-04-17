@@ -5,7 +5,7 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
   styleUrl: '<%= title_lowercase %>.css'
 })
 
-export class <%= title %> {
+export class <%= componentName %> {
 
     @Prop() width: any;
     @Prop() height: any = this.width;
