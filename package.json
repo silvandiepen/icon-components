@@ -18,7 +18,8 @@
 		"minify": "terser-folder dist",
 		"lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
 		"lint:fix": "eslint --ext .js,.ts --ignore-path .gitignore . --fix",
-		"dev": "tsc -w"
+		"dev": "tsc -w",
+		"prepublishOnly": "npm run test"
 	},
 	"repository": {
 		"type": "git",

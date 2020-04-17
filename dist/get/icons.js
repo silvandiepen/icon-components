@@ -45,8 +45,9 @@ exports.getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* 
         if (path.extname(file) !== '.svg')
             return;
         const fileData = yield getFileData(settings, file);
-        const fileData_clean = yield helpers_1.asyncRemoveAttrs(fileData, settings.removeAttrs);
-        const fileData_stripped = yield helpers_1.asyncRemoveTags(fileData_clean, settings.removeTags);
+        const fileData__clean_attrs = yield helpers_1.asyncRemoveAttrs(fileData, settings.removeAttrs);
+        const fileData__clean_tags = yield helpers_1.asyncRemoveTags(fileData, settings.removeTags);
+        const fileData__clean_both = yield helpers_1.asyncRemoveTags(fileData__clean_attrs, settings.removeTags);
         filelist.push({
             og_name: file,
             name: str_convert_1.kebabCase(helpers_1.fileName(file)),
@@ -55,8 +56,11 @@ exports.getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* 
             fileName: helpers_1.prefixedName(file, settings.prefix),
             componentName: str_convert_1.pascalCase(helpers_1.prefixedName(file, settings.prefix)),
             data: fileData,
-            data_clean: fileData_clean,
-            data_stripped: fileData_stripped
+            data_clean: {
+                attrs: fileData__clean_attrs,
+                tags: fileData__clean_tags,
+                both: fileData__clean_both
+            }
         });
     }));
     return filelist;

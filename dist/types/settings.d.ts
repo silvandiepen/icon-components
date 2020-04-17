@@ -11,6 +11,11 @@ export interface WriteFileType {
     name?: string;
     path?: string;
 }
+export interface DataCleanedType {
+    attrs: string;
+    tags: string;
+    both: string;
+}
 export interface FilesType {
     og_name: string;
     name: string;
@@ -19,8 +24,7 @@ export interface FilesType {
     title_lowercase: string;
     fileName: string;
     componentName: string;
-    data_clean?: string;
-    data_stripped?: string;
+    data_clean: DataCleanedType;
 }
 export interface ListFilesType {
     file: string;
