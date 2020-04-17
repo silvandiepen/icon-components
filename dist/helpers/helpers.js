@@ -65,7 +65,7 @@ exports.asyncRemoveTags = (str, tags) => __awaiter(void 0, void 0, void 0, funct
     });
     return str;
 });
-const attrRegex = (attr) => new RegExp(` ${attr}=""[^"]*"`, 'gi');
+const attrRegex = (attr) => new RegExp(` ${attr}="[^"]*"`, 'gi');
 exports.removeAttrs = (str, attrs) => {
     attrs.forEach((attr) => {
         str = str.replace(attrRegex(attr), '');

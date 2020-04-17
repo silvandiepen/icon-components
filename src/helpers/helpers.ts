@@ -65,7 +65,7 @@ export const asyncRemoveTags = async (
 	return str;
 };
 
-const attrRegex = (attr: string): any => new RegExp(` ${attr}=""[^"]*"`, 'gi');
+const attrRegex = (attr: string): any => new RegExp(` ${attr}="[^"]*"`, 'gi');
 
 export const removeAttrs = (str: string, attrs: Array<string>): string => {
 	attrs.forEach((attr) => {
