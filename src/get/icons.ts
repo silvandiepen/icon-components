@@ -8,9 +8,7 @@ import {
 	asyncForEach,
 	fileName,
 	prefixedName,
-	removeAttrs,
 	asyncRemoveAttrs,
-	removeTags,
 	asyncRemoveTags
 } from '../helpers';
 import { kebabCase, pascalCase } from 'str-convert';

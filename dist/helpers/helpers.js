@@ -79,6 +79,8 @@ exports.asyncRemoveAttrs = (str, attrs) => __awaiter(void 0, void 0, void 0, fun
     return str;
 });
 exports.prefixedName = (name, prefix) => {
+    if (prefix === '')
+        return exports.fileName(name);
     return prefix
         ? `${prefix}-${str_convert_1.kebabCase(exports.fileName(name))}`
         : `icon-${str_convert_1.kebabCase(exports.fileName(name))}`;

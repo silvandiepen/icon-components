@@ -85,6 +85,7 @@ export const asyncRemoveAttrs = async (
 };
 
 export const prefixedName = (name: string, prefix: string): string => {
+	if (prefix === '') return kebabCase(fileName(name));
 	return prefix
 		? `${prefix}-${kebabCase(fileName(name))}`
 		: `icon-${kebabCase(fileName(name))}`;

@@ -75,9 +75,34 @@ test('prefixName', () => {
 	// assert
 
 	const input = `Some name`;
+	const output = `yeah-some-name`;
+	const settings = {
+		prefix: 'yeah'
+	};
+
+	// Expect
+	expect(prefixedName(input, settings.prefix)).toStrictEqual(output);
+});
+
+test('prefixName - no prefix', () => {
+	// assert
+
+	const input = `Some name`;
 	const output = `icon-some-name`;
 	const settings = {
-		prefix: 'icon'
+		prefix: null
+	};
+
+	// Expect
+	expect(prefixedName(input, settings.prefix)).toStrictEqual(output);
+});
+test('prefixName - empty prefix', () => {
+	// assert
+
+	const input = `Some name`;
+	const output = `some-name`;
+	const settings = {
+		prefix: ''
 	};
 
 	// Expect
