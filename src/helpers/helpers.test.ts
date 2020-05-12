@@ -6,7 +6,8 @@ import {
 	asyncRemoveAttrs,
 	fixJsx,
 	prefixedName,
-	fileName
+	fileName,
+	svgOnly
 } from './helpers';
 
 test('Remove requested Tags', () => {
@@ -122,4 +123,17 @@ test('fileName', () => {
 	// Expect
 	expect(fileName(input)).toStrictEqual(output1);
 	expect(fileName(input, settings)).toStrictEqual(output2);
+});
+
+test('svgOnly', () => {
+	// assert
+
+	const input1 = `<svg><thisis><a><test></test></a></thisis></svg>`;
+	const output1 = `<svg><thisis><a><test></test></a></thisis></svg>`;
+	const input2 = `<test></test><svg><thisis><a><test></test></a></thisis></svg>`;
+	const output2 = `<svg><thisis><a><test></test></a></thisis></svg>`;
+
+	// Expect
+	expect(svgOnly(input1)).toStrictEqual(output1);
+	expect(svgOnly(input2)).toStrictEqual(output2);
 });

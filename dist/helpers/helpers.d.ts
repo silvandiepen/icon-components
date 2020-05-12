@@ -5,6 +5,7 @@ export declare const removeTags: (str: string, tags: string[]) => string;
 export declare const asyncRemoveTags: (str: string, tags: string[]) => Promise<string>;
 export declare const removeAttrs: (str: string, attrs: string[]) => string;
 export declare const asyncRemoveAttrs: (str: string, attrs: string[]) => Promise<string>;
+export declare const svgOnly: (str: string) => string;
 export declare const prefixedName: (name: string, prefix: string) => string;
 export declare const getExtension: (file: string) => string;
 export declare const fixJsx: (str: string) => string;
