@@ -44,9 +44,9 @@ exports.getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* 
     yield helpers_1.asyncForEach(files, (file) => __awaiter(void 0, void 0, void 0, function* () {
         if (path.extname(file) !== '.svg')
             return;
-        const fileData = yield getFileData(settings, file);
-        const fileData__clean_attrs = yield helpers_1.asyncRemoveAttrs(fileData, settings.removeAttrs);
-        const fileData__clean_tags = yield helpers_1.asyncRemoveTags(fileData, settings.removeTags);
+        const fileData = yield getFileData(settings, file).then(helpers_1.svgOnly);
+        const fileData__clean_attrs = yield helpers_1.asyncRemoveAttrs(settings.svgOnly ? helpers_1.svgOnly(fileData) : fileData, settings.removeAttrs);
+        const fileData__clean_tags = yield helpers_1.asyncRemoveTags(settings.svgOnly ? helpers_1.svgOnly(fileData) : fileData, settings.removeTags);
         const fileData__clean_both = yield helpers_1.asyncRemoveTags(fileData__clean_attrs, settings.removeTags);
         filelist.push({
             og_name: file,
@@ -65,20 +65,4 @@ exports.getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* 
     }));
     return filelist;
 });
-// // Get the template
-// export const getTemplate = async (
-// 	srcFileName: string,
-// 	external: boolean = false
-// ): Promise<string> => {
-// 	let currentPath = external
-// 		? srcFileName
-// 		: path.join(__dirname, '../src/templates', srcFileName + '.template');
-// 	try {
-// 		return fs.readFile(currentPath).then((file: any) => {
-// 			return file.toString();
-// 		});
-// 	} catch (err) {
-// 		console.warn(err);
-// 	}
-// };
 //# sourceMappingURL=icons.js.map

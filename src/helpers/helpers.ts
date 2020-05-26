@@ -84,7 +84,15 @@ export const asyncRemoveAttrs = async (
 	return str;
 };
 
+export const svgOnly = (str: string): string => {
+	return str.substring(
+		str.indexOf('<svg'),
+		str.indexOf('</svg>') + '</svg>'.length
+	);
+};
+
 export const prefixedName = (name: string, prefix: string): string => {
+	if (prefix === '') return kebabCase(fileName(name));
 	return prefix
 		? `${prefix}-${kebabCase(fileName(name))}`
 		: `icon-${kebabCase(fileName(name))}`;

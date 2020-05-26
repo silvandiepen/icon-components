@@ -44,7 +44,8 @@ export const settings = (): SettingsType => {
 			default: ['svg'],
 			alias: 'removeTags'
 		},
-		ro: { type: 'boolean', default: false, alias: 'removeOld' }
+		ro: { type: 'boolean', default: false, alias: 'removeOld' },
+		svg: { type: 'boolean', default: false, alias: 'svgOnly' }
 	}).argv;
 
 	return {
@@ -59,6 +60,7 @@ export const settings = (): SettingsType => {
 		listTemplate: cs.lt,
 		type: cs.type,
 		removeAttrs: cs.ra,
-		removeTags: cs.rt
+		removeTags: cs.rt,
+		svgOnly: cs.svg
 	};
 };

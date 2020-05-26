@@ -8,13 +8,12 @@ import {
 	asyncForEach,
 	fileName,
 	prefixedName,
-	removeAttrs,
 	asyncRemoveAttrs,
-	removeTags,
-	asyncRemoveTags
+	asyncRemoveTags,
+	svgOnly
 } from '../helpers';
-import { kebabCase, pascalCase } from 'str-convert';
 
+import { kebabCase, pascalCase } from 'str-convert';
 import { getFileTemplates } from './templates';
 
 export const getFiles = async (
@@ -51,15 +50,16 @@ export const getFileList = async (
 
 	await asyncForEach(files, async (file: string) => {
 		if (path.extname(file) !== '.svg') return;
-		const fileData = await getFileData(settings, file);
+
+		const fileData = await getFileData(settings, file).then(svgOnly);
 
 		const fileData__clean_attrs = await asyncRemoveAttrs(
-			fileData,
+			settings.svgOnly ? svgOnly(fileData) : fileData,
 			settings.removeAttrs
 		);
 
 		const fileData__clean_tags = await asyncRemoveTags(
-			fileData,
+			settings.svgOnly ? svgOnly(fileData) : fileData,
 			settings.removeTags
 		);
 
@@ -85,20 +85,3 @@ export const getFileList = async (
 	});
 	return filelist;
 };
-
-// // Get the template
-// export const getTemplate = async (
-// 	srcFileName: string,
-// 	external: boolean = false
-// ): Promise<string> => {
-// 	let currentPath = external
-// 		? srcFileName
-// 		: path.join(__dirname, '../src/templates', srcFileName + '.template');
-// 	try {
-// 		return fs.readFile(currentPath).then((file: any) => {
-// 			return file.toString();
-// 		});
-// 	} catch (err) {
-// 		console.warn(err);
-// 	}
-// };

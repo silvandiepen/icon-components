@@ -46,7 +46,8 @@ exports.settings = () => {
             default: ['svg'],
             alias: 'removeTags'
         },
-        ro: { type: 'boolean', default: false, alias: 'removeOld' }
+        ro: { type: 'boolean', default: false, alias: 'removeOld' },
+        svg: { type: 'boolean', default: false, alias: 'svgOnly' }
     }).argv;
     return {
         src: cs.src,
@@ -60,7 +61,8 @@ exports.settings = () => {
         listTemplate: cs.lt,
         type: cs.type,
         removeAttrs: cs.ra,
-        removeTags: cs.rt
+        removeTags: cs.rt,
+        svgOnly: cs.svg
     };
 };
 //# sourceMappingURL=settings.js.map

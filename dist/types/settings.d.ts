@@ -48,4 +48,5 @@ export interface SettingsType {
     error?: Array<string>;
     removeTags: Array<string>;
     removeAttrs: Array<string>;
+    svgOnly: boolean;
 }
