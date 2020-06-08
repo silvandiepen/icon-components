@@ -18,7 +18,7 @@ Add a command (script) to your package.json to create the components like;
 
 _package.json_
 
-```
+```json
 scripts: {
     ...
     "build:icons": "icon-components --src assets/icons --dest src/components/icons --template react",
@@ -30,7 +30,7 @@ scripts: {
 
 _package.json_
 
-```
+```json
 scripts: {
     ...
     "build:icons": "sh scripts/icon-components",
@@ -40,7 +40,7 @@ scripts: {
 
 _scripts/icon-components_
 
-```
+```bash
 #!/bin/bash
 
 node node_modules/icon-components/dist/cli.js \
@@ -53,7 +53,7 @@ node node_modules/icon-components/dist/cli.js \
 
 **Single file**
 
-```
+```bash
 #!/bin/bash
 
 node node_modules/icon-components/dist/cli.js \
@@ -64,7 +64,7 @@ node node_modules/icon-components/dist/cli.js \
 
 **Multiple files / folder**
 
-```
+```bash
 #!/bin/bash
 
 node node_modules/icon-components/dist/cli.js \
@@ -94,7 +94,7 @@ The output won't be done on the data output. But on the data_clean and data_stri
 **example**
 In this case, all svg's will be stripped from their g (group) and style elements and all elements will be stripped from id, fill and style.
 
-```
+```bash
 #!/bin/bash
 
 node node_modules/icon-components/dist/cli.js \
@@ -137,7 +137,7 @@ In many cases it can come in handy to also create a list of all components. This
 
 Default template for list;
 
-```
+```ejs
 {
     "icons": [<% files.forEach(function(file,index) { %>
         "<%= file %>"<% if(index < files.length -1){ %>,<% } %>
