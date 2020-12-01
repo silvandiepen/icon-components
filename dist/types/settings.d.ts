@@ -34,19 +34,22 @@ export interface ListFilesType {
 export interface SettingsType {
     src: string;
     dest: string;
-    list: boolean;
-    listTemplate: string;
-    listTemplates?: Array<TemplateFileType>;
     prefix: string;
     optimize: boolean;
     removeOld: boolean;
-    template: string;
-    templates?: Array<TemplateFileType>;
     inRoot: boolean;
-    type: string;
     files?: FilesType[];
     error?: Array<string>;
     removeTags: Array<string>;
     removeAttrs: Array<string>;
     svgOnly: boolean;
+    type: string;
+    template: string;
+    templates?: Array<TemplateFileType>;
+    index: boolean;
+    indexTemplate: string[];
+    indexTemplates?: Array<TemplateFileType>;
+    list: boolean;
+    listTemplate: string[];
+    listTemplates?: Array<TemplateFileType>;
 }

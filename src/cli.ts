@@ -3,7 +3,7 @@ import rimraf from 'rimraf';
 
 import { getFiles } from './get';
 import { buildFiles } from './build';
-import { createLists } from './list';
+import { createLists, createIndexes } from './list';
 
 import { settings } from './settings';
 import * as clog from 'cli-block';
@@ -18,7 +18,10 @@ import * as clog from 'cli-block';
 
 getFiles(settings())
 	.then(buildFiles)
-	.then(createLists)
+	.then(async (s) => {
+		await createLists(s);
+		await createIndexes(s);
+	})
 	.then(() => {
 		clog.BLOCK_END('Done!');
 	});

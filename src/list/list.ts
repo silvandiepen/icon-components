@@ -10,19 +10,13 @@ import { writeAFile } from '../build';
   When there is no Template given, but a type. The templates will be gotten from the package.
 */
 
-const getLocalListTemplates = async (
-	settings: SettingsType
-): Promise<TemplateFileType[]> => {
+const getLocalTemplates = async (dir: string): Promise<TemplateFileType[]> => {
 	let templates: any = [];
 	try {
-		let localTemplateDir = await readdir(
-			join(__dirname, '../../src/templates/list')
-		);
+		let localTemplateDir = await readdir(join(__dirname, dir));
 
 		await asyncForEach(localTemplateDir, async (template: string) => {
-			let fileData = await readFile(
-				join(__dirname, '../../src/templates/list', template)
-			);
+			let fileData = await readFile(join(__dirname, dir, template));
 			templates.push({
 				file: template,
 				data: fileData.toString()
@@ -30,20 +24,15 @@ const getLocalListTemplates = async (
 		});
 
 		return templates;
-	} catch (err) {
-		clog.BLOCK_ERRORS(["Couldn't get the template ", err]);
+	} catch (error) {
+		clog.BLOCK_ERRORS(["Couldn't get the template ", error]);
 	}
 };
 
-export const getListTemplates = async (
-	settings: SettingsType
-): Promise<TemplateFileType[]> => {
-	if (settings.listTemplate[0] == null || settings.listTemplate.length < 1)
-		return await getLocalListTemplates(settings);
-
+const getTemplateFiles = async (list): Promise<TemplateFileType[]> => {
 	let templates = [];
 
-	await asyncForEach(settings.listTemplate, async (templateFile) => {
+	await asyncForEach(list, async (templateFile) => {
 		const stats = await lstat(templateFile);
 		if (stats.isDirectory()) {
 			let templateFiles = await readdir(templateFile);
@@ -58,7 +47,7 @@ export const getListTemplates = async (
 					});
 				});
 			} catch (error) {
-				throw new Error(error);
+				clog.BLOCK_ERRORS(["Couldn't get the template ", error, templateFiles]);
 			}
 		} else {
 			try {
@@ -68,10 +57,32 @@ export const getListTemplates = async (
 					data: fileData.toString()
 				});
 			} catch (error) {
-				throw new Error(error);
+				clog.BLOCK_ERRORS(["Couldn't get the template ", error, templateFile]);
 			}
 		}
 	});
+	return templates;
+};
+
+export const getListTemplates = async (
+	settings: SettingsType
+): Promise<TemplateFileType[]> => {
+	if (settings.listTemplate[0] == null || settings.listTemplate.length < 1)
+		return await getLocalTemplates('../../src/templates/list');
+
+	const templates = getTemplateFiles(settings.listTemplate);
+
+	return templates;
+};
+
+export const getIndexTemplates = async (
+	settings: SettingsType
+): Promise<TemplateFileType[]> => {
+	if (settings.indexTemplate[0] == null || settings.indexTemplate.length < 1)
+		return await getLocalTemplates('../../src/templates/index');
+
+	const templates = getTemplateFiles(settings.indexTemplate);
+
 	return templates;
 };
 
@@ -81,14 +92,17 @@ export const buildLists = async (
 ): Promise<ListFilesType[]> => {
 	let files = [];
 
-	await asyncForEach(templates, (template) => {
-		files.push({
-			name: fileName(template.file),
-			ext: getExtension(template.file),
-			data: ejs.render(template.data, settings)
+	try {
+		await asyncForEach(templates, (template) => {
+			files.push({
+				name: fileName(template.file),
+				ext: getExtension(template.file),
+				data: ejs.render(template.data, settings)
+			});
 		});
-	});
-
+	} catch (error) {
+		console.warn(error);
+	}
 	return files;
 };
 
@@ -102,19 +116,27 @@ export const writeLists = async (
 	});
 };
 
-export const createLists = async (
-	settings: SettingsType
-): Promise<SettingsType> => {
-	if (!settings.list) return settings;
+export const createLists = async (settings: SettingsType): Promise<void> => {
+	if (!settings.list) return;
 
 	clog.BLOCK_MID('Lists');
 
 	settings.inRoot = true;
 
 	const templates = await getListTemplates(settings);
-	const lists = await buildLists(settings, templates);
+	const files = await buildLists(settings, templates);
+	await writeLists(settings, files);
+};
 
-	await writeLists(settings, lists);
+export const createIndexes = async (settings: SettingsType): Promise<void> => {
+	// console.log(settings);
+	if (!settings.index) return;
 
-	return settings;
+	clog.BLOCK_MID('Indexes');
+
+	settings.inRoot = true;
+
+	const templates = await getIndexTemplates(settings);
+	const files = await buildLists(settings, templates);
+	await writeLists(settings, files);
 };

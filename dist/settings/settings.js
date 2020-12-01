@@ -25,8 +25,8 @@ exports.settings = () => {
         lt: {
             required: false,
             type: 'array',
-            default: null,
-            alias: []
+            default: [],
+            alias: 'listTemplate'
         },
         ir: { required: false, type: 'boolean', default: false, alias: 'inRoot' },
         type: {
@@ -47,7 +47,19 @@ exports.settings = () => {
             alias: 'removeTags'
         },
         ro: { type: 'boolean', default: false, alias: 'removeOld' },
-        svg: { type: 'boolean', default: false, alias: 'svgOnly' }
+        svg: { type: 'boolean', default: false, alias: 'svgOnly' },
+        idx: {
+            required: false,
+            type: 'boolean',
+            default: false,
+            alias: 'index'
+        },
+        idxt: {
+            required: false,
+            type: 'array',
+            default: [],
+            alias: 'indexTemplate'
+        }
     }).argv;
     return {
         src: cs.src,
@@ -57,12 +69,14 @@ exports.settings = () => {
         inRoot: cs.ir,
         removeOld: cs.ro,
         prefix: cs.p,
-        list: cs.lt ? cs.lt : cs.l,
+        list: cs.lt.filter(Boolean).length > 0 ? true : cs.l,
         listTemplate: cs.lt,
         type: cs.type,
         removeAttrs: cs.ra,
         removeTags: cs.rt,
-        svgOnly: cs.svg
+        svgOnly: cs.svg,
+        index: cs.idxt.filter(Boolean).length > 0 ? true : cs.idx,
+        indexTemplate: cs.idxt
     };
 };
 //# sourceMappingURL=settings.js.map

@@ -1,0 +1,5 @@
+{
+    "icons": [<% files.forEach(function(file,index) { %>
+        "<%= file.name %>"<% if(index < files.length -1){ %>,<% } %>
+    <% }); %>]
+}

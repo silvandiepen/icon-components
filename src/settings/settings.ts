@@ -23,8 +23,8 @@ export const settings = (): SettingsType => {
 		lt: {
 			required: false,
 			type: 'array',
-			default: null,
-			alias: []
+			default: [],
+			alias: 'listTemplate'
 		},
 		ir: { required: false, type: 'boolean', default: false, alias: 'inRoot' },
 		type: {
@@ -45,7 +45,19 @@ export const settings = (): SettingsType => {
 			alias: 'removeTags'
 		},
 		ro: { type: 'boolean', default: false, alias: 'removeOld' },
-		svg: { type: 'boolean', default: false, alias: 'svgOnly' }
+		svg: { type: 'boolean', default: false, alias: 'svgOnly' },
+		idx: {
+			required: false,
+			type: 'boolean',
+			default: false,
+			alias: 'index'
+		},
+		idxt: {
+			required: false,
+			type: 'array',
+			default: [],
+			alias: 'indexTemplate'
+		}
 	}).argv;
 
 	return {
@@ -56,11 +68,13 @@ export const settings = (): SettingsType => {
 		inRoot: cs.ir,
 		removeOld: cs.ro,
 		prefix: cs.p,
-		list: cs.lt ? cs.lt : cs.l, // If the listTemplate is set, the list is true otherwise, set the value of list.
+		list: cs.lt.filter(Boolean).length > 0 ? true : cs.l, // If the listTemplate is set, the list is true otherwise, set the value of list.
 		listTemplate: cs.lt,
 		type: cs.type,
 		removeAttrs: cs.ra,
 		removeTags: cs.rt,
-		svgOnly: cs.svg
+		svgOnly: cs.svg,
+		index: cs.idxt.filter(Boolean).length > 0 ? true : cs.idx, // If the indexTemplate is set, the index is true otherwise, set the value of index.
+		indexTemplate: cs.idxt
 	};
 };

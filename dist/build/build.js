@@ -110,6 +110,8 @@ exports.startBuild = (settings) => __awaiter(void 0, void 0, void 0, function* (
             removeOld: settings.removeOld,
             list: settings.list ? settings.list : false,
             listTemplate: settings.listTemplate ? settings.listTemplate : false,
+            index: settings.index ? settings.index : false,
+            indexTemplate: settings.indexTemplate ? settings.indexTemplate : false,
             totalFiles: settings.files.length
         };
         yield clog.BLOCK_SETTINGS(showSettings);
