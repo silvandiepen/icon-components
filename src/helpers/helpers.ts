@@ -1,4 +1,5 @@
 import path from 'path';
+const { mkdir } = require('fs').promises;
 
 import { kebabCase } from 'str-convert';
 
@@ -16,13 +17,6 @@ export const asyncForEach = async (array: any, callback: any) => {
 	}
 };
 
-// export const kebabCase = (str: string): string =>
-// 	str
-// 		.match(/[A-Z]{2,}(?=[A-Z][a-z0-9]*|\b)|[A-Z]?[a-z0-9]*|[A-Z]|[0-9]+/g)
-// 		.filter(Boolean)
-// 		.map((x) => x.toLowerCase())
-// 		.join('-');
-
 export const fileName = (str: string, settings = null) => {
 	if (settings)
 		return `${settings.prefix}${path
@@ -35,15 +29,6 @@ export const fileName = (str: string, settings = null) => {
 			.replace('.template', '')
 			.replace(path.extname(str), '')}`;
 };
-
-// export const PascalCase = (str: string): string =>
-// 	str
-// 		.replace('-', ' ')
-// 		.match(/[a-zA-Z0-9]+/gi)
-// 		.map(function (word) {
-// 			return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-// 		})
-// 		.join('');
 
 const tagsRegex = (tag: string): any =>
 	new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
@@ -108,4 +93,16 @@ export const fixJsx = (str: string): string => {
 	return str
 		.replace('xlink:href', 'xlinkHref')
 		.replace('xmlns:xlink', 'xmlnsXlink');
+};
+
+export const createAFolder = async (dir: string): Promise<void> => {
+	try {
+		await mkdir(dir, {
+			recursive: true,
+			mode: 0o775
+		});
+	} catch (error) {
+		console.log(`error creating folder ${dir}`);
+	}
+	return;
 };

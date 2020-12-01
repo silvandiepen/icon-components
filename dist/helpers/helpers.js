@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
+const { mkdir } = require('fs').promises;
 const str_convert_1 = require("str-convert");
 exports.WAIT = (time = 0) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve) => {
@@ -26,12 +27,6 @@ exports.asyncForEach = (array, callback) => __awaiter(void 0, void 0, void 0, fu
         yield callback(array[index], index, array);
     }
 });
-// export const kebabCase = (str: string): string =>
-// 	str
-// 		.match(/[A-Z]{2,}(?=[A-Z][a-z0-9]*|\b)|[A-Z]?[a-z0-9]*|[A-Z]|[0-9]+/g)
-// 		.filter(Boolean)
-// 		.map((x) => x.toLowerCase())
-// 		.join('-');
 exports.fileName = (str, settings = null) => {
     if (settings)
         return `${settings.prefix}${path_1.default
@@ -44,14 +39,6 @@ exports.fileName = (str, settings = null) => {
             .replace('.template', '')
             .replace(path_1.default.extname(str), '')}`;
 };
-// export const PascalCase = (str: string): string =>
-// 	str
-// 		.replace('-', ' ')
-// 		.match(/[a-zA-Z0-9]+/gi)
-// 		.map(function (word) {
-// 			return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-// 		})
-// 		.join('');
 const tagsRegex = (tag) => new RegExp(`<[\/]{0,1}(${tag}|${tag})[^><]*>`, 'g');
 exports.removeTags = (str, tags) => {
     tags.forEach((tag) => {
@@ -98,4 +85,16 @@ exports.fixJsx = (str) => {
         .replace('xlink:href', 'xlinkHref')
         .replace('xmlns:xlink', 'xmlnsXlink');
 };
+exports.createAFolder = (dir) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield mkdir(dir, {
+            recursive: true,
+            mode: 0o775
+        });
+    }
+    catch (error) {
+        console.log(`error creating folder ${dir}`);
+    }
+    return;
+});
 //# sourceMappingURL=helpers.js.map

@@ -1,11 +1,17 @@
-const path = require('path');
-const fs = require('fs').promises;
+import { join, dirname } from 'path';
+const { mkdir, stat, writeFile } = require('fs').promises;
 import ejs from 'ejs';
 import { red, yellow, blue, green, bold } from 'kleur';
 import * as clog from 'cli-block';
 
 import * as helpers from '../helpers';
-import { fileName, asyncForEach, getExtension, WAIT } from '../helpers';
+import {
+	fileName,
+	asyncForEach,
+	getExtension,
+	WAIT,
+	createAFolder
+} from '../helpers';
 import { kebabCase, pascalCase } from 'str-convert';
 
 import {
@@ -21,12 +27,12 @@ import {
 
 	*/
 const makePath = async (filePath: string) => {
-	const dirname = path.dirname(filePath);
-	if ((await fs.stat(dirname)).isDirectory()) {
+	const directoryName = dirname(filePath);
+	if ((await stat(directoryName)).isDirectory()) {
 		return true;
 	}
-	makePath(dirname);
-	fs.mkdir(dirname);
+	makePath(directoryName);
+	mkdir(directoryName);
 };
 
 /*
@@ -35,26 +41,26 @@ const makePath = async (filePath: string) => {
 
 	*/
 
-export const writeFile = async (
+export const writeAFile = async (
 	settings: SettingsType,
 	file: WriteFileType
 ) => {
 	try {
-		let filePath = path.join(
+		let filePath = join(
 			settings.dest,
 			kebabCase(fileName(file.name)),
 			kebabCase(fileName(file.name)) + (file.ext ? file.ext : '')
 		);
 
 		if (settings.inRoot)
-			filePath = path.join(
+			filePath = join(
 				settings.dest,
 				kebabCase(fileName(file.name)) + (file.ext ? file.ext : '')
 			);
 
 		await makePath(filePath);
 
-		await fs.writeFile(filePath, file.data, {
+		await writeFile(filePath, file.data, {
 			encoding: 'utf8',
 			flag: 'w'
 		});
@@ -93,7 +99,7 @@ const buildComponent = async function (
 ): Promise<void> {
 	await asyncForEach(settings.templates, async (template: TemplateFileType) => {
 		try {
-			await writeFile(settings, {
+			await writeAFile(settings, {
 				data: await CombineTemplateWithData(file, template, settings),
 				ext: getExtension(template.file),
 				name: file.name
@@ -161,16 +167,12 @@ export const buildComponents = async (
 
 		await asyncForEach(settings.files, async (file: FilesType) => {
 			if (!settings.inRoot)
-				await fs.mkdir(path.join(settings.dest, fileName(file.name)), {
-					recursive: true,
-					mode: 0o775
-				});
+				await createAFolder(join(settings.dest, fileName(file.name)));
 
 			buildComponent(settings, file);
 		});
 	}
 	await WAIT(100);
-	// return settings;
 };
 
 /*
@@ -182,10 +184,7 @@ export const buildComponents = async (
 export const buildFiles = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {
-	// console.log(settings);
 	await startBuild(settings);
 	await buildComponents(settings);
 	return settings;
-	// return settings;
-	//
 };

@@ -1,11 +1,11 @@
 import { join } from 'path';
-const fs = require('fs').promises;
+const { readdir, readFile, lstat } = require('fs').promises;
 
 import ejs from 'ejs';
 import { asyncForEach, getExtension, fileName } from '../helpers';
 import { SettingsType, TemplateFileType, ListFilesType } from '../types';
 import * as clog from 'cli-block';
-import { writeFile } from '../build';
+import { writeAFile } from '../build';
 /*
   When there is no Template given, but a type. The templates will be gotten from the package.
 */
@@ -15,12 +15,12 @@ const getLocalListTemplates = async (
 ): Promise<TemplateFileType[]> => {
 	let templates: any = [];
 	try {
-		let localTemplateDir = await fs.readdir(
+		let localTemplateDir = await readdir(
 			join(__dirname, '../../src/templates/list')
 		);
 
 		await asyncForEach(localTemplateDir, async (template: string) => {
-			let fileData = await fs.readFile(
+			let fileData = await readFile(
 				join(__dirname, '../../src/templates/list', template)
 			);
 			templates.push({
@@ -44,13 +44,13 @@ export const getListTemplates = async (
 	let templates = [];
 
 	await asyncForEach(settings.listTemplate, async (templateFile) => {
-		const stats = await fs.lstat(templateFile);
+		const stats = await lstat(templateFile);
 		if (stats.isDirectory()) {
-			let templateFiles = await fs.readdir(templateFile);
+			let templateFiles = await readdir(templateFile);
 
 			try {
 				await asyncForEach(templateFiles, async (template: string) => {
-					let fileData = await fs.readFile(join(templateFile, template));
+					let fileData = await readFile(join(templateFile, template));
 
 					templates.push({
 						file: template,
@@ -62,7 +62,7 @@ export const getListTemplates = async (
 			}
 		} else {
 			try {
-				let fileData = await fs.readFile(templateFile);
+				let fileData = await readFile(templateFile);
 				templates.push({
 					file: templateFile,
 					data: fileData.toString()
@@ -97,7 +97,7 @@ export const writeLists = async (
 	lists: ListFilesType[]
 ): Promise<void> => {
 	await asyncForEach(lists, async (file) => {
-		await writeFile(settings, file);
+		await writeAFile(settings, file);
 		clog.BLOCK_LINE_SUCCESS(file.name);
 	});
 };

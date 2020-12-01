@@ -9,3 +9,4 @@ export declare const svgOnly: (str: string) => string;
 export declare const prefixedName: (name: string, prefix: string) => string;
 export declare const getExtension: (file: string) => string;
 export declare const fixJsx: (str: string) => string;
+export declare const createAFolder: (dir: string) => Promise<void>;

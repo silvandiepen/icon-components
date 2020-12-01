@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
-const fs = require('fs').promises;
+const { readdir, readFile, lstat } = require('fs').promises;
 const ejs_1 = __importDefault(require("ejs"));
 const helpers_1 = require("../helpers");
 const clog = __importStar(require("cli-block"));
@@ -31,9 +31,9 @@ const build_1 = require("../build");
 const getLocalListTemplates = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     let templates = [];
     try {
-        let localTemplateDir = yield fs.readdir(path_1.join(__dirname, '../../src/templates/list'));
+        let localTemplateDir = yield readdir(path_1.join(__dirname, '../../src/templates/list'));
         yield helpers_1.asyncForEach(localTemplateDir, (template) => __awaiter(void 0, void 0, void 0, function* () {
-            let fileData = yield fs.readFile(path_1.join(__dirname, '../../src/templates/list', template));
+            let fileData = yield readFile(path_1.join(__dirname, '../../src/templates/list', template));
             templates.push({
                 file: template,
                 data: fileData.toString()
@@ -50,12 +50,12 @@ exports.getListTemplates = (settings) => __awaiter(void 0, void 0, void 0, funct
         return yield getLocalListTemplates(settings);
     let templates = [];
     yield helpers_1.asyncForEach(settings.listTemplate, (templateFile) => __awaiter(void 0, void 0, void 0, function* () {
-        const stats = yield fs.lstat(templateFile);
+        const stats = yield lstat(templateFile);
         if (stats.isDirectory()) {
-            let templateFiles = yield fs.readdir(templateFile);
+            let templateFiles = yield readdir(templateFile);
             try {
                 yield helpers_1.asyncForEach(templateFiles, (template) => __awaiter(void 0, void 0, void 0, function* () {
-                    let fileData = yield fs.readFile(path_1.join(templateFile, template));
+                    let fileData = yield readFile(path_1.join(templateFile, template));
                     templates.push({
                         file: template,
                         data: fileData.toString()
@@ -68,7 +68,7 @@ exports.getListTemplates = (settings) => __awaiter(void 0, void 0, void 0, funct
         }
         else {
             try {
-                let fileData = yield fs.readFile(templateFile);
+                let fileData = yield readFile(templateFile);
                 templates.push({
                     file: templateFile,
                     data: fileData.toString()
@@ -94,7 +94,7 @@ exports.buildLists = (settings, templates) => __awaiter(void 0, void 0, void 0, 
 });
 exports.writeLists = (settings, lists) => __awaiter(void 0, void 0, void 0, function* () {
     yield helpers_1.asyncForEach(lists, (file) => __awaiter(void 0, void 0, void 0, function* () {
-        yield build_1.writeFile(settings, file);
+        yield build_1.writeAFile(settings, file);
         clog.BLOCK_LINE_SUCCESS(file.name);
     }));
 });

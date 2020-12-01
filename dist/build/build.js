@@ -19,8 +19,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = require('path');
-const fs = require('fs').promises;
+const path_1 = require("path");
+const { mkdir, stat, writeFile } = require('fs').promises;
 const ejs_1 = __importDefault(require("ejs"));
 const kleur_1 = require("kleur");
 const clog = __importStar(require("cli-block"));
@@ -33,25 +33,25 @@ const str_convert_1 = require("str-convert");
 
     */
 const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
-    const dirname = path.dirname(filePath);
-    if ((yield fs.stat(dirname)).isDirectory()) {
+    const directoryName = path_1.dirname(filePath);
+    if ((yield stat(directoryName)).isDirectory()) {
         return true;
     }
-    makePath(dirname);
-    fs.mkdir(dirname);
+    makePath(directoryName);
+    mkdir(directoryName);
 });
 /*
 
     Write the file
 
     */
-exports.writeFile = (settings, file) => __awaiter(void 0, void 0, void 0, function* () {
+exports.writeAFile = (settings, file) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let filePath = path.join(settings.dest, str_convert_1.kebabCase(helpers_1.fileName(file.name)), str_convert_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
+        let filePath = path_1.join(settings.dest, str_convert_1.kebabCase(helpers_1.fileName(file.name)), str_convert_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
         if (settings.inRoot)
-            filePath = path.join(settings.dest, str_convert_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
+            filePath = path_1.join(settings.dest, str_convert_1.kebabCase(helpers_1.fileName(file.name)) + (file.ext ? file.ext : ''));
         yield makePath(filePath);
-        yield fs.writeFile(filePath, file.data, {
+        yield writeFile(filePath, file.data, {
             encoding: 'utf8',
             flag: 'w'
         });
@@ -78,7 +78,7 @@ const buildComponent = function (settings, file) {
     return __awaiter(this, void 0, void 0, function* () {
         yield helpers_1.asyncForEach(settings.templates, (template) => __awaiter(this, void 0, void 0, function* () {
             try {
-                yield exports.writeFile(settings, {
+                yield exports.writeAFile(settings, {
                     data: yield exports.CombineTemplateWithData(file, template, settings),
                     ext: helpers_1.getExtension(template.file),
                     name: file.name
@@ -130,15 +130,11 @@ exports.buildComponents = (settings) => __awaiter(void 0, void 0, void 0, functi
         clog.BLOCK_MID(`${kleur_1.bold('Files')} ${kleur_1.blue().bold('(' + settings.files.length + ')')}`);
         yield helpers_1.asyncForEach(settings.files, (file) => __awaiter(void 0, void 0, void 0, function* () {
             if (!settings.inRoot)
-                yield fs.mkdir(path.join(settings.dest, helpers_1.fileName(file.name)), {
-                    recursive: true,
-                    mode: 0o775
-                });
+                yield helpers_1.createAFolder(path_1.join(settings.dest, helpers_1.fileName(file.name)));
             buildComponent(settings, file);
         }));
     }
     yield helpers_1.WAIT(100);
-    // return settings;
 });
 /*
 
@@ -146,11 +142,8 @@ exports.buildComponents = (settings) => __awaiter(void 0, void 0, void 0, functi
 
     */
 exports.buildFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log(settings);
     yield exports.startBuild(settings);
     yield exports.buildComponents(settings);
     return settings;
-    // return settings;
-    //
 });
 //# sourceMappingURL=build.js.map
