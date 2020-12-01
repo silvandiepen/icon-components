@@ -1,4 +1,4 @@
-const path = require('path');
+import { join } from 'path';
 const fs = require('fs').promises;
 
 import ejs from 'ejs';
@@ -16,12 +16,12 @@ const getLocalListTemplates = async (
 	let templates: any = [];
 	try {
 		let localTemplateDir = await fs.readdir(
-			path.join(__dirname, '../../src/templates/list')
+			join(__dirname, '../../src/templates/list')
 		);
 
 		await asyncForEach(localTemplateDir, async (template: string) => {
 			let fileData = await fs.readFile(
-				path.join(__dirname, '../../src/templates/list', template)
+				join(__dirname, '../../src/templates/list', template)
 			);
 			templates.push({
 				file: template,
@@ -38,33 +38,40 @@ const getLocalListTemplates = async (
 export const getListTemplates = async (
 	settings: SettingsType
 ): Promise<TemplateFileType[]> => {
-	if (settings.listTemplate == null) {
+	if (settings.listTemplate[0] == null || settings.listTemplate.length < 1)
 		return await getLocalListTemplates(settings);
-	}
 
 	let templates = [];
 
-	const stats = await fs.lstat(settings.listTemplate);
-	if (stats.isDirectory()) {
-		let templateFiles = await fs.readdir(settings.listTemplate);
+	await asyncForEach(settings.listTemplate, async (templateFile) => {
+		const stats = await fs.lstat(templateFile);
+		if (stats.isDirectory()) {
+			let templateFiles = await fs.readdir(templateFile);
 
-		await asyncForEach(templateFiles, async (template: string) => {
-			let fileData = await fs.readFile(
-				path.join(settings.listTemplate, template)
-			);
+			try {
+				await asyncForEach(templateFiles, async (template: string) => {
+					let fileData = await fs.readFile(join(templateFile, template));
 
-			templates.push({
-				file: template,
-				data: fileData.toString()
-			});
-		});
-	} else {
-		let fileData = await fs.readFile(settings.listTemplate);
-		templates.push({
-			file: settings.listTemplate,
-			data: fileData.toString()
-		});
-	}
+					templates.push({
+						file: template,
+						data: fileData.toString()
+					});
+				});
+			} catch (error) {
+				throw new Error(error);
+			}
+		} else {
+			try {
+				let fileData = await fs.readFile(templateFile);
+				templates.push({
+					file: templateFile,
+					data: fileData.toString()
+				});
+			} catch (error) {
+				throw new Error(error);
+			}
+		}
+	});
 	return templates;
 };
 
@@ -108,8 +115,6 @@ export const createLists = async (
 	const lists = await buildLists(settings, templates);
 
 	await writeLists(settings, lists);
-
-	// console.log('listTemplates', templates);
 
 	return settings;
 };

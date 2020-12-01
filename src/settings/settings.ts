@@ -22,9 +22,9 @@ export const settings = (): SettingsType => {
 		},
 		lt: {
 			required: false,
-			type: 'string',
+			type: 'array',
 			default: null,
-			alias: 'listTemplate'
+			alias: []
 		},
 		ir: { required: false, type: 'boolean', default: false, alias: 'inRoot' },
 		type: {

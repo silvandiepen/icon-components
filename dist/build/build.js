@@ -29,7 +29,7 @@ const helpers_1 = require("../helpers");
 const str_convert_1 = require("str-convert");
 /*
 
-    Create the path if it doesnt exist.
+    Create the path if it doesn't exist.
 
     */
 const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
@@ -109,6 +109,7 @@ exports.startBuild = (settings) => __awaiter(void 0, void 0, void 0, function* (
             optimize: settings.optimize,
             removeOld: settings.removeOld,
             list: settings.list ? settings.list : false,
+            listTemplate: settings.listTemplate ? settings.listTemplate : false,
             totalFiles: settings.files.length
         };
         yield clog.BLOCK_SETTINGS(showSettings);

@@ -17,7 +17,7 @@ import {
 
 /*
 
-	Create the path if it doesnt exist.
+	Create the path if it doesn't exist.
 
 	*/
 const makePath = async (filePath: string) => {
@@ -130,6 +130,7 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 			optimize: settings.optimize,
 			removeOld: settings.removeOld,
 			list: settings.list ? settings.list : false,
+			listTemplate: settings.listTemplate ? settings.listTemplate : false,
 			totalFiles: settings.files.length
 		};
 

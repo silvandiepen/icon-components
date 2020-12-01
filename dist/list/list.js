@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = require('path');
+const path_1 = require("path");
 const fs = require('fs').promises;
 const ejs_1 = __importDefault(require("ejs"));
 const helpers_1 = require("../helpers");
@@ -31,9 +31,9 @@ const build_1 = require("../build");
 const getLocalListTemplates = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     let templates = [];
     try {
-        let localTemplateDir = yield fs.readdir(path.join(__dirname, '../../src/templates/list'));
+        let localTemplateDir = yield fs.readdir(path_1.join(__dirname, '../../src/templates/list'));
         yield helpers_1.asyncForEach(localTemplateDir, (template) => __awaiter(void 0, void 0, void 0, function* () {
-            let fileData = yield fs.readFile(path.join(__dirname, '../../src/templates/list', template));
+            let fileData = yield fs.readFile(path_1.join(__dirname, '../../src/templates/list', template));
             templates.push({
                 file: template,
                 data: fileData.toString()
@@ -46,28 +46,39 @@ const getLocalListTemplates = (settings) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.getListTemplates = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    if (settings.listTemplate == null) {
+    if (settings.listTemplate[0] == null || settings.listTemplate.length < 1)
         return yield getLocalListTemplates(settings);
-    }
     let templates = [];
-    const stats = yield fs.lstat(settings.listTemplate);
-    if (stats.isDirectory()) {
-        let templateFiles = yield fs.readdir(settings.listTemplate);
-        yield helpers_1.asyncForEach(templateFiles, (template) => __awaiter(void 0, void 0, void 0, function* () {
-            let fileData = yield fs.readFile(path.join(settings.listTemplate, template));
-            templates.push({
-                file: template,
-                data: fileData.toString()
-            });
-        }));
-    }
-    else {
-        let fileData = yield fs.readFile(settings.listTemplate);
-        templates.push({
-            file: settings.listTemplate,
-            data: fileData.toString()
-        });
-    }
+    yield helpers_1.asyncForEach(settings.listTemplate, (templateFile) => __awaiter(void 0, void 0, void 0, function* () {
+        const stats = yield fs.lstat(templateFile);
+        if (stats.isDirectory()) {
+            let templateFiles = yield fs.readdir(templateFile);
+            try {
+                yield helpers_1.asyncForEach(templateFiles, (template) => __awaiter(void 0, void 0, void 0, function* () {
+                    let fileData = yield fs.readFile(path_1.join(templateFile, template));
+                    templates.push({
+                        file: template,
+                        data: fileData.toString()
+                    });
+                }));
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        }
+        else {
+            try {
+                let fileData = yield fs.readFile(templateFile);
+                templates.push({
+                    file: templateFile,
+                    data: fileData.toString()
+                });
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        }
+    }));
     return templates;
 });
 exports.buildLists = (settings, templates) => __awaiter(void 0, void 0, void 0, function* () {
@@ -95,7 +106,6 @@ exports.createLists = (settings) => __awaiter(void 0, void 0, void 0, function* 
     const templates = yield exports.getListTemplates(settings);
     const lists = yield exports.buildLists(settings, templates);
     yield exports.writeLists(settings, lists);
-    // console.log('listTemplates', templates);
     return settings;
 });
 //# sourceMappingURL=list.js.map
