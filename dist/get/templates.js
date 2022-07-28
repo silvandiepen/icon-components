@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFileTemplates = void 0;
 const path_1 = __importDefault(require("path"));
 const fs = require('fs').promises;
 const helpers_1 = require("../helpers");
@@ -24,7 +25,7 @@ const getLocalTemplates = (settings) => __awaiter(void 0, void 0, void 0, functi
     let templates = [];
     try {
         let localTemplateDir = yield fs.readdir(path_1.default.join(__dirname, '../../src/templates', settings.type));
-        yield helpers_1.asyncForEach(localTemplateDir, (template) => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, helpers_1.asyncForEach)(localTemplateDir, (template) => __awaiter(void 0, void 0, void 0, function* () {
             let fileData = yield fs.readFile(path_1.default.join(__dirname, '../../src/templates/', settings.type, template));
             templates.push({
                 file: template,
@@ -40,7 +41,7 @@ const getLocalTemplates = (settings) => __awaiter(void 0, void 0, void 0, functi
 /*
   Get all templates.
 */
-exports.getFileTemplates = (settings) => __awaiter(void 0, void 0, void 0, function* () {
+const getFileTemplates = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     if (settings.template == null) {
         return yield getLocalTemplates(settings);
     }
@@ -48,7 +49,7 @@ exports.getFileTemplates = (settings) => __awaiter(void 0, void 0, void 0, funct
     const stats = yield fs.lstat(settings.template);
     if (stats.isDirectory()) {
         let templateFiles = yield fs.readdir(settings.template);
-        yield helpers_1.asyncForEach(templateFiles, (template) => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, helpers_1.asyncForEach)(templateFiles, (template) => __awaiter(void 0, void 0, void 0, function* () {
             let fileData = yield fs.readFile(path_1.default.join(settings.template, template));
             templates.push({
                 file: template,
@@ -67,4 +68,5 @@ exports.getFileTemplates = (settings) => __awaiter(void 0, void 0, void 0, funct
     }
     return templates;
 });
+exports.getFileTemplates = getFileTemplates;
 //# sourceMappingURL=templates.js.map

@@ -1,3 +1,5 @@
+
+// @ts-nocheck
 import yargs from 'yargs';
 
 import { SettingsType } from '../types';

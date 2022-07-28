@@ -4,7 +4,7 @@ const { readdir, readFile, lstat } = require('fs').promises;
 import ejs from 'ejs';
 import { asyncForEach, getExtension, fileName } from '../helpers';
 import { SettingsType, TemplateFileType, ListFilesType } from '../types';
-import * as clog from 'cli-block';
+import  { blockErrors, blockLineSuccess, blockMid } from 'cli-block';
 import { writeAFile } from '../build';
 /*
   When there is no Template given, but a type. The templates will be gotten from the package.
@@ -25,7 +25,7 @@ const getLocalTemplates = async (dir: string): Promise<TemplateFileType[]> => {
 
 		return templates;
 	} catch (error) {
-		clog.BLOCK_ERRORS(["Couldn't get the template ", error]);
+		blockErrors(["Couldn't get the template ", error]);
 	}
 };
 
@@ -47,7 +47,7 @@ const getTemplateFiles = async (list): Promise<TemplateFileType[]> => {
 					});
 				});
 			} catch (error) {
-				clog.BLOCK_ERRORS(["Couldn't get the template ", error, templateFiles]);
+				blockErrors(["Couldn't get the template ", error, templateFiles]);
 			}
 		} else {
 			try {
@@ -57,7 +57,7 @@ const getTemplateFiles = async (list): Promise<TemplateFileType[]> => {
 					data: fileData.toString()
 				});
 			} catch (error) {
-				clog.BLOCK_ERRORS(["Couldn't get the template ", error, templateFile]);
+				blockErrors(["Couldn't get the template ", error, templateFile]);
 			}
 		}
 	});
@@ -112,14 +112,14 @@ export const writeLists = async (
 ): Promise<void> => {
 	await asyncForEach(lists, async (file) => {
 		await writeAFile(settings, file);
-		clog.BLOCK_LINE_SUCCESS(file.name);
+		blockLineSuccess(file.name);
 	});
 };
 
 export const createLists = async (settings: SettingsType): Promise<void> => {
 	if (!settings.list) return;
 
-	clog.BLOCK_MID('Lists');
+	blockMid('Lists');
 
 	settings.inRoot = true;
 
@@ -132,7 +132,7 @@ export const createIndexes = async (settings: SettingsType): Promise<void> => {
 	// console.log(settings);
 	if (!settings.index) return;
 
-	clog.BLOCK_MID('Indexes');
+	blockMid('Indexes');
 
 	settings.inRoot = true;
 

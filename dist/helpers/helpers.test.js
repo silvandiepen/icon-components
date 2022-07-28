@@ -16,7 +16,7 @@ test('Remove requested Tags', () => {
     const output = `<test id="test"><path fill="test"></path></test>`;
     const tags = ['svg', 'g'];
     // Expect
-    expect(helpers_1.removeTags(input, tags)).toStrictEqual(output);
+    expect((0, helpers_1.removeTags)(input, tags)).toStrictEqual(output);
 });
 test('Remove requested Tags - async', () => __awaiter(void 0, void 0, void 0, function* () {
     // assert
@@ -24,7 +24,7 @@ test('Remove requested Tags - async', () => __awaiter(void 0, void 0, void 0, fu
     const output = `<test id="test"><path fill="test"></path></test>`;
     const tags = ['svg', 'g'];
     // Expect
-    return helpers_1.asyncRemoveTags(input, tags).then((data) => {
+    return (0, helpers_1.asyncRemoveTags)(input, tags).then((data) => {
         expect(data).toStrictEqual(output);
     });
 }));
@@ -34,7 +34,7 @@ test('Remove requested Attributes', () => {
     const output = `<svg><test><path></path></test></svg>`;
     const attributes = ['id', 'fill'];
     // Expect
-    expect(helpers_1.removeAttrs(input, attributes)).toStrictEqual(output);
+    expect((0, helpers_1.removeAttrs)(input, attributes)).toStrictEqual(output);
 });
 test('Remove requested Attributes - async', () => __awaiter(void 0, void 0, void 0, function* () {
     // assert
@@ -42,7 +42,7 @@ test('Remove requested Attributes - async', () => __awaiter(void 0, void 0, void
     const output = `<svg><test><path></path></test></svg>`;
     const attributes = ['id', 'fill'];
     // Expect
-    return helpers_1.asyncRemoveAttrs(input, attributes).then((data) => {
+    return (0, helpers_1.asyncRemoveAttrs)(input, attributes).then((data) => {
         expect(data).toStrictEqual(output);
     });
 }));
@@ -51,7 +51,7 @@ test('Fix JSX', () => {
     const input = `<svg xmlns:xlink><test id="test"><path xlink:href fill="test"></path></test></svg>`;
     const output = `<svg xmlnsXlink><test id="test"><path xlinkHref fill="test"></path></test></svg>`;
     // Expect
-    expect(helpers_1.fixJsx(input)).toStrictEqual(output);
+    expect((0, helpers_1.fixJsx)(input)).toStrictEqual(output);
 });
 test('prefixName', () => {
     // assert
@@ -61,7 +61,7 @@ test('prefixName', () => {
         prefix: 'yeah'
     };
     // Expect
-    expect(helpers_1.prefixedName(input, settings.prefix)).toStrictEqual(output);
+    expect((0, helpers_1.prefixedName)(input, settings.prefix)).toStrictEqual(output);
 });
 test('prefixName - no prefix', () => {
     // assert
@@ -71,7 +71,7 @@ test('prefixName - no prefix', () => {
         prefix: null
     };
     // Expect
-    expect(helpers_1.prefixedName(input, settings.prefix)).toStrictEqual(output);
+    expect((0, helpers_1.prefixedName)(input, settings.prefix)).toStrictEqual(output);
 });
 test('prefixName - empty prefix', () => {
     // assert
@@ -81,7 +81,7 @@ test('prefixName - empty prefix', () => {
         prefix: ''
     };
     // Expect
-    expect(helpers_1.prefixedName(input, settings.prefix)).toStrictEqual(output);
+    expect((0, helpers_1.prefixedName)(input, settings.prefix)).toStrictEqual(output);
 });
 test('fileName', () => {
     // assert
@@ -92,8 +92,8 @@ test('fileName', () => {
         prefix: 'icon'
     };
     // Expect
-    expect(helpers_1.fileName(input)).toStrictEqual(output1);
-    expect(helpers_1.fileName(input, settings)).toStrictEqual(output2);
+    expect((0, helpers_1.fileName)(input)).toStrictEqual(output1);
+    expect((0, helpers_1.fileName)(input, settings)).toStrictEqual(output2);
 });
 test('svgOnly', () => {
     // assert
@@ -102,7 +102,7 @@ test('svgOnly', () => {
     const input2 = `<test></test><svg><thisis><a><test></test></a></thisis></svg>`;
     const output2 = `<svg><thisis><a><test></test></a></thisis></svg>`;
     // Expect
-    expect(helpers_1.svgOnly(input1)).toStrictEqual(output1);
-    expect(helpers_1.svgOnly(input2)).toStrictEqual(output2);
+    expect((0, helpers_1.svgOnly)(input1)).toStrictEqual(output1);
+    expect((0, helpers_1.svgOnly)(input2)).toStrictEqual(output2);
 });
 //# sourceMappingURL=helpers.test.js.map

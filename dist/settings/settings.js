@@ -3,8 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.settings = void 0;
+// @ts-nocheck
 const yargs_1 = __importDefault(require("yargs"));
-exports.settings = () => {
+const settings = () => {
     const cs = yargs_1.default.options({
         src: { required: true, type: 'string', default: null, alias: 'source' },
         dest: {
@@ -79,4 +81,5 @@ exports.settings = () => {
         indexTemplate: cs.idxt
     };
 };
+exports.settings = settings;
 //# sourceMappingURL=settings.js.map

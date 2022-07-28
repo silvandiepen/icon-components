@@ -1,8 +1,8 @@
 import { join, dirname } from 'path';
 const { mkdir, stat, writeFile } = require('fs').promises;
 import ejs from 'ejs';
-import { red, yellow, blue, green, bold } from 'kleur';
-import * as clog from 'cli-block';
+import { red, yellow, blue,  bold } from 'kleur';
+import { blockErrors, blockHeader, blockLineError, blockLineSuccess, blockMid, blockRowLine, blockSettings } from "cli-block";
 
 import * as helpers from '../helpers';
 import {
@@ -65,7 +65,7 @@ export const writeAFile = async (
 			flag: 'w'
 		});
 	} catch (err) {
-		clog.BLOCK_ERRORS(['Woops, something happened during writing. ', err]);
+		blockErrors(['Woops, something happened during writing. ', err]);
 	}
 };
 /*
@@ -104,13 +104,9 @@ const buildComponent = async function (
 				ext: getExtension(template.file),
 				name: file.name
 			});
-			clog.BLOCK_LINE(
-				`${green('✔')} ${file.name}${blue(getExtension(template.file))}`
-			);
+			blockLineSuccess(`${file.name}${blue(getExtension(template.file))}`);
 		} catch (err) {
-			clog.BLOCK_LINE(
-				`${red('×')} ${file.name}${blue(getExtension(template.file))} ${err}`
-			);
+			blockLineError(`${file.name}${blue(getExtension(template.file))} ${err}`);
 		}
 	});
 };
@@ -124,8 +120,8 @@ const buildComponent = async function (
 export const startBuild = async (settings: SettingsType): Promise<void> => {
 	// Log it all\
 
-	clog.START(`Generating ${settings.template}`);
-	clog.BLOCK_START(`Settings`);
+	blockHeader(`Generating ${settings.template ? settings.template : (settings.type ? settings.type  : '')}`);
+	blockMid(`Settings`);
 
 	if (settings.src && settings.dest) {
 		let showSettings = {
@@ -142,11 +138,11 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 			totalFiles: settings.files.length
 		};
 
-		await clog.BLOCK_SETTINGS(showSettings);
+		await blockSettings(showSettings);
 
 		if (settings.files.length < 1) {
-			clog.BLOCK_MID(`Warnings`);
-			clog.BLOCK_ROW_LINE([
+			blockMid(`Warnings`);
+			blockRowLine([
 				'src',
 				`${yellow().italic(settings.src)} ${
 					red("Your source folder doesn't contain any") +
@@ -163,7 +159,7 @@ export const buildComponents = async (
 	settings: SettingsType
 ): Promise<void> => {
 	if (settings.files.length > 0) {
-		clog.BLOCK_MID(
+		blockMid(
 			`${bold('Files')} ${blue().bold('(' + settings.files.length + ')')}`
 		);
 

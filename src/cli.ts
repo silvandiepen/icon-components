@@ -6,7 +6,7 @@ import { buildFiles } from './build';
 import { createLists, createIndexes } from './list';
 
 import { settings } from './settings';
-import * as clog from 'cli-block';
+import { blockFooter } from 'cli-block';
 
 // If remove old is set, the destination folder will be removed in order to be sure all files are new.
 () => {
@@ -23,7 +23,7 @@ getFiles(settings())
 		await createIndexes(s);
 	})
 	.then(() => {
-		clog.BLOCK_END('Done!');
+		blockFooter('Done!');
 	});
 // console.log(tempSettings);
 
