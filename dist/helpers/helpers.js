@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
+exports.formatFile = exports.getTagData = exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
 const path_1 = __importDefault(require("path"));
 const { mkdir } = require('fs').promises;
-const str_convert_1 = require("str-convert");
+const prettier_1 = require("prettier");
+const case_1 = require("@sil/case");
 const WAIT = (time = 0) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -79,10 +80,10 @@ const svgOnly = (str) => {
 exports.svgOnly = svgOnly;
 const prefixedName = (name, prefix) => {
     if (prefix === '')
-        return (0, str_convert_1.kebabCase)((0, exports.fileName)(name));
+        return (0, case_1.kebabCase)((0, exports.fileName)(name));
     return prefix
-        ? `${prefix}-${(0, str_convert_1.kebabCase)((0, exports.fileName)(name))}`
-        : `icon-${(0, str_convert_1.kebabCase)((0, exports.fileName)(name))}`;
+        ? `${prefix}-${(0, case_1.kebabCase)((0, exports.fileName)(name))}`
+        : `icon-${(0, case_1.kebabCase)((0, exports.fileName)(name))}`;
 };
 exports.prefixedName = prefixedName;
 const getExtension = (file) => {
@@ -110,4 +111,44 @@ const createAFolder = (dir) => __awaiter(void 0, void 0, void 0, function* () {
     return;
 });
 exports.createAFolder = createAFolder;
+const getTagData = (str, tag) => {
+    const regex = new RegExp(`<${tag}>(.|\n)*?<\/${tag}>`, 'gi');
+    const matches = str.match(regex);
+    return matches ? (0, exports.removeTags)(matches[0], [tag]) : '';
+};
+exports.getTagData = getTagData;
+const formatFile = (str, ext) => {
+    let parserFormat = null;
+    const allowed = [
+        'scss',
+        'css',
+        'less',
+        'graphql',
+        'html',
+        'vue',
+        'yaml',
+        'mdx'
+    ];
+    if (allowed.includes(ext)) {
+        parserFormat = ext;
+    }
+    else {
+        switch (ext) {
+            case 'js':
+                parserFormat = 'babel';
+                break;
+            case 'ts':
+                parserFormat = 'typescript';
+                break;
+            case 'json':
+                parserFormat = 'json5';
+                break;
+            case 'md':
+                parserFormat = 'markdown';
+                break;
+        }
+    }
+    return parserFormat ? (0, prettier_1.format)(str, { parser: parserFormat }) : str;
+};
+exports.formatFile = formatFile;
 //# sourceMappingURL=helpers.js.map

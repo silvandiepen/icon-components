@@ -10,3 +10,5 @@ export declare const prefixedName: (name: string, prefix: string) => string;
 export declare const getExtension: (file: string) => string;
 export declare const fixJsx: (str: string) => string;
 export declare const createAFolder: (dir: string) => Promise<void>;
+export declare const getTagData: (str: string, tag: string) => string;
+export declare const formatFile: (str: string, ext: string) => string;

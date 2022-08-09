@@ -43,7 +43,7 @@ const kleur_1 = require("kleur");
 const cli_block_1 = require("cli-block");
 const helpers = __importStar(require("../helpers"));
 const helpers_1 = require("../helpers");
-const str_convert_1 = require("str-convert");
+const case_1 = require("@sil/case");
 /*
 
     Create the path if it doesn't exist.
@@ -64,9 +64,9 @@ const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     */
 const writeAFile = (settings, file) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let filePath = (0, path_1.join)(settings.dest, (0, str_convert_1.kebabCase)((0, helpers_1.fileName)(file.name)), (0, str_convert_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
+        let filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)), (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
         if (settings.inRoot)
-            filePath = (0, path_1.join)(settings.dest, (0, str_convert_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
+            filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
         yield makePath(filePath);
         yield writeFile(filePath, file.data, {
             encoding: 'utf8',
@@ -84,8 +84,9 @@ exports.writeAFile = writeAFile;
 
     */
 const CombineTemplateWithData = (file, template, settings) => __awaiter(void 0, void 0, void 0, function* () {
-    return ejs_1.default.render(template.data, Object.assign(Object.assign(Object.assign(Object.assign({}, settings), file), helpers), { pascalCase: str_convert_1.pascalCase,
-        kebabCase: str_convert_1.kebabCase }));
+    return ejs_1.default.render(template.data, Object.assign(Object.assign(Object.assign(Object.assign({}, settings), file), helpers), { PascalCase: case_1.PascalCase,
+        kebabCase: case_1.kebabCase,
+        upperSnakeCase: case_1.upperSnakeCase }));
 });
 exports.CombineTemplateWithData = CombineTemplateWithData;
 /*
@@ -97,9 +98,11 @@ const buildComponent = function (settings, file) {
     return __awaiter(this, void 0, void 0, function* () {
         yield (0, helpers_1.asyncForEach)(settings.templates, (template) => __awaiter(this, void 0, void 0, function* () {
             try {
+                const data = yield (0, exports.CombineTemplateWithData)(file, template, settings);
+                const ext = (0, helpers_1.getExtension)(template.file);
                 yield (0, exports.writeAFile)(settings, {
-                    data: yield (0, exports.CombineTemplateWithData)(file, template, settings),
-                    ext: (0, helpers_1.getExtension)(template.file),
+                    data: (0, helpers_1.formatFile)(data, ext),
+                    ext,
                     name: file.name
                 });
                 (0, cli_block_1.blockLineSuccess)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))}`);
@@ -117,7 +120,7 @@ const buildComponent = function (settings, file) {
     */
 const startBuild = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     // Log it all\
-    (0, cli_block_1.blockHeader)(`Generating ${settings.template ? settings.template : (settings.type ? settings.type : '')}`);
+    (0, cli_block_1.blockHeader)(`Generating ${settings.template ? settings.template : settings.type ? settings.type : ''}`);
     (0, cli_block_1.blockMid)(`Settings`);
     if (settings.src && settings.dest) {
         let showSettings = {

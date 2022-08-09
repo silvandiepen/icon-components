@@ -4,8 +4,9 @@ const { readdir, readFile, lstat } = require('fs').promises;
 import ejs from 'ejs';
 import { asyncForEach, getExtension, fileName } from '../helpers';
 import { SettingsType, TemplateFileType, ListFilesType } from '../types';
-import  { blockErrors, blockLineSuccess, blockMid } from 'cli-block';
+import { blockErrors, blockLineSuccess, blockMid } from 'cli-block';
 import { writeAFile } from '../build';
+import { PascalCase, kebabCase, upperSnakeCase } from '@sil/case';
 /*
   When there is no Template given, but a type. The templates will be gotten from the package.
 */
@@ -97,7 +98,12 @@ export const buildLists = async (
 			files.push({
 				name: fileName(template.file),
 				ext: getExtension(template.file),
-				data: ejs.render(template.data, settings)
+				data: ejs.render(template.data, {
+					...settings,
+					PascalCase,
+					kebabCase,
+					upperSnakeCase
+				})
 			});
 		});
 	} catch (error) {

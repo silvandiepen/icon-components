@@ -19,6 +19,7 @@ const ejs_1 = __importDefault(require("ejs"));
 const helpers_1 = require("../helpers");
 const cli_block_1 = require("cli-block");
 const build_1 = require("../build");
+const case_1 = require("@sil/case");
 /*
   When there is no Template given, but a type. The templates will be gotten from the package.
 */
@@ -94,7 +95,9 @@ const buildLists = (settings, templates) => __awaiter(void 0, void 0, void 0, fu
             files.push({
                 name: (0, helpers_1.fileName)(template.file),
                 ext: (0, helpers_1.getExtension)(template.file),
-                data: ejs_1.default.render(template.data, settings)
+                data: ejs_1.default.render(template.data, Object.assign(Object.assign({}, settings), { PascalCase: case_1.PascalCase,
+                    kebabCase: case_1.kebabCase,
+                    upperSnakeCase: case_1.upperSnakeCase }))
             });
         });
     }

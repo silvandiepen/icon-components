@@ -1,8 +1,16 @@
 import { join, dirname } from 'path';
 const { mkdir, stat, writeFile } = require('fs').promises;
 import ejs from 'ejs';
-import { red, yellow, blue,  bold } from 'kleur';
-import { blockErrors, blockHeader, blockLineError, blockLineSuccess, blockMid, blockRowLine, blockSettings } from "cli-block";
+import { red, yellow, blue, bold } from 'kleur';
+import {
+	blockErrors,
+	blockHeader,
+	blockLineError,
+	blockLineSuccess,
+	blockMid,
+	blockRowLine,
+	blockSettings
+} from 'cli-block';
 
 import * as helpers from '../helpers';
 import {
@@ -10,9 +18,10 @@ import {
 	asyncForEach,
 	getExtension,
 	WAIT,
-	createAFolder
+	createAFolder,
+	formatFile
 } from '../helpers';
-import { kebabCase, pascalCase } from 'str-convert';
+import { kebabCase, PascalCase, upperSnakeCase } from '@sil/case';
 
 import {
 	SettingsType,
@@ -83,8 +92,9 @@ export const CombineTemplateWithData = async (
 		...settings,
 		...file,
 		...helpers,
-		pascalCase,
-		kebabCase
+		PascalCase,
+		kebabCase,
+		upperSnakeCase
 	});
 
 /*
@@ -99,9 +109,12 @@ const buildComponent = async function (
 ): Promise<void> {
 	await asyncForEach(settings.templates, async (template: TemplateFileType) => {
 		try {
+			const data = await CombineTemplateWithData(file, template, settings);
+			const ext = getExtension(template.file);
+
 			await writeAFile(settings, {
-				data: await CombineTemplateWithData(file, template, settings),
-				ext: getExtension(template.file),
+				data: formatFile(data, ext),
+				ext,
 				name: file.name
 			});
 			blockLineSuccess(`${file.name}${blue(getExtension(template.file))}`);
@@ -120,7 +133,11 @@ const buildComponent = async function (
 export const startBuild = async (settings: SettingsType): Promise<void> => {
 	// Log it all\
 
-	blockHeader(`Generating ${settings.template ? settings.template : (settings.type ? settings.type  : '')}`);
+	blockHeader(
+		`Generating ${
+			settings.template ? settings.template : settings.type ? settings.type : ''
+		}`
+	);
 	blockMid(`Settings`);
 
 	if (settings.src && settings.dest) {

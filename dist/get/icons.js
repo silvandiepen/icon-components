@@ -14,7 +14,7 @@ const path = require('path');
 const fs = require('fs').promises;
 // import SVGO from 'svgo';
 const helpers_1 = require("../helpers");
-const str_convert_1 = require("str-convert");
+const case_1 = require("@sil/case");
 const templates_1 = require("./templates");
 const getFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -37,6 +37,7 @@ const getFileData = (filedata, srcFileName) => __awaiter(void 0, void 0, void 0,
         console.warn(err);
     }
 });
+const getStyleData = (filedata) => (0, helpers_1.getTagData)(filedata, 'style');
 /*
   Get A list of all the files and their data.
 */
@@ -52,17 +53,18 @@ const getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* ()
         const fileData__clean_both = yield (0, helpers_1.asyncRemoveTags)(fileData__clean_attrs, settings.removeTags);
         filelist.push({
             og_name: file,
-            name: (0, str_convert_1.kebabCase)((0, helpers_1.fileName)(file)),
-            title: (0, str_convert_1.pascalCase)(path.basename(file)),
+            name: (0, case_1.kebabCase)((0, helpers_1.fileName)(file)),
+            title: (0, case_1.PascalCase)(path.basename(file)),
             title_lowercase: path.basename(file).toLowerCase(),
             fileName: (0, helpers_1.prefixedName)(file, settings.prefix),
-            componentName: (0, str_convert_1.pascalCase)((0, helpers_1.prefixedName)(file, settings.prefix)),
+            componentName: (0, case_1.PascalCase)((0, helpers_1.prefixedName)(file, settings.prefix)),
             data: fileData,
             data_clean: {
                 attrs: fileData__clean_attrs,
                 tags: fileData__clean_tags,
                 both: fileData__clean_both
-            }
+            },
+            style: getStyleData(fileData)
         });
     }));
     return filelist;

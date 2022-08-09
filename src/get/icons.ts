@@ -10,10 +10,11 @@ import {
 	prefixedName,
 	asyncRemoveAttrs,
 	asyncRemoveTags,
-	svgOnly
+	svgOnly,
+	getTagData
 } from '../helpers';
 
-import { kebabCase, pascalCase } from 'str-convert';
+import { kebabCase, PascalCase } from '@sil/case';
 import { getFileTemplates } from './templates';
 
 export const getFiles = async (
@@ -37,6 +38,8 @@ const getFileData = async (filedata: FilesDataType, srcFileName: string) => {
 		console.warn(err);
 	}
 };
+
+const getStyleData = (filedata: string): string => getTagData(filedata,'style');
 
 /*
   Get A list of all the files and their data. 
@@ -71,16 +74,17 @@ export const getFileList = async (
 		filelist.push({
 			og_name: file,
 			name: kebabCase(fileName(file)),
-			title: pascalCase(path.basename(file)),
+			title: PascalCase(path.basename(file)),
 			title_lowercase: path.basename(file).toLowerCase(),
 			fileName: prefixedName(file, settings.prefix),
-			componentName: pascalCase(prefixedName(file, settings.prefix)),
+			componentName: PascalCase(prefixedName(file, settings.prefix)),
 			data: fileData,
 			data_clean: {
 				attrs: fileData__clean_attrs,
 				tags: fileData__clean_tags,
 				both: fileData__clean_both
-			}
+			},
+			style: getStyleData(fileData)
 		});
 	});
 	return filelist;

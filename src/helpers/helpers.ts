@@ -1,7 +1,8 @@
 import path from 'path';
 const { mkdir } = require('fs').promises;
 
-import { kebabCase } from 'str-convert';
+import { format } from 'prettier';
+import { kebabCase } from '@sil/case';
 
 export const WAIT = async (time: number = 0) => {
 	return new Promise((resolve) => {
@@ -105,4 +106,47 @@ export const createAFolder = async (dir: string): Promise<void> => {
 		console.log(`error creating folder ${dir}`);
 	}
 	return;
+};
+
+export const getTagData = (str: string, tag: string): string => {
+	const regex = new RegExp(`<${tag}>(.|\n)*?<\/${tag}>`, 'gi');
+	const matches = str.match(regex);
+
+	return matches ? removeTags(matches[0], [tag]) : '';
+};
+
+export const formatFile = (str: string, ext: string) => {
+	let parserFormat: string = null;
+
+	const allowed = [
+		'scss',
+		'css',
+		'less',
+		'graphql',
+		'html',
+		'vue',
+		'yaml',
+		'mdx'
+	];
+
+	if (allowed.includes(ext)) {
+		parserFormat = ext;
+	} else {
+		switch (ext) {
+			case 'js':
+				parserFormat = 'babel';
+				break;
+			case 'ts':
+				parserFormat = 'typescript';
+				break;
+			case 'json':
+				parserFormat = 'json5';
+				break;
+			case 'md':
+				parserFormat = 'markdown';
+				break;
+		}
+	}
+
+	return parserFormat ? format(str, { parser: parserFormat }) : str;
 };
