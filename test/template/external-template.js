@@ -28,7 +28,8 @@ export class <%= title %> {
 
     return (
         <Host>
-            <%- fixJsx(data_clean.both) %>
+          <%- fixJsx(data_clean.both) %>
+          <%- kebabCase(title) %>
         </Host>);
   }
 }
