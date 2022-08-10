@@ -11,7 +11,8 @@ import {
 	asyncRemoveAttrs,
 	asyncRemoveTags,
 	svgOnly,
-	getTagData
+	getTagData,
+	dirExist
 } from '../helpers';
 
 import { kebabCase, PascalCase } from '@sil/case';
@@ -126,7 +127,11 @@ export const getFileList = async (
 export const getStyleFileList = async (
 	settings: SettingsType
 ): Promise<FilesType[]> => {
+
+	
 	const fileDirectory = path.join(settings.src, 'styles');
+	if (!dirExist(fileDirectory)) return [];
+
 	const files = await fs.readdir(fileDirectory);
 	const filelist = [];
 

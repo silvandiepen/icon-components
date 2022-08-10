@@ -96,6 +96,8 @@ const getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getFileList = getFileList;
 const getStyleFileList = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     const fileDirectory = path.join(settings.src, 'styles');
+    if (!(0, helpers_1.dirExist)(fileDirectory))
+        return [];
     const files = yield fs.readdir(fileDirectory);
     const filelist = [];
     yield (0, helpers_1.asyncForEach)(files, (file) => __awaiter(void 0, void 0, void 0, function* () {

@@ -12,9 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatFile = exports.getTagData = exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
+exports.dirExist = exports.formatFile = exports.getTagData = exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
 const path_1 = __importDefault(require("path"));
-const { mkdir } = require('fs').promises;
+const { mkdir, existsSync } = require('fs').promises;
 const prettier_1 = require("prettier");
 const case_1 = require("@sil/case");
 const WAIT = (time = 0) => __awaiter(void 0, void 0, void 0, function* () {
@@ -151,4 +151,18 @@ const formatFile = (str, ext) => {
     return parserFormat ? (0, prettier_1.format)(str, { parser: parserFormat }) : str;
 };
 exports.formatFile = formatFile;
+const dirExist = (dir) => {
+    try {
+        if (existsSync(dir)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    catch (e) {
+        return false;
+    }
+};
+exports.dirExist = dirExist;
 //# sourceMappingURL=helpers.js.map
