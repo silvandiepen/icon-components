@@ -25,6 +25,7 @@ export interface FilesType {
     fileName: string;
     componentName: string;
     data_clean: DataCleanedType;
+    style: string;
 }
 export interface StyleFilesType {
     name: string;

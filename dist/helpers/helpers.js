@@ -14,7 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dirExist = exports.formatFile = exports.getTagData = exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
 const path_1 = __importDefault(require("path"));
-const { mkdir, existsSync } = require('fs').promises;
+const { mkdir } = require('fs').promises;
+const fs_1 = require("fs");
 const prettier_1 = require("prettier");
 const case_1 = require("@sil/case");
 const WAIT = (time = 0) => __awaiter(void 0, void 0, void 0, function* () {
@@ -153,7 +154,7 @@ const formatFile = (str, ext) => {
 exports.formatFile = formatFile;
 const dirExist = (dir) => {
     try {
-        if (existsSync(dir)) {
+        if ((0, fs_1.existsSync)(dir)) {
             return true;
         }
         else {

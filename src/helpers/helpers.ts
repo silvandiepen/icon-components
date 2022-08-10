@@ -1,5 +1,6 @@
 import path from 'path';
-const { mkdir, existsSync } = require('fs').promises;
+const { mkdir } = require('fs').promises;
+import { existsSync } from "fs";
 
 import { format } from 'prettier';
 import { kebabCase } from '@sil/case';
@@ -151,7 +152,7 @@ export const formatFile = (str: string, ext: string) => {
 	return parserFormat ? format(str, { parser: parserFormat }) : str;
 };
 
-export const dirExist = (dir: string): boolean => {
+export const dirExist = (dir: string):boolean => {
 	try {
 		if (existsSync(dir)) {
 			return true;

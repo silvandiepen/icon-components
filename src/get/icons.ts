@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs').promises;
+import { existsSync } from 'fs';
 
 import { SettingsType, FilesType, FilesDataType } from '../types';
 
@@ -43,6 +44,7 @@ export const getStyles = async (
 ): Promise<SettingsType> => {
 	try {
 		const styles = await getStyleFileList(settings).then((result) => result);
+
 		return { ...settings, styles: styles };
 	} catch (err) {
 		console.log(err);
@@ -65,12 +67,12 @@ const getStyleData = (
 	filedata: string
 ): string => {
 	const tagData = getTagData(filedata, 'style');
-
 	const cssFile = settings.styles
 		? settings.styles.find((style) => style.name === name)
 		: null;
 
 	const style = tagData + (cssFile ? cssFile.data : '');
+
 	return style;
 };
 
@@ -104,10 +106,11 @@ export const getFileList = async (
 			settings.removeTags
 		);
 		const name = kebabCase(fileName(file));
+		const style = getStyleData(settings, name, fileData);
 
 		filelist.push({
 			og_name: file,
-			name: name,
+			name,
 			title: PascalCase(path.basename(file)),
 			title_lowercase: path.basename(file).toLowerCase(),
 			fileName: prefixedName(file, settings.prefix),
@@ -118,7 +121,7 @@ export const getFileList = async (
 				tags: fileData__clean_tags,
 				both: fileData__clean_both
 			},
-			style: getStyleData(settings, name, fileData)
+			style
 		});
 	});
 	return filelist;
@@ -127,9 +130,8 @@ export const getFileList = async (
 export const getStyleFileList = async (
 	settings: SettingsType
 ): Promise<FilesType[]> => {
-
-	
 	const fileDirectory = path.join(settings.src, 'styles');
+
 	if (!dirExist(fileDirectory)) return [];
 
 	const files = await fs.readdir(fileDirectory);

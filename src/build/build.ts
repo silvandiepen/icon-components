@@ -111,13 +111,12 @@ const buildComponent = async function (
 		try {
 			const data = await CombineTemplateWithData(file, template, settings);
 			const ext = getExtension(template.file);
-
 			await writeAFile(settings, {
 				data: formatFile(data, ext),
 				ext,
 				name: file.name
 			});
-			blockLineSuccess(`${file.name}${blue(getExtension(template.file))}`);
+			blockLineSuccess(`${file.name}${blue(getExtension(template.file))}${file.style ? ` ${blue('+ style')}`: ''}`);
 		} catch (err) {
 			blockLineError(`${file.name}${blue(getExtension(template.file))} ${err}`);
 		}

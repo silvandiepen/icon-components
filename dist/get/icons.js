@@ -75,9 +75,10 @@ const getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* ()
         const fileData__clean_tags = yield (0, helpers_1.asyncRemoveTags)(settings.svgOnly ? (0, helpers_1.svgOnly)(fileData) : fileData, settings.removeTags);
         const fileData__clean_both = yield (0, helpers_1.asyncRemoveTags)(fileData__clean_attrs, settings.removeTags);
         const name = (0, case_1.kebabCase)((0, helpers_1.fileName)(file));
+        const style = getStyleData(settings, name, fileData);
         filelist.push({
             og_name: file,
-            name: name,
+            name,
             title: (0, case_1.PascalCase)(path.basename(file)),
             title_lowercase: path.basename(file).toLowerCase(),
             fileName: (0, helpers_1.prefixedName)(file, settings.prefix),
@@ -88,7 +89,7 @@ const getFileList = (settings) => __awaiter(void 0, void 0, void 0, function* ()
                 tags: fileData__clean_tags,
                 both: fileData__clean_both
             },
-            style: getStyleData(settings, name, fileData)
+            style
         });
     }));
     return filelist;
