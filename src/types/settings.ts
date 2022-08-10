@@ -29,6 +29,10 @@ export interface FilesType {
 	componentName: string;
 	data_clean: DataCleanedType;
 }
+export interface StyleFilesType {
+	name: string;
+	data: string;
+}
 export interface ListFilesType {
 	file: string;
 	extension: string;
@@ -44,6 +48,7 @@ export interface SettingsType {
 	inRoot: boolean;
 	stripStyle: boolean;
 	files?: FilesType[];
+	styles?: StyleFilesType[];
 	error?: Array<string>;
 	removeTags: Array<string>;
 	removeAttrs: Array<string>;
