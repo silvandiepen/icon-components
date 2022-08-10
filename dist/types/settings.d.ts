@@ -38,6 +38,7 @@ export interface SettingsType {
     optimize: boolean;
     removeOld: boolean;
     inRoot: boolean;
+    stripStyle: boolean;
     files?: FilesType[];
     error?: Array<string>;
     removeTags: Array<string>;

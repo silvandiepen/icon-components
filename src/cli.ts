@@ -10,8 +10,7 @@ import { blockFooter } from 'cli-block';
 
 // If remove old is set, the destination folder will be removed in order to be sure all files are new.
 () => {
-	if (settings().removeOld)
-		rimraf(settings().dest + '/*', () => {
+	settings().removeOld && rimraf(settings().dest + '/*', () => {
 			console.log('Cleaned destination folder');
 		});
 };
@@ -25,7 +24,3 @@ getFiles(settings())
 	.then(() => {
 		blockFooter('Done!');
 	});
-// console.log(tempSettings);
-
-// getFiles(settings()).then(getTemplates).then(buildFiles);
-// .then(createLists);

@@ -9,3 +9,5 @@ node dist/cli.js \
     --prefix icon \
     --template test/template/external-template.js \
     --remove-old --optimize
+
+exit 0

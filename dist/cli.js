@@ -21,10 +21,9 @@ const settings_1 = require("./settings");
 const cli_block_1 = require("cli-block");
 // If remove old is set, the destination folder will be removed in order to be sure all files are new.
 () => {
-    if ((0, settings_1.settings)().removeOld)
-        (0, rimraf_1.default)((0, settings_1.settings)().dest + '/*', () => {
-            console.log('Cleaned destination folder');
-        });
+    (0, settings_1.settings)().removeOld && (0, rimraf_1.default)((0, settings_1.settings)().dest + '/*', () => {
+        console.log('Cleaned destination folder');
+    });
 };
 (0, get_1.getFiles)((0, settings_1.settings)())
     .then(build_1.buildFiles)
@@ -35,7 +34,4 @@ const cli_block_1 = require("cli-block");
     .then(() => {
     (0, cli_block_1.blockFooter)('Done!');
 });
-// console.log(tempSettings);
-// getFiles(settings()).then(getTemplates).then(buildFiles);
-// .then(createLists);
 //# sourceMappingURL=cli.js.map

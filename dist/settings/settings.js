@@ -49,6 +49,7 @@ const settings = () => {
             alias: 'removeTags'
         },
         ro: { type: 'boolean', default: false, alias: 'removeOld' },
+        ss: { type: 'boolean', default: false, alias: 'stripStyle' },
         svg: { type: 'boolean', default: false, alias: 'svgOnly' },
         idx: {
             required: false,
@@ -70,6 +71,7 @@ const settings = () => {
         template: cs.t,
         inRoot: cs.ir,
         removeOld: cs.ro,
+        stripStyle: cs.ss,
         prefix: cs.p,
         list: cs.lt.filter(Boolean).length > 0 ? true : cs.l,
         listTemplate: cs.lt,

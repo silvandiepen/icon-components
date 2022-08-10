@@ -130,6 +130,8 @@ const startBuild = (settings) => __awaiter(void 0, void 0, void 0, function* () 
             template: settings.template ? settings.template : settings.type,
             optimize: settings.optimize,
             removeOld: settings.removeOld,
+            removeAttrs: settings.removeAttrs,
+            removeTags: settings.removeTags,
             list: settings.list ? settings.list : false,
             listTemplate: settings.listTemplate ? settings.listTemplate : false,
             index: settings.index ? settings.index : false,
