@@ -22,15 +22,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildFiles = exports.buildComponents = exports.startBuild = exports.CombineTemplateWithData = exports.writeAFile = void 0;
 const path_1 = require("path");
@@ -46,25 +37,25 @@ const case_1 = require("@sil/case");
     Create the path if it doesn't exist.
 
     */
-const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
+const makePath = async (filePath) => {
     const directoryName = (0, path_1.dirname)(filePath);
-    if ((yield stat(directoryName)).isDirectory()) {
+    if ((await stat(directoryName)).isDirectory()) {
         return true;
     }
     mkdir(directoryName);
-});
+};
 /*
 
     Write the file
 
     */
-const writeAFile = (settings, file) => __awaiter(void 0, void 0, void 0, function* () {
+const writeAFile = async (settings, file) => {
     let filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)), (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
     if (settings.inRoot)
         filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
     try {
-        yield makePath(filePath);
-        yield writeFile(filePath, file.data, {
+        await makePath(filePath);
+        await writeFile(filePath, file.data, {
             encoding: 'utf8',
             flag: 'w'
         });
@@ -72,41 +63,44 @@ const writeAFile = (settings, file) => __awaiter(void 0, void 0, void 0, functio
     catch (err) {
         (0, cli_block_1.blockErrors)(['Woops, something happened during writing. ', err]);
     }
-});
+};
 exports.writeAFile = writeAFile;
 /*
 
     Build/Combine the template with the data using EJS
 
     */
-const CombineTemplateWithData = (file, template, settings) => __awaiter(void 0, void 0, void 0, function* () {
-    return (0, ejs_1.render)(template.data, Object.assign(Object.assign(Object.assign(Object.assign({}, settings), file), helpers), { PascalCase: case_1.PascalCase,
+const CombineTemplateWithData = async (file, template, settings) => {
+    return (0, ejs_1.render)(template.data, {
+        ...settings,
+        ...file,
+        ...helpers,
+        PascalCase: case_1.PascalCase,
         kebabCase: case_1.kebabCase,
-        upperSnakeCase: case_1.upperSnakeCase }));
-});
+        upperSnakeCase: case_1.upperSnakeCase,
+    });
+};
 exports.CombineTemplateWithData = CombineTemplateWithData;
 /*
 
     Write a single Component
 
     */
-const buildComponent = function (settings, file) {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield (0, helpers_1.asyncForEach)(settings.templates, (template) => __awaiter(this, void 0, void 0, function* () {
-            try {
-                const data = yield (0, exports.CombineTemplateWithData)(file, template, settings);
-                const ext = (0, helpers_1.getExtension)(template.file);
-                yield (0, exports.writeAFile)(settings, {
-                    data: (0, helpers_1.formatFile)(data, ext),
-                    ext,
-                    name: file.name
-                });
-                (0, cli_block_1.blockLineSuccess)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))}${file.style ? ` ${(0, kleur_1.blue)('+ style')}` : ''}`);
-            }
-            catch (err) {
-                (0, cli_block_1.blockLineError)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))} ${err}`);
-            }
-        }));
+const buildComponent = async function (settings, file) {
+    await (0, helpers_1.asyncForEach)(settings.templates, async (template) => {
+        try {
+            const data = await (0, exports.CombineTemplateWithData)(file, template, settings);
+            const ext = (0, helpers_1.getExtension)(template.file);
+            await (0, exports.writeAFile)(settings, {
+                data: (0, helpers_1.formatFile)(data, ext),
+                ext,
+                name: file.name
+            });
+            (0, cli_block_1.blockLineSuccess)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))}${file.style ? ` ${(0, kleur_1.blue)('+ style')}` : ''}`);
+        }
+        catch (err) {
+            (0, cli_block_1.blockLineError)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))} ${err}`);
+        }
     });
 };
 /*
@@ -114,7 +108,7 @@ const buildComponent = function (settings, file) {
     Start the building process
 
     */
-const startBuild = (settings) => __awaiter(void 0, void 0, void 0, function* () {
+const startBuild = async (settings) => {
     // Log it all\
     (0, cli_block_1.blockHeader)(`Generating ${settings.template ? settings.template : settings.type ? settings.type : ''}`);
     (0, cli_block_1.blockMid)(`Settings`);
@@ -134,7 +128,7 @@ const startBuild = (settings) => __awaiter(void 0, void 0, void 0, function* () 
             indexTemplate: settings.indexTemplate ? settings.indexTemplate : false,
             totalFiles: settings.files.length
         };
-        yield (0, cli_block_1.blockSettings)(showSettings);
+        await (0, cli_block_1.blockSettings)(showSettings);
         if (settings.files.length < 1) {
             (0, cli_block_1.blockMid)(`Warnings`);
             (0, cli_block_1.blockRowLine)([
@@ -146,29 +140,29 @@ const startBuild = (settings) => __awaiter(void 0, void 0, void 0, function* () 
             ]);
         }
     }
-});
+};
 exports.startBuild = startBuild;
-const buildComponents = (settings) => __awaiter(void 0, void 0, void 0, function* () {
+const buildComponents = async (settings) => {
     if (settings.files.length > 0) {
         (0, cli_block_1.blockMid)(`${(0, kleur_1.bold)('Files')} ${(0, kleur_1.blue)().bold('(' + settings.files.length + ')')}`);
-        yield (0, helpers_1.asyncForEach)(settings.files, (file) => __awaiter(void 0, void 0, void 0, function* () {
+        await (0, helpers_1.asyncForEach)(settings.files, async (file) => {
             if (!settings.inRoot)
-                yield (0, helpers_1.createAFolder)((0, path_1.join)(settings.dest, (0, helpers_1.fileName)(file.name)));
+                await (0, helpers_1.createAFolder)((0, path_1.join)(settings.dest, (0, helpers_1.fileName)(file.name)));
             buildComponent(settings, file);
-        }));
+        });
     }
-    yield (0, helpers_1.WAIT)(100);
-});
+    await (0, helpers_1.WAIT)(100);
+};
 exports.buildComponents = buildComponents;
 /*
 
     Build the files!
 
     */
-const buildFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, exports.startBuild)(settings);
-    yield (0, exports.buildComponents)(settings);
+const buildFiles = async (settings) => {
+    await (0, exports.startBuild)(settings);
+    await (0, exports.buildComponents)(settings);
     return settings;
-});
+};
 exports.buildFiles = buildFiles;
 //# sourceMappingURL=build.js.map

@@ -92,7 +92,7 @@ export const CombineTemplateWithData = async (
 		...helpers,
 		PascalCase,
 		kebabCase,
-		upperSnakeCase
+		upperSnakeCase,
 	});
 };
 

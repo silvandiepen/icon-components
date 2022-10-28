@@ -1,36 +1,27 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dirExist = exports.formatFile = exports.getTagData = exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
+exports.dirExist = exports.formatFile = exports.getAttrData = exports.getTagData = exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
 const path_1 = __importDefault(require("path"));
 const { mkdir } = require('fs').promises;
 const fs_1 = require("fs");
 const prettier_1 = require("prettier");
 const case_1 = require("@sil/case");
-const WAIT = (time = 0) => __awaiter(void 0, void 0, void 0, function* () {
+const WAIT = async (time = 0) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve('resolved');
         }, time);
     });
-});
+};
 exports.WAIT = WAIT;
-const asyncForEach = (array, callback) => __awaiter(void 0, void 0, void 0, function* () {
+const asyncForEach = async (array, callback) => {
     for (let index = 0; index < array.length; index++) {
-        yield callback(array[index], index, array);
+        await callback(array[index], index, array);
     }
-});
+};
 exports.asyncForEach = asyncForEach;
 const fileName = (str, settings = null) => {
     if (settings)
@@ -53,12 +44,12 @@ const removeTags = (str, tags) => {
     return str;
 };
 exports.removeTags = removeTags;
-const asyncRemoveTags = (str, tags) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, exports.asyncForEach)(tags, (tag) => {
+const asyncRemoveTags = async (str, tags) => {
+    await (0, exports.asyncForEach)(tags, (tag) => {
         str = str.replace(tagsRegex(tag), '');
     });
     return str;
-});
+};
 exports.asyncRemoveTags = asyncRemoveTags;
 const attrRegex = (attr) => new RegExp(` ${attr}="[^"]*"`, 'gi');
 const removeAttrs = (str, attrs) => {
@@ -68,12 +59,12 @@ const removeAttrs = (str, attrs) => {
     return str;
 };
 exports.removeAttrs = removeAttrs;
-const asyncRemoveAttrs = (str, attrs) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, exports.asyncForEach)(attrs, (attr) => {
+const asyncRemoveAttrs = async (str, attrs) => {
+    await (0, exports.asyncForEach)(attrs, (attr) => {
         str = str.replace(attrRegex(attr), '');
     });
     return str;
-});
+};
 exports.asyncRemoveAttrs = asyncRemoveAttrs;
 const svgOnly = (str) => {
     return str.substring(str.indexOf('<svg'), str.indexOf('</svg>') + '</svg>'.length);
@@ -99,9 +90,9 @@ const fixJsx = (str) => {
         .replace('xmlns:xlink', 'xmlnsXlink');
 };
 exports.fixJsx = fixJsx;
-const createAFolder = (dir) => __awaiter(void 0, void 0, void 0, function* () {
+const createAFolder = async (dir) => {
     try {
-        yield mkdir(dir, {
+        await mkdir(dir, {
             recursive: true,
             mode: 0o775
         });
@@ -110,7 +101,7 @@ const createAFolder = (dir) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(`error creating folder ${dir}`);
     }
     return;
-});
+};
 exports.createAFolder = createAFolder;
 const getTagData = (str, tag) => {
     const regex = new RegExp(`<${tag}>(.|\n)*?<\/${tag}>`, 'gi');
@@ -118,6 +109,12 @@ const getTagData = (str, tag) => {
     return matches ? (0, exports.removeTags)(matches[0], [tag]) : '';
 };
 exports.getTagData = getTagData;
+const getAttrData = (str, tag) => {
+    const regex = new RegExp(`${tag}="(.|\n)*?"`, 'gi');
+    const matches = str.match(regex);
+    return matches ? (0, exports.removeTags)(matches[0], [tag]) : '';
+};
+exports.getAttrData = getAttrData;
 const formatFile = (str, ext) => {
     let parserFormat = null;
     const allowed = [

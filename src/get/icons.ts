@@ -10,26 +10,24 @@ import {
 	prefixedName,
 	asyncRemoveAttrs,
 	asyncRemoveTags,
-	svgOnly
+	svgOnly,
+	getAttrData
 } from '../helpers';
 import { getFileTemplates } from './templates';
+import { blockLineError } from 'cli-block';
 
 export const getData = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {
-	settings = await getStyles(settings);	
+	settings = await getStyles(settings);
 	settings = await getFiles(settings);
 	return settings;
 };
 
 export const getFiles = async (
 	settings: SettingsType
-): Promise<SettingsType> => {	
-
+): Promise<SettingsType> => {
 	const files = await getFileList(settings).then((result) => result);
-
-
-
 
 	try {
 		const files = await getFileList(settings).then((result) => result);
@@ -55,6 +53,19 @@ const getFileData = async (filedata: FilesDataType, srcFileName: string) => {
 /*
   Get A list of all the files and their data. 
 */
+const getSizes = (file: string):{width: number, height: number} => {
+	const viewBox:string[] = getAttrData(file, 'viewbox')
+		.replace(/[^\d. ]/g, '')
+		.split(' ');
+
+	if(viewBox.length !== 4){ 
+		blockLineError('Some file does not have a viewbox')
+	}
+	return {
+		width: parseInt(viewBox[2],10),
+		height: parseInt(viewBox[3],10)
+	};
+};
 
 export const getFileList = async (
 	settings: SettingsType
@@ -62,9 +73,7 @@ export const getFileList = async (
 	let files = await fs.readdir(settings.src);
 	let filelist = [];
 
-
 	await asyncForEach(files, async (file: string) => {
-
 		if (extname(file) !== '.svg') return;
 
 		const fileData = await getFileData(settings, file).then(svgOnly);
@@ -86,6 +95,8 @@ export const getFileList = async (
 		const name = kebabCase(fileName(file)).replace(settings.removePrefix, '');
 		const style = getStyleData(settings, name, fileData);
 
+		const { width, height } = getSizes(fileData);
+
 		filelist.push({
 			og_name: file,
 			name,
@@ -99,6 +110,8 @@ export const getFileList = async (
 				tags: fileData__clean_tags,
 				both: fileData__clean_both
 			},
+			width,
+			height,
 			style
 		});
 	});

@@ -116,6 +116,15 @@ export const getTagData = (str: string, tag: string): string => {
 	return matches ? removeTags(matches[0], [tag]) : '';
 };
 
+export const getAttrData = (str: string, tag: string): string => {
+	const regex = new RegExp(`${tag}="(.|\n)*?"`, 'gi');
+	const matches = str.match(regex);
+
+	return matches ? removeTags(matches[0], [tag]) : '';
+};
+
+
+
 export const formatFile = (str: string, ext: string) => {
 	let parserFormat: string = null;
 
