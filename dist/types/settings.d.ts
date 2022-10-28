@@ -29,6 +29,7 @@ export interface FilesType {
 }
 export interface StyleFilesType {
     name: string;
+    extension: string;
     data: string;
 }
 export interface ListFilesType {
@@ -39,9 +40,11 @@ export interface ListFilesType {
 export interface SettingsType {
     src: string;
     dest: string;
+    styleDir: string;
     prefix: string;
     optimize: boolean;
     removeOld: boolean;
+    removePrefix: string;
     inRoot: boolean;
     stripStyle: boolean;
     files?: FilesType[];

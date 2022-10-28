@@ -15,6 +15,7 @@ const settings = () => {
             default: null,
             alias: 'destination'
         },
+        sd: { required: true, type: 'string', default: '', alias: 'styleDir' },
         o: { required: false, type: 'boolean', default: true, alias: 'optimize' },
         t: { required: false, type: 'string', default: null, alias: 'template' },
         p: { required: false, type: 'string', default: '', alias: 'prefix' },
@@ -49,6 +50,7 @@ const settings = () => {
             alias: 'removeTags'
         },
         ro: { type: 'boolean', default: false, alias: 'removeOld' },
+        rp: { type: 'string', default: '', alias: 'removePrefix' },
         ss: { type: 'boolean', default: false, alias: 'stripStyle' },
         svg: { type: 'boolean', default: false, alias: 'svgOnly' },
         idx: {
@@ -67,10 +69,12 @@ const settings = () => {
     return {
         src: cs.src,
         dest: cs.dest,
+        styleDir: cs.sd,
         optimize: cs.o,
         template: cs.t,
         inRoot: cs.ir,
         removeOld: cs.ro,
+        removePrefix: cs.rp,
         stripStyle: cs.ss,
         prefix: cs.p,
         list: cs.lt.filter(Boolean).length > 0 ? true : cs.l,

@@ -125,7 +125,6 @@ const createLists = (settings) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.createLists = createLists;
 const createIndexes = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log(settings);
     if (!settings.index)
         return;
     (0, cli_block_1.blockMid)('Indexes');

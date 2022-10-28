@@ -1,6 +1,6 @@
 import { join, dirname } from 'path';
 const { mkdir, stat, writeFile } = require('fs').promises;
-import ejs from 'ejs';
+import { render } from 'ejs';
 import { red, yellow, blue, bold } from 'kleur';
 import {
 	blockErrors,
@@ -40,7 +40,6 @@ const makePath = async (filePath: string) => {
 	if ((await stat(directoryName)).isDirectory()) {
 		return true;
 	}
-	makePath(directoryName);
 	mkdir(directoryName);
 };
 
@@ -54,19 +53,18 @@ export const writeAFile = async (
 	settings: SettingsType,
 	file: WriteFileType
 ) => {
-	try {
-		let filePath = join(
+	let filePath = join(
+		settings.dest,
+		kebabCase(fileName(file.name)),
+		kebabCase(fileName(file.name)) + (file.ext ? file.ext : '')
+	);
+	if (settings.inRoot)
+		filePath = join(
 			settings.dest,
-			kebabCase(fileName(file.name)),
 			kebabCase(fileName(file.name)) + (file.ext ? file.ext : '')
 		);
 
-		if (settings.inRoot)
-			filePath = join(
-				settings.dest,
-				kebabCase(fileName(file.name)) + (file.ext ? file.ext : '')
-			);
-
+	try {
 		await makePath(filePath);
 
 		await writeFile(filePath, file.data, {
@@ -87,8 +85,8 @@ export const CombineTemplateWithData = async (
 	file: any,
 	template: TemplateFileType,
 	settings: SettingsType
-): Promise<string> =>
-	ejs.render(template.data, {
+): Promise<string> => {
+	return render(template.data, {
 		...settings,
 		...file,
 		...helpers,
@@ -96,6 +94,7 @@ export const CombineTemplateWithData = async (
 		kebabCase,
 		upperSnakeCase
 	});
+};
 
 /*
 
@@ -116,7 +115,11 @@ const buildComponent = async function (
 				ext,
 				name: file.name
 			});
-			blockLineSuccess(`${file.name}${blue(getExtension(template.file))}${file.style ? ` ${blue('+ style')}`: ''}`);
+			blockLineSuccess(
+				`${file.name}${blue(getExtension(template.file))}${
+					file.style ? ` ${blue('+ style')}` : ''
+				}`
+			);
 		} catch (err) {
 			blockLineError(`${file.name}${blue(getExtension(template.file))} ${err}`);
 		}

@@ -135,7 +135,6 @@ export const createLists = async (settings: SettingsType): Promise<void> => {
 };
 
 export const createIndexes = async (settings: SettingsType): Promise<void> => {
-	// console.log(settings);
 	if (!settings.index) return;
 
 	blockMid('Indexes');

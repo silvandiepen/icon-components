@@ -31,14 +31,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildFiles = exports.buildComponents = exports.startBuild = exports.CombineTemplateWithData = exports.writeAFile = void 0;
 const path_1 = require("path");
 const { mkdir, stat, writeFile } = require('fs').promises;
-const ejs_1 = __importDefault(require("ejs"));
+const ejs_1 = require("ejs");
 const kleur_1 = require("kleur");
 const cli_block_1 = require("cli-block");
 const helpers = __importStar(require("../helpers"));
@@ -54,7 +51,6 @@ const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     if ((yield stat(directoryName)).isDirectory()) {
         return true;
     }
-    makePath(directoryName);
     mkdir(directoryName);
 });
 /*
@@ -63,10 +59,10 @@ const makePath = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
 
     */
 const writeAFile = (settings, file) => __awaiter(void 0, void 0, void 0, function* () {
+    let filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)), (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
+    if (settings.inRoot)
+        filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
     try {
-        let filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)), (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
-        if (settings.inRoot)
-            filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
         yield makePath(filePath);
         yield writeFile(filePath, file.data, {
             encoding: 'utf8',
@@ -84,7 +80,7 @@ exports.writeAFile = writeAFile;
 
     */
 const CombineTemplateWithData = (file, template, settings) => __awaiter(void 0, void 0, void 0, function* () {
-    return ejs_1.default.render(template.data, Object.assign(Object.assign(Object.assign(Object.assign({}, settings), file), helpers), { PascalCase: case_1.PascalCase,
+    return (0, ejs_1.render)(template.data, Object.assign(Object.assign(Object.assign(Object.assign({}, settings), file), helpers), { PascalCase: case_1.PascalCase,
         kebabCase: case_1.kebabCase,
         upperSnakeCase: case_1.upperSnakeCase }));
 });
