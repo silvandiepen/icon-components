@@ -50,9 +50,8 @@ const makePath = async (filePath) => {
 
     */
 const writeAFile = async (settings, file) => {
-    let filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)), (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
-    if (settings.inRoot)
-        filePath = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)) + (file.ext ? file.ext : ''));
+    const dest = file.dest ? file.dest : settings.dest;
+    const filePath = (0, path_1.join)(dest, file.name + (file.ext ? file.ext : ''));
     try {
         await makePath(filePath);
         await writeFile(filePath, file.data, {
@@ -61,7 +60,8 @@ const writeAFile = async (settings, file) => {
         });
     }
     catch (err) {
-        (0, cli_block_1.blockErrors)(['Woops, something happened during writing. ', err]);
+        console.log(err);
+        // blockErrors(['Woops, something happened during writing. ', err]);
     }
 };
 exports.writeAFile = writeAFile;
@@ -77,7 +77,7 @@ const CombineTemplateWithData = async (file, template, settings) => {
         ...helpers,
         PascalCase: case_1.PascalCase,
         kebabCase: case_1.kebabCase,
-        upperSnakeCase: case_1.upperSnakeCase,
+        upperSnakeCase: case_1.upperSnakeCase
     });
 };
 exports.CombineTemplateWithData = CombineTemplateWithData;
@@ -89,14 +89,29 @@ exports.CombineTemplateWithData = CombineTemplateWithData;
 const buildComponent = async function (settings, file) {
     await (0, helpers_1.asyncForEach)(settings.templates, async (template) => {
         try {
+            let dest = settings.dest;
+            if (!settings.inRoot) {
+                dest = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)));
+            }
             const data = await (0, exports.CombineTemplateWithData)(file, template, settings);
             const ext = (0, helpers_1.getExtension)(template.file);
             await (0, exports.writeAFile)(settings, {
                 data: (0, helpers_1.formatFile)(data, ext),
                 ext,
-                name: file.name
+                name: (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)),
+                dest
             });
             (0, cli_block_1.blockLineSuccess)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))}${file.style ? ` ${(0, kleur_1.blue)('+ style')}` : ''}`);
+            if (!(!settings.inRoot && settings.parentIndex))
+                return;
+            const indexData = `export * from "./${file.name}";`;
+            const indexExt = ['.ts', '.tsx'].includes(ext) ? '.ts' : '.js';
+            await (0, exports.writeAFile)(settings, {
+                data: (0, helpers_1.formatFile)(indexData, indexExt),
+                ext: indexExt,
+                name: 'index',
+                dest
+            });
         }
         catch (err) {
             (0, cli_block_1.blockLineError)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))} ${err}`);
@@ -110,7 +125,7 @@ const buildComponent = async function (settings, file) {
     */
 const startBuild = async (settings) => {
     // Log it all\
-    (0, cli_block_1.blockHeader)(`Generating ${settings.template ? settings.template : settings.type ? settings.type : ''}`);
+    (0, cli_block_1.blockHeader)(`Generating Icons`);
     (0, cli_block_1.blockMid)(`Settings`);
     if (settings.src && settings.dest) {
         let showSettings = {
@@ -126,6 +141,9 @@ const startBuild = async (settings) => {
             listTemplate: settings.listTemplate ? settings.listTemplate : false,
             index: settings.index ? settings.index : false,
             indexTemplate: settings.indexTemplate ? settings.indexTemplate : false,
+            types: settings.types ? settings.types : false,
+            typesTemplate: settings.typesTemplate ? settings.typesTemplate : false,
+            parentIndex: settings.parentIndex ? settings.parentIndex : false,
             totalFiles: settings.files.length
         };
         await (0, cli_block_1.blockSettings)(showSettings);

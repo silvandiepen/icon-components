@@ -1,0 +1,7 @@
+export const Icons = {
+    <% files.forEach(function(file,index) { %>
+     <%= upperSnakeCase(file.name) %>: "<%= file.name %>"<% if(index < files.length -1){ %>,<% } %>
+    <% }); %>
+};
+
+export type Icons = typeof Icons[keyof typeof Icons];

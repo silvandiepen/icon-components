@@ -19,6 +19,7 @@ const settings = () => {
         o: { required: false, type: 'boolean', default: true, alias: 'optimize' },
         t: { required: false, type: 'string', default: null, alias: 'template' },
         p: { required: false, type: 'string', default: '', alias: 'prefix' },
+        c: { required: false, type: 'array', default: [], alias: 'copy' },
         l: {
             required: false,
             type: 'boolean',
@@ -64,6 +65,24 @@ const settings = () => {
             type: 'array',
             default: [],
             alias: 'indexTemplate'
+        },
+        tps: {
+            required: false,
+            type: 'boolean',
+            default: false,
+            alias: 'types'
+        },
+        tpst: {
+            required: false,
+            type: 'array',
+            default: [],
+            alias: 'typesTemplate'
+        },
+        pidx: {
+            required: false,
+            type: 'boolean',
+            default: false,
+            alias: 'parentIndex'
         }
     }).argv;
     return {
@@ -73,6 +92,7 @@ const settings = () => {
         optimize: cs.o,
         template: cs.t,
         inRoot: cs.ir,
+        copy: cs.c,
         removeOld: cs.ro,
         removePrefix: cs.rp,
         stripStyle: cs.ss,
@@ -84,7 +104,10 @@ const settings = () => {
         removeTags: cs.rt,
         svgOnly: cs.svg,
         index: cs.idxt.filter(Boolean).length > 0 ? true : cs.idx,
-        indexTemplate: cs.idxt
+        indexTemplate: cs.idxt,
+        types: cs.tpst.filter(Boolean).length > 0 ? true : cs.tps,
+        typesTemplate: cs.tpst,
+        parentIndex: cs.pidx
     };
 };
 exports.settings = settings;

@@ -1,9 +1,9 @@
 import path from 'path';
 const { mkdir } = require('fs').promises;
-import { existsSync } from "fs";
+import { existsSync } from 'fs';
 
 import { format } from 'prettier';
-import { kebabCase } from '@sil/case';
+import { kebabCase, snakeCase } from '@sil/case';
 
 export const WAIT = async (time: number = 0) => {
 	return new Promise((resolve) => {
@@ -123,8 +123,6 @@ export const getAttrData = (str: string, tag: string): string => {
 	return matches ? removeTags(matches[0], [tag]) : '';
 };
 
-
-
 export const formatFile = (str: string, ext: string) => {
 	let parserFormat: string = null;
 
@@ -144,9 +142,11 @@ export const formatFile = (str: string, ext: string) => {
 	} else {
 		switch (ext) {
 			case 'js':
+			case 'jsx':
 				parserFormat = 'babel';
 				break;
 			case 'ts':
+			case 'tsx':
 				parserFormat = 'typescript';
 				break;
 			case 'json':
@@ -161,7 +161,7 @@ export const formatFile = (str: string, ext: string) => {
 	return parserFormat ? format(str, { parser: parserFormat }) : str;
 };
 
-export const dirExist = (dir: string):boolean => {
+export const dirExist = (dir: string): boolean => {
 	try {
 		if (existsSync(dir)) {
 			return true;

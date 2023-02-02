@@ -10,6 +10,7 @@ export interface WriteFileType {
     ext: string;
     name?: string;
     path?: string;
+    dest?: string;
 }
 export interface DataCleanedType {
     attrs: string;
@@ -54,6 +55,7 @@ export interface SettingsType {
     removeAttrs: Array<string>;
     svgOnly: boolean;
     type: string;
+    copy: string[];
     template: string;
     templates?: Array<TemplateFileType>;
     index: boolean;
@@ -62,4 +64,8 @@ export interface SettingsType {
     list: boolean;
     listTemplate: string[];
     listTemplates?: Array<TemplateFileType>;
+    types: boolean;
+    typesTemplate: string[];
+    typesTemplates?: Array<TemplateFileType>;
+    parentIndex: boolean;
 }

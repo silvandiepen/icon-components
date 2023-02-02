@@ -133,9 +133,11 @@ const formatFile = (str, ext) => {
     else {
         switch (ext) {
             case 'js':
+            case 'jsx':
                 parserFormat = 'babel';
                 break;
             case 'ts':
+            case 'tsx':
                 parserFormat = 'typescript';
                 break;
             case 'json':

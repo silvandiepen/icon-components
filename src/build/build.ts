@@ -53,16 +53,9 @@ export const writeAFile = async (
 	settings: SettingsType,
 	file: WriteFileType
 ) => {
-	let filePath = join(
-		settings.dest,
-		kebabCase(fileName(file.name)),
-		kebabCase(fileName(file.name)) + (file.ext ? file.ext : '')
-	);
-	if (settings.inRoot)
-		filePath = join(
-			settings.dest,
-			kebabCase(fileName(file.name)) + (file.ext ? file.ext : '')
-		);
+	const dest = file.dest ? file.dest : settings.dest;
+
+	const filePath = join(dest, file.name + (file.ext ? file.ext : ''));
 
 	try {
 		await makePath(filePath);
@@ -72,7 +65,8 @@ export const writeAFile = async (
 			flag: 'w'
 		});
 	} catch (err) {
-		blockErrors(['Woops, something happened during writing. ', err]);
+		console.log(err);
+		// blockErrors(['Woops, something happened during writing. ', err]);
 	}
 };
 /*
@@ -92,7 +86,7 @@ export const CombineTemplateWithData = async (
 		...helpers,
 		PascalCase,
 		kebabCase,
-		upperSnakeCase,
+		upperSnakeCase
 	});
 };
 
@@ -108,18 +102,37 @@ const buildComponent = async function (
 ): Promise<void> {
 	await asyncForEach(settings.templates, async (template: TemplateFileType) => {
 		try {
+			let dest = settings.dest;
+			if (!settings.inRoot) {
+				dest = join(settings.dest, kebabCase(fileName(file.name)));
+			}
+
 			const data = await CombineTemplateWithData(file, template, settings);
 			const ext = getExtension(template.file);
 			await writeAFile(settings, {
 				data: formatFile(data, ext),
 				ext,
-				name: file.name
+				name: kebabCase(fileName(file.name)),
+				dest
 			});
+
 			blockLineSuccess(
 				`${file.name}${blue(getExtension(template.file))}${
 					file.style ? ` ${blue('+ style')}` : ''
 				}`
 			);
+
+			if (!(!settings.inRoot && settings.parentIndex)) return;
+
+			const indexData = `export * from "./${file.name}";`;
+			const indexExt = ['.ts', '.tsx'].includes(ext) ? '.ts' : '.js';
+
+			await writeAFile(settings, {
+				data: formatFile(indexData, indexExt),
+				ext: indexExt,
+				name: 'index',
+				dest
+			});
 		} catch (err) {
 			blockLineError(`${file.name}${blue(getExtension(template.file))} ${err}`);
 		}
@@ -136,9 +149,7 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 	// Log it all\
 
 	blockHeader(
-		`Generating ${
-			settings.template ? settings.template : settings.type ? settings.type : ''
-		}`
+		`Generating Icons`
 	);
 	blockMid(`Settings`);
 
@@ -156,6 +167,9 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 			listTemplate: settings.listTemplate ? settings.listTemplate : false,
 			index: settings.index ? settings.index : false,
 			indexTemplate: settings.indexTemplate ? settings.indexTemplate : false,
+			types: settings.types ? settings.types : false,
+			typesTemplate: settings.typesTemplate ? settings.typesTemplate : false,
+			parentIndex: settings.parentIndex ? settings.parentIndex : false,
 			totalFiles: settings.files.length
 		};
 

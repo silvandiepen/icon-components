@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { basename, join, extname } from 'path';
 const { readdir, readFile, lstat } = require('fs').promises;
 
 import ejs from 'ejs';
@@ -66,25 +66,28 @@ const getTemplateFiles = async (list): Promise<TemplateFileType[]> => {
 };
 
 export const getListTemplates = async (
-	settings: SettingsType
+	settings: SettingsType,
+	type: string = 'list'
 ): Promise<TemplateFileType[]> => {
-	if (settings.listTemplate[0] == null || settings.listTemplate.length < 1)
-		return await getLocalTemplates('../../src/templates/list');
+	let listTemplate = [];
+	switch (type) {
+		case 'list':
+			listTemplate = settings.listTemplate;
+			break;
+		case 'index':
+			listTemplate = settings.indexTemplate;
+			break;
+		case 'types':
+			listTemplate = settings.typesTemplate;
+			break;
+	}
 
-	const templates = getTemplateFiles(settings.listTemplate);
+	if (listTemplate[0] == null || listTemplate.length < 1) {
+		const templateDir = `../../src/templates/${type}`;
+		return await getLocalTemplates(templateDir);
+	}
 
-	return templates;
-};
-
-export const getIndexTemplates = async (
-	settings: SettingsType
-): Promise<TemplateFileType[]> => {
-	if (settings.indexTemplate[0] == null || settings.indexTemplate.length < 1)
-		return await getLocalTemplates('../../src/templates/index');
-
-	const templates = getTemplateFiles(settings.indexTemplate);
-
-	return templates;
+	return await getTemplateFiles(listTemplate);
 };
 
 export const buildLists = async (
@@ -117,31 +120,60 @@ export const writeLists = async (
 	lists: ListFilesType[]
 ): Promise<void> => {
 	await asyncForEach(lists, async (file) => {
-		await writeAFile(settings, file);
+		// console.log(file);
+		await writeAFile(settings, {
+			...file,
+			name: basename(file.name).replace(extname(file.name),'')
+		});
 		blockLineSuccess(file.name);
 	});
 };
 
-export const createLists = async (settings: SettingsType): Promise<void> => {
-	if (!settings.list) return;
+export const createListType = async (
+	settings: SettingsType,
+	type: string = 'list'
+): Promise<void> => {
+	if (!settings[type]) return;
 
-	blockMid('Lists');
+	blockMid(type);
 
-	settings.inRoot = true;
-
-	const templates = await getListTemplates(settings);
+	const templates = await getListTemplates(settings, type);
 	const files = await buildLists(settings, templates);
 	await writeLists(settings, files);
 };
 
-export const createIndexes = async (settings: SettingsType): Promise<void> => {
-	if (!settings.index) return;
+// export const createLists = async (settings: SettingsType): Promise<void> => {
+// 	if (!settings.list) return;
 
-	blockMid('Indexes');
+// 	blockMid('Lists');
 
-	settings.inRoot = true;
+// 	settings.inRoot = true;
 
-	const templates = await getIndexTemplates(settings);
-	const files = await buildLists(settings, templates);
-	await writeLists(settings, files);
-};
+// 	const templates = await getListTemplates(settings);
+// 	const files = await buildLists(settings, templates);
+// 	await writeLists(settings, files);
+// };
+
+// export const createIndexes = async (settings: SettingsType): Promise<void> => {
+// 	if (!settings.index) return;
+
+// 	blockMid('Indexes');
+
+// 	settings.inRoot = true;
+
+// 	const templates = await getIndexTemplates(settings);
+// 	const files = await buildLists(settings, templates);
+// 	await writeLists(settings, files);
+// };
+
+// export const createTypes = async (settings: SettingsType): Promise<void> => {
+// 	if (!settings.types) return;
+
+// 	blockMid('Types');
+
+// 	settings.inRoot = true;
+
+// 	const templates = await getTypesTemplates(settings);
+// 	const files = await buildLists(settings, templates);
+// 	await writeLists(settings, files);
+// };

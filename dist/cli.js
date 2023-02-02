@@ -17,11 +17,15 @@ const cli_block_1 = require("cli-block");
             console.log('Cleaned destination folder');
         });
 };
+// console.log('hiii');
 (0, get_1.getData)((0, settings_1.settings)())
     .then(build_1.buildFiles)
     .then(async (s) => {
-    await (0, list_1.createLists)(s);
-    await (0, list_1.createIndexes)(s);
+    await (0, list_1.createListType)(s, 'list');
+    await (0, list_1.createListType)(s, 'index');
+    await (0, list_1.createListType)(s, 'types');
+    if (s.copy.length > 0)
+        await (0, build_1.copyFiles)(s);
 })
     .then(() => {
     (0, cli_block_1.blockFooter)('Done!');

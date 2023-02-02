@@ -16,6 +16,7 @@ export const settings = (): SettingsType => {
 		o: { required: false, type: 'boolean', default: true, alias: 'optimize' },
 		t: { required: false, type: 'string', default: null, alias: 'template' },
 		p: { required: false, type: 'string', default: '', alias: 'prefix' },
+		c: { required: false, type: 'array', default: [], alias: 'copy' },
 		l: {
 			required: false,
 			type: 'boolean',
@@ -61,6 +62,24 @@ export const settings = (): SettingsType => {
 			type: 'array',
 			default: [],
 			alias: 'indexTemplate'
+		},
+		tps: {
+			required: false,
+			type: 'boolean',
+			default: false,
+			alias: 'types'
+		},
+		tpst: {
+			required: false,
+			type: 'array',
+			default: [],
+			alias: 'typesTemplate'
+		},
+		pidx: {
+			required: false,
+			type: 'boolean',
+			default: false,
+			alias: 'parentIndex'
 		}
 	}).argv;
 
@@ -71,6 +90,7 @@ export const settings = (): SettingsType => {
 		optimize: cs.o,
 		template: cs.t,
 		inRoot: cs.ir,
+		copy: cs.c,
 		removeOld: cs.ro,
 		removePrefix: cs.rp,
 		stripStyle: cs.ss,
@@ -82,6 +102,9 @@ export const settings = (): SettingsType => {
 		removeTags: cs.rt,
 		svgOnly: cs.svg,
 		index: cs.idxt.filter(Boolean).length > 0 ? true : cs.idx, // If the indexTemplate is set, the index is true otherwise, set the value of index.
-		indexTemplate: cs.idxt
+		indexTemplate: cs.idxt,
+		types: cs.tpst.filter(Boolean).length > 0 ? true : cs.tps, // If the indexTemplate is set, the index is true otherwise, set the value of index.
+		typesTemplate: cs.tpst,
+		parentIndex: cs.pidx
 	};
 };
