@@ -86,7 +86,7 @@ const getExtension = (file) => {
 exports.getExtension = getExtension;
 const fixJsx = (str) => {
     return str
-        .replaceAll('fill-rule', 'fileRule')
+        .replaceAll('fill-rule', 'fillRule')
         .replaceAll('clip-rule', 'clipRule')
         .replace('xlink:href', 'xlinkHref')
         .replace('xmlns:xlink', 'xmlnsXlink');
