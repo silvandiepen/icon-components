@@ -5,24 +5,27 @@ import { basename, join } from 'path';
 import { blockLineSuccess } from 'cli-block';
 
 export const copyFiles = async (settings: SettingsType): Promise<void> => {
-	await asyncForEach(settings.copy, async (item) => {
-		const stats = await lstat(item);
+	await asyncForEach(settings.copy, async (item: string) => {
+		const baseFile = item.includes('=') ? item.split('=')[0] : item;
+		const targetFile = item.includes('=') ? item.split('=')[1] : basename(item);
+
+		const stats = await lstat(baseFile);
 		if (stats.isFile()) {
-			const input = join(item);
-			const output = join(settings.dest, basename(item));
+			const input = join(baseFile);
+			const output = join(settings.dest, targetFile);
 
 			await copyFile(input, output);
-			blockLineSuccess(`Copied ${basename(item)}`);
+			blockLineSuccess(`Copied ${targetFile}`);
 		}
 		if (stats.isDirectory()) {
-			const input = join(item);
+			const input = join(baseFile);
 			const output = join(
 				settings.dest,
-				item.split('/')[item.split('/').length - 1]
+				baseFile.split('/')[baseFile.split('/').length - 1]
 			);
 
 			await copyFile(input, output);
-			blockLineSuccess(`Copied ${basename(item)}`);
+			blockLineSuccess(`Copied ${targetFile}`);
 		}
 	});
 };
