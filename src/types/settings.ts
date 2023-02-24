@@ -72,4 +72,5 @@ export interface SettingsType {
 	typesTemplate: string[];
 	typesTemplates?: Array<TemplateFileType>;
 	parentIndex: boolean;
+	prependLine: string;
 }

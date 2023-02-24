@@ -83,6 +83,12 @@ const settings = () => {
             type: 'boolean',
             default: false,
             alias: 'parentIndex'
+        },
+        ppl: {
+            required: false,
+            type: 'string',
+            default: '',
+            alias: 'prependLine'
         }
     }).argv;
     return {
@@ -107,7 +113,8 @@ const settings = () => {
         indexTemplate: cs.idxt,
         types: cs.tpst.filter(Boolean).length > 0 ? true : cs.tps,
         typesTemplate: cs.tpst,
-        parentIndex: cs.pidx
+        parentIndex: cs.pidx,
+        prependLine: cs.ppl
     };
 };
 exports.settings = settings;

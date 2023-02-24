@@ -52,9 +52,10 @@ const makePath = async (filePath) => {
 const writeAFile = async (settings, file) => {
     const dest = file.dest ? file.dest : settings.dest;
     const filePath = (0, path_1.join)(dest, file.name + (file.ext ? file.ext : ''));
+    const data = settings.prependLine ? `${settings.prependLine}\n${file.data}` : file.data;
     try {
         await makePath(filePath);
-        await writeFile(filePath, file.data, {
+        await writeFile(filePath, data, {
             encoding: 'utf8',
             flag: 'w'
         });

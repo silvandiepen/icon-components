@@ -80,6 +80,12 @@ export const settings = (): SettingsType => {
 			type: 'boolean',
 			default: false,
 			alias: 'parentIndex'
+		},
+		ppl: {
+			required: false,
+			type: 'string',
+			default: '',
+			alias: 'prependLine'
 		}
 	}).argv;
 
@@ -105,6 +111,7 @@ export const settings = (): SettingsType => {
 		indexTemplate: cs.idxt,
 		types: cs.tpst.filter(Boolean).length > 0 ? true : cs.tps, // If the indexTemplate is set, the index is true otherwise, set the value of index.
 		typesTemplate: cs.tpst,
-		parentIndex: cs.pidx
+		parentIndex: cs.pidx,
+		prependLine: cs.ppl
 	};
 };
