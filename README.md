@@ -5,9 +5,10 @@ projectDescription: "Create Icon components from your SVG Library"
 
 # Icon Components
 
-A design system can also incorporate a full set of Icons.
+Generate your icon components directly from the source svg files. 
 
-To automatically create the source code for icon web components for a full folder of SVG files, this plugin comes in handy. Just add it to your stencil project and generate the icons.
+With any framework or code, since you can create and define your own templates which can be used. Create lists, types and everything, with one command.
+
 
 ## Install
 
@@ -18,12 +19,12 @@ npm install icon-components
 
 
 
-## Wishlist
+#### Wishlist
 
 - improve documentation
 - local development watching and selective changes
 
-## Contributing
+#### Contributing
 
 Any help to make this package better is very welcome! So if you like this idea and have a good idea for refactor, update, write better docs or add features. Please feel free to contact me or just make a PR.
 
@@ -33,7 +34,7 @@ Any help to make this package better is very welcome! So if you like this idea a
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
-## Author
+#### Author
 
 **icon-components** © [Sil van Diepen](https://github.com/silvandiepen), Released under the [MIT](./LICENSE) License.<br>
 Authored and maintained by Sil van Diepen with help from contributors ([list](https://github.com/silvandiepen/icon-components/contributors)).
