@@ -69,4 +69,5 @@ export interface SettingsType {
     typesTemplates?: Array<TemplateFileType>;
     parentIndex: boolean;
     prependLine: string;
+    iconFolder: string;
 }

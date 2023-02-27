@@ -52,7 +52,9 @@ const makePath = async (filePath) => {
 const writeAFile = async (settings, file) => {
     const dest = file.dest ? file.dest : settings.dest;
     const filePath = (0, path_1.join)(dest, file.name + (file.ext ? file.ext : ''));
-    const data = settings.prependLine ? `${settings.prependLine}\n${file.data}` : file.data;
+    const data = settings.prependLine
+        ? `${settings.prependLine}\n${file.data}`
+        : file.data;
     try {
         await makePath(filePath);
         await writeFile(filePath, data, {
@@ -90,17 +92,13 @@ exports.CombineTemplateWithData = CombineTemplateWithData;
 const buildComponent = async function (settings, file) {
     await (0, helpers_1.asyncForEach)(settings.templates, async (template) => {
         try {
-            let dest = settings.dest;
-            if (!settings.inRoot) {
-                dest = (0, path_1.join)(settings.dest, (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)));
-            }
             const data = await (0, exports.CombineTemplateWithData)(file, template, settings);
             const ext = (0, helpers_1.getExtension)(template.file);
             await (0, exports.writeAFile)(settings, {
                 data: (0, helpers_1.formatFile)(data, ext),
                 ext,
                 name: (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)),
-                dest
+                dest: settings.dest
             });
             (0, cli_block_1.blockLineSuccess)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))}${file.style ? ` ${(0, kleur_1.blue)('+ style')}` : ''}`);
             if (!(!settings.inRoot && settings.parentIndex))
@@ -111,7 +109,7 @@ const buildComponent = async function (settings, file) {
                 data: (0, helpers_1.formatFile)(indexData, indexExt),
                 ext: indexExt,
                 name: 'index',
-                dest
+                dest: settings.dest
             });
         }
         catch (err) {
@@ -129,7 +127,7 @@ const startBuild = async (settings) => {
     (0, cli_block_1.blockHeader)(`Generating Icons`);
     (0, cli_block_1.blockMid)(`Settings`);
     if (settings.src && settings.dest) {
-        let showSettings = {
+        const showSettings = {
             destination: settings.dest,
             source: settings.src,
             prefix: settings.prefix,
@@ -145,7 +143,9 @@ const startBuild = async (settings) => {
             types: settings.types ? settings.types : false,
             typesTemplate: settings.typesTemplate ? settings.typesTemplate : false,
             parentIndex: settings.parentIndex ? settings.parentIndex : false,
-            totalFiles: settings.files.length
+            totalFiles: settings.files.length,
+            iconFolder: settings.iconFolder ? settings.iconFolder : false,
+            inRoot: settings.inRoot ? settings.inRoot : false
         };
         await (0, cli_block_1.blockSettings)(showSettings);
         if (settings.files.length < 1) {
@@ -165,9 +165,15 @@ const buildComponents = async (settings) => {
     if (settings.files.length > 0) {
         (0, cli_block_1.blockMid)(`${(0, kleur_1.bold)('Files')} ${(0, kleur_1.blue)().bold('(' + settings.files.length + ')')}`);
         await (0, helpers_1.asyncForEach)(settings.files, async (file) => {
-            if (!settings.inRoot)
-                await (0, helpers_1.createAFolder)((0, path_1.join)(settings.dest, (0, helpers_1.fileName)(file.name)));
-            buildComponent(settings, file);
+            let newFolder = (0, path_1.join)(settings.dest);
+            if (settings.iconFolder && !settings.inRoot)
+                newFolder = (0, path_1.join)(settings.dest, settings.iconFolder, (0, helpers_1.fileName)(file.name));
+            else if (!settings.inRoot)
+                newFolder = (0, path_1.join)(settings.dest, (0, helpers_1.fileName)(file.name));
+            else if (settings.iconFolder)
+                newFolder = (0, path_1.join)(settings.dest, settings.iconFolder);
+            await (0, helpers_1.createAFolder)(newFolder);
+            buildComponent({ ...settings, dest: newFolder }, file);
         });
     }
     await (0, helpers_1.WAIT)(100);

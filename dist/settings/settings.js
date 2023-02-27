@@ -89,6 +89,12 @@ const settings = () => {
             type: 'string',
             default: '',
             alias: 'prependLine'
+        },
+        if: {
+            required: false,
+            type: 'string',
+            default: '',
+            alias: 'iconFolder'
         }
     }).argv;
     return {
@@ -114,7 +120,8 @@ const settings = () => {
         types: cs.tpst.filter(Boolean).length > 0 ? true : cs.tps,
         typesTemplate: cs.tpst,
         parentIndex: cs.pidx,
-        prependLine: cs.ppl
+        prependLine: cs.ppl,
+        iconFolder: cs.if
     };
 };
 exports.settings = settings;

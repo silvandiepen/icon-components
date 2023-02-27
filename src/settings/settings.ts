@@ -86,6 +86,12 @@ export const settings = (): SettingsType => {
 			type: 'string',
 			default: '',
 			alias: 'prependLine'
+		},
+		if: {
+			required: false,
+			type: 'string',
+			default: '',
+			alias: 'iconFolder'
 		}
 	}).argv;
 
@@ -112,6 +118,7 @@ export const settings = (): SettingsType => {
 		types: cs.tpst.filter(Boolean).length > 0 ? true : cs.tps, // If the indexTemplate is set, the index is true otherwise, set the value of index.
 		typesTemplate: cs.tpst,
 		parentIndex: cs.pidx,
-		prependLine: cs.ppl
+		prependLine: cs.ppl,
+		iconFolder: cs.if
 	};
 };

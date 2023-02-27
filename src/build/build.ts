@@ -55,7 +55,9 @@ export const writeAFile = async (
 ) => {
 	const dest = file.dest ? file.dest : settings.dest;
 	const filePath = join(dest, file.name + (file.ext ? file.ext : ''));
-	const data = settings.prependLine ? `${settings.prependLine}\n${file.data}`: file.data;
+	const data = settings.prependLine
+		? `${settings.prependLine}\n${file.data}`
+		: file.data;
 
 	try {
 		await makePath(filePath);
@@ -102,18 +104,13 @@ const buildComponent = async function (
 ): Promise<void> {
 	await asyncForEach(settings.templates, async (template: TemplateFileType) => {
 		try {
-			let dest = settings.dest;
-			if (!settings.inRoot) {
-				dest = join(settings.dest, kebabCase(fileName(file.name)));
-			}
-
 			const data = await CombineTemplateWithData(file, template, settings);
 			const ext = getExtension(template.file);
 			await writeAFile(settings, {
 				data: formatFile(data, ext),
 				ext,
 				name: kebabCase(fileName(file.name)),
-				dest
+				dest: settings.dest
 			});
 
 			blockLineSuccess(
@@ -131,7 +128,7 @@ const buildComponent = async function (
 				data: formatFile(indexData, indexExt),
 				ext: indexExt,
 				name: 'index',
-				dest
+				dest: settings.dest
 			});
 		} catch (err) {
 			blockLineError(`${file.name}${blue(getExtension(template.file))} ${err}`);
@@ -148,13 +145,11 @@ const buildComponent = async function (
 export const startBuild = async (settings: SettingsType): Promise<void> => {
 	// Log it all\
 
-	blockHeader(
-		`Generating Icons`
-	);
+	blockHeader(`Generating Icons`);
 	blockMid(`Settings`);
 
 	if (settings.src && settings.dest) {
-		let showSettings = {
+		const showSettings = {
 			destination: settings.dest,
 			source: settings.src,
 			prefix: settings.prefix,
@@ -170,7 +165,9 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 			types: settings.types ? settings.types : false,
 			typesTemplate: settings.typesTemplate ? settings.typesTemplate : false,
 			parentIndex: settings.parentIndex ? settings.parentIndex : false,
-			totalFiles: settings.files.length
+			totalFiles: settings.files.length,
+			iconFolder: settings.iconFolder ? settings.iconFolder : false,
+			inRoot: settings.inRoot ? settings.inRoot : false
 		};
 
 		await blockSettings(showSettings);
@@ -199,10 +196,21 @@ export const buildComponents = async (
 		);
 
 		await asyncForEach(settings.files, async (file: FilesType) => {
-			if (!settings.inRoot)
-				await createAFolder(join(settings.dest, fileName(file.name)));
+			let newFolder = join(settings.dest);
+			if (settings.iconFolder && !settings.inRoot)
+				newFolder = join(
+					settings.dest,
+					settings.iconFolder,
+					fileName(file.name)
+				);
+			else if (!settings.inRoot)
+				newFolder = join(settings.dest, fileName(file.name));
+			else if (settings.iconFolder)
+				newFolder = join(settings.dest, settings.iconFolder);
 
-			buildComponent(settings, file);
+			await createAFolder(newFolder);
+
+			buildComponent({ ...settings, dest: newFolder }, file);
 		});
 	}
 	await WAIT(100);
