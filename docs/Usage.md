@@ -1,3 +1,7 @@
+---
+icon: 📘
+---
+
 # Usage
 
 ### In your package.json

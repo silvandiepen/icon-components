@@ -1,3 +1,7 @@
+---
+icon: 🎨
+---
+
 # Styles
 
 The style attribute will automatically be stripped from the svg data, but it will be passed back as an option in the template.

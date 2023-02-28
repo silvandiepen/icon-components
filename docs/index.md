@@ -1,5 +1,6 @@
 ---
 archive: articles
+icon: 📚
 ---
 
 # Documentation

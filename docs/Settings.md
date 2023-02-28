@@ -1,3 +1,7 @@
+---
+icon: ⚙️
+---
+
 # Settings
 
 ## Base

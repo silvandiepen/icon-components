@@ -1,3 +1,7 @@
+---
+icon: 🖼️
+---
+
 # Templates
 
 ## Using a custom template

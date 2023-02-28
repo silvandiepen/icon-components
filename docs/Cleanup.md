@@ -1,3 +1,7 @@
+---
+icon: 🧹
+---
+
 # Clean up
 
 In some cases you don't want certain tags or attributes in your output. In that case you can use the `--removeAttrs` and `--removeTags` to remove certain tags.
