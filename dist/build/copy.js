@@ -9,16 +9,16 @@ const copyFiles = async (settings) => {
     await (0, helpers_1.asyncForEach)(settings.copy, async (item) => {
         const baseFile = item.includes('=') ? item.split('=')[0] : item;
         const targetFile = item.includes('=') ? item.split('=')[1] : (0, path_1.basename)(item);
-        const stats = await (0, promises_1.lstat)(baseFile);
-        if (stats.isFile()) {
+        const baseStat = await (0, promises_1.lstat)(baseFile);
+        if (baseStat.isDirectory()) {
             const input = (0, path_1.join)(baseFile);
-            const output = (0, path_1.join)(settings.dest, targetFile);
+            const output = (0, path_1.join)(settings.dest, baseFile.split('/')[baseFile.split('/').length - 1]);
             await (0, promises_1.copyFile)(input, output);
             (0, cli_block_1.blockLineSuccess)(`Copied ${targetFile}`);
         }
-        if (stats.isDirectory()) {
+        else {
             const input = (0, path_1.join)(baseFile);
-            const output = (0, path_1.join)(settings.dest, baseFile.split('/')[baseFile.split('/').length - 1]);
+            const output = (0, path_1.join)(settings.dest, targetFile);
             await (0, promises_1.copyFile)(input, output);
             (0, cli_block_1.blockLineSuccess)(`Copied ${targetFile}`);
         }

@@ -1,7 +1,7 @@
-import { asyncForEach } from '../helpers';
+import { asyncForEach, createAFolder } from '../helpers';
 import { SettingsType } from '../types';
 import { lstat, copyFile } from 'fs/promises';
-import { basename, join } from 'path';
+import { basename, dirname, join } from 'path';
 import { blockLineSuccess } from 'cli-block';
 
 export const copyFiles = async (settings: SettingsType): Promise<void> => {
@@ -9,21 +9,20 @@ export const copyFiles = async (settings: SettingsType): Promise<void> => {
 		const baseFile = item.includes('=') ? item.split('=')[0] : item;
 		const targetFile = item.includes('=') ? item.split('=')[1] : basename(item);
 
-		const stats = await lstat(baseFile);
-		if (stats.isFile()) {
-			const input = join(baseFile);
-			const output = join(settings.dest, targetFile);
+		const baseStat = await lstat(baseFile);
 
-			await copyFile(input, output);
-			blockLineSuccess(`Copied ${targetFile}`);
-		}
-		if (stats.isDirectory()) {
+		if (baseStat.isDirectory()) {
 			const input = join(baseFile);
 			const output = join(
 				settings.dest,
 				baseFile.split('/')[baseFile.split('/').length - 1]
 			);
 
+			await copyFile(input, output);
+			blockLineSuccess(`Copied ${targetFile}`);
+		} else {
+			const input = join(baseFile);
+			const output = join(settings.dest, targetFile);
 			await copyFile(input, output);
 			blockLineSuccess(`Copied ${targetFile}`);
 		}
