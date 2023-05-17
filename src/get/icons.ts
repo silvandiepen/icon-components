@@ -95,8 +95,6 @@ export const getFileList = async (
 
 		const { width, height } = getSizes(fileData);
 
-		const 
-
 		filelist.push({
 			og_name: file,
 			name,
@@ -106,9 +104,15 @@ export const getFileList = async (
 			componentName: PascalCase(prefixedName(file, settings.prefix)),
 			data: settings.removeStyle ? removeStyle(fileData) : fileData,
 			data_clean: {
-				attrs: settings.removeStyle ? removeStyle(fileData__clean_attrs) : fileData__clean_attrs,
-				tags:  settings.removeStyle ? removeStyle(fileData__clean_tags) : fileData__clean_tags,
-				both:  settings.removeStyle ? removeStyle(fileData__clean_both) : fileData__clean_both,
+				attrs: settings.removeStyle
+					? removeStyle(fileData__clean_attrs)
+					: fileData__clean_attrs,
+				tags: settings.removeStyle
+					? removeStyle(fileData__clean_tags)
+					: fileData__clean_tags,
+				both: settings.removeStyle
+					? removeStyle(fileData__clean_both)
+					: fileData__clean_both
 			},
 			width,
 			height,

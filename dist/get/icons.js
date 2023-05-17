@@ -15,7 +15,6 @@ const getData = async (settings) => {
 };
 exports.getData = getData;
 const getFiles = async (settings) => {
-    const files = await (0, exports.getFileList)(settings).then((result) => result);
     try {
         const files = await (0, exports.getFileList)(settings).then((result) => result);
         const templates = await (0, templates_1.getFileTemplates)(settings).then((result) => result);
@@ -64,7 +63,8 @@ const getFileList = async (settings) => {
         const name = (0, case_1.kebabCase)((0, helpers_1.fileName)(file)).replace(settings.removePrefix, '');
         const style = (0, styles_1.getStyleData)(settings, name, fileData);
         const { width, height } = getSizes(fileData);
-        filelist.push({
+        const filelist, push;
+        ({
             og_name: file,
             name,
             title: (0, case_1.PascalCase)((0, path_1.basename)(file)),
@@ -73,9 +73,9 @@ const getFileList = async (settings) => {
             componentName: (0, case_1.PascalCase)((0, helpers_1.prefixedName)(file, settings.prefix)),
             data: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData) : fileData,
             data_clean: {
-                attrs: fileData__clean_attrs,
-                tags: fileData__clean_tags,
-                both: fileData__clean_both
+                attrs: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData__clean_attrs) : fileData__clean_attrs,
+                tags: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData__clean_tags) : fileData__clean_tags,
+                both: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData__clean_both) : fileData__clean_both,
             },
             width,
             height,
