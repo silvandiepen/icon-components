@@ -7,7 +7,8 @@ import {
 	fixJsx,
 	prefixedName,
 	fileName,
-	svgOnly
+	svgOnly,
+	removeStyle
 } from './helpers';
 
 test('Remove requested Tags', () => {
@@ -136,4 +137,18 @@ test('svgOnly', () => {
 	// Expect
 	expect(svgOnly(input1)).toStrictEqual(output1);
 	expect(svgOnly(input2)).toStrictEqual(output2);
+});
+
+
+test('removeStyle', () => {
+	// assert
+
+	const input1 = `<svg><style><a><test></test></a></style></svg>`;
+	const output1 = `<svg></svg>`;
+	const input2 = `<test></test><svg><g></g><style lang="something"><a><test></test></a></style></svg>`;
+	const output2 = `<test></test><svg><g></g></svg>`;
+
+	// Expect
+	expect(removeStyle(input1)).toStrictEqual(output1);
+	expect(removeStyle(input2)).toStrictEqual(output2);
 });

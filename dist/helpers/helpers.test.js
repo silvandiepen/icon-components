@@ -96,4 +96,14 @@ test('svgOnly', () => {
     expect((0, helpers_1.svgOnly)(input1)).toStrictEqual(output1);
     expect((0, helpers_1.svgOnly)(input2)).toStrictEqual(output2);
 });
+test('removeStyle', () => {
+    // assert
+    const input1 = `<svg><style><a><test></test></a></style></svg>`;
+    const output1 = `<svg></svg>`;
+    const input2 = `<test></test><svg><g></g><style lang="something"><a><test></test></a></style></svg>`;
+    const output2 = `<test></test><svg><g></g></svg>`;
+    // Expect
+    expect((0, helpers_1.removeStyle)(input1)).toStrictEqual(output1);
+    expect((0, helpers_1.removeStyle)(input2)).toStrictEqual(output2);
+});
 //# sourceMappingURL=helpers.test.js.map

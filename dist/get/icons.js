@@ -63,8 +63,7 @@ const getFileList = async (settings) => {
         const name = (0, case_1.kebabCase)((0, helpers_1.fileName)(file)).replace(settings.removePrefix, '');
         const style = (0, styles_1.getStyleData)(settings, name, fileData);
         const { width, height } = getSizes(fileData);
-        const filelist, push;
-        ({
+        filelist.push({
             og_name: file,
             name,
             title: (0, case_1.PascalCase)((0, path_1.basename)(file)),
@@ -73,9 +72,15 @@ const getFileList = async (settings) => {
             componentName: (0, case_1.PascalCase)((0, helpers_1.prefixedName)(file, settings.prefix)),
             data: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData) : fileData,
             data_clean: {
-                attrs: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData__clean_attrs) : fileData__clean_attrs,
-                tags: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData__clean_tags) : fileData__clean_tags,
-                both: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData__clean_both) : fileData__clean_both,
+                attrs: settings.removeStyle
+                    ? (0, helpers_1.removeStyle)(fileData__clean_attrs)
+                    : fileData__clean_attrs,
+                tags: settings.removeStyle
+                    ? (0, helpers_1.removeStyle)(fileData__clean_tags)
+                    : fileData__clean_tags,
+                both: settings.removeStyle
+                    ? (0, helpers_1.removeStyle)(fileData__clean_both)
+                    : fileData__clean_both
             },
             width,
             height,
