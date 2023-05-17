@@ -47,9 +47,9 @@ export const settings = (): SettingsType => {
 			default: ['svg'],
 			alias: 'removeTags'
 		},
-		rt: {
+		rs: {
 			required: false,
-			type: boolean,
+			type: 'boolean',
 			default: false,
 			alias: 'removeStyle'
 		},
