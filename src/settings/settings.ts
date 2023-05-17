@@ -47,6 +47,12 @@ export const settings = (): SettingsType => {
 			default: ['svg'],
 			alias: 'removeTags'
 		},
+		rt: {
+			required: false,
+			type: boolean,
+			default: false,
+			alias: 'removeStyle'
+		},
 		ro: { type: 'boolean', default: false, alias: 'removeOld' },
 		rp: { type: 'string', default: '', alias: 'removePrefix' },
 		ss: { type: 'boolean', default: false, alias: 'stripStyle' },
@@ -110,6 +116,7 @@ export const settings = (): SettingsType => {
 		list: cs.lt.filter(Boolean).length > 0 ? true : cs.l, // If the listTemplate is set, the list is true otherwise, set the value of list.
 		listTemplate: cs.lt,
 		type: cs.type,
+		removeStyle: cs.rs,
 		removeAttrs: cs.ra,
 		removeTags: cs.rt,
 		svgOnly: cs.svg,

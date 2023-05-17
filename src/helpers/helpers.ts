@@ -71,6 +71,10 @@ export const asyncRemoveAttrs = async (
 	return str;
 };
 
+export const removeStyle = (str:string):string=>{
+	return str.replace(/<style.*?>.*?<\/style>/ig,'');
+}
+
 export const svgOnly = (str: string): string => {
 	return str.substring(
 		str.indexOf('<svg'),

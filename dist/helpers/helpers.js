@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dirExist = exports.formatFile = exports.getAttrData = exports.getTagData = exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
+exports.dirExist = exports.formatFile = exports.getAttrData = exports.getTagData = exports.createAFolder = exports.fixJsx = exports.getExtension = exports.prefixedName = exports.svgOnly = exports.removeStyle = exports.asyncRemoveAttrs = exports.removeAttrs = exports.asyncRemoveTags = exports.removeTags = exports.fileName = exports.asyncForEach = exports.WAIT = void 0;
 const path_1 = __importDefault(require("path"));
 const { mkdir } = require('fs').promises;
 const fs_1 = require("fs");
@@ -66,6 +66,10 @@ const asyncRemoveAttrs = async (str, attrs) => {
     return str;
 };
 exports.asyncRemoveAttrs = asyncRemoveAttrs;
+const removeStyle = (str) => {
+    return str.replace(/<style.*?>.*?<\/style>/ig, '');
+};
+exports.removeStyle = removeStyle;
 const svgOnly = (str) => {
     return str.substring(str.indexOf('<svg'), str.indexOf('</svg>') + '</svg>'.length);
 };

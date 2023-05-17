@@ -71,7 +71,7 @@ const getFileList = async (settings) => {
             title_lowercase: (0, path_1.basename)(file).toLowerCase(),
             fileName: (0, helpers_1.prefixedName)(file, settings.prefix),
             componentName: (0, case_1.PascalCase)((0, helpers_1.prefixedName)(file, settings.prefix)),
-            data: fileData,
+            data: settings.removeStyle ? (0, helpers_1.removeStyle)(fileData) : fileData,
             data_clean: {
                 attrs: fileData__clean_attrs,
                 tags: fileData__clean_tags,

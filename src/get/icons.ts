@@ -9,6 +9,7 @@ import {
 	fileName,
 	prefixedName,
 	asyncRemoveAttrs,
+	removeStyle,
 	asyncRemoveTags,
 	svgOnly,
 	getAttrData
@@ -53,17 +54,17 @@ const getFileData = async (filedata: FilesDataType, srcFileName: string) => {
 /*
   Get A list of all the files and their data. 
 */
-const getSizes = (file: string):{width: number, height: number} => {
-	const viewBox:string[] = getAttrData(file, 'viewbox')
+const getSizes = (file: string): { width: number; height: number } => {
+	const viewBox: string[] = getAttrData(file, 'viewbox')
 		.replace(/[^\d. ]/g, '')
 		.split(' ');
 
-	if(viewBox.length !== 4){ 
-		blockLineError('Some file does not have a viewbox')
+	if (viewBox.length !== 4) {
+		blockLineError('Some file does not have a viewbox');
 	}
 	return {
-		width: parseInt(viewBox[2],10),
-		height: parseInt(viewBox[3],10)
+		width: parseInt(viewBox[2], 10),
+		height: parseInt(viewBox[3], 10)
 	};
 };
 
@@ -77,7 +78,6 @@ export const getFileList = async (
 		if (extname(file) !== '.svg') return;
 
 		const fileData = await getFileData(settings, file).then(svgOnly);
-
 		const fileData__clean_attrs = await asyncRemoveAttrs(
 			settings.svgOnly ? svgOnly(fileData) : fileData,
 			settings.removeAttrs
@@ -104,7 +104,7 @@ export const getFileList = async (
 			title_lowercase: basename(file).toLowerCase(),
 			fileName: prefixedName(file, settings.prefix),
 			componentName: PascalCase(prefixedName(file, settings.prefix)),
-			data: fileData,
+			data: settings.removeStyle ? removeStyle(fileData) : fileData,
 			data_clean: {
 				attrs: fileData__clean_attrs,
 				tags: fileData__clean_tags,
