@@ -30,6 +30,8 @@ import {
 	WriteFileType
 } from '../types';
 
+const packageJson = require('../../package.json');
+
 /*
 
 	Create the path if it doesn't exist.
@@ -145,7 +147,7 @@ const buildComponent = async function (
 export const startBuild = async (settings: SettingsType): Promise<void> => {
 	// Log it all\
 
-	blockHeader(`Generating Icons`);
+	blockHeader(`Generating Icons - ${packageJson.version}`);
 	blockMid(`Settings`);
 
 	if (settings.src && settings.dest) {
@@ -158,6 +160,7 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 			removeOld: settings.removeOld,
 			removeAttrs: settings.removeAttrs,
 			removeTags: settings.removeTags,
+			removeStyle: settings.removeStyle,
 			list: settings.list ? settings.list : false,
 			listTemplate: settings.listTemplate ? settings.listTemplate : false,
 			index: settings.index ? settings.index : false,

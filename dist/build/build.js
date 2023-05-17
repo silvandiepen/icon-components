@@ -32,6 +32,7 @@ const cli_block_1 = require("cli-block");
 const helpers = __importStar(require("../helpers"));
 const helpers_1 = require("../helpers");
 const case_1 = require("@sil/case");
+const packageJson = require('../../package.json');
 /*
 
     Create the path if it doesn't exist.
@@ -124,7 +125,7 @@ const buildComponent = async function (settings, file) {
     */
 const startBuild = async (settings) => {
     // Log it all\
-    (0, cli_block_1.blockHeader)(`Generating Icons`);
+    (0, cli_block_1.blockHeader)(`Generating Icons - ${packageJson.version}`);
     (0, cli_block_1.blockMid)(`Settings`);
     if (settings.src && settings.dest) {
         const showSettings = {
@@ -136,6 +137,7 @@ const startBuild = async (settings) => {
             removeOld: settings.removeOld,
             removeAttrs: settings.removeAttrs,
             removeTags: settings.removeTags,
+            removeStyle: settings.removeStyle,
             list: settings.list ? settings.list : false,
             listTemplate: settings.listTemplate ? settings.listTemplate : false,
             index: settings.index ? settings.index : false,
