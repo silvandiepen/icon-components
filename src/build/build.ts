@@ -61,6 +61,11 @@ export const writeAFile = async (
 	file: WriteFileType
 ) => {
 	const dest = file.dest ? file.dest : settings.dest;
+
+	// Check if dest exists, if it doesnt, create it
+	await createAFolder(dest);
+
+
 	const filePath = join(dest, file.name + (file.ext ? file.ext : ''));
 	const data = settings.prependLine
 		? `${settings.prependLine}\n${file.data}`
@@ -156,8 +161,8 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 
 	if (settings.src && settings.dest) {
 		const showSettings = {
-			destination: settings.dest,
-			source: settings.src,
+			dest: settings.dest,
+			src: settings.src,
 			template: settings.template ? settings.template : null,
 		};
 		if (settings.removeAttrs.length > 0) showSettings['removeAttrs'] = settings.removeAttrs;
