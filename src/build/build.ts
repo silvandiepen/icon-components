@@ -175,6 +175,7 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 			totalFiles: settings.files.length,
 			iconFolder: settings.iconFolder ? settings.iconFolder : defaultSettings.iconFolder,
 			inRoot: settings.inRoot ? settings.inRoot : defaultSettings.inRoot,
+			filter: settings.filter ? settings.filter : defaultSettings.filter
 		};
 
 		await blockSettings(showSettings);

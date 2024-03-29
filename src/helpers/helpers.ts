@@ -169,11 +169,7 @@ export const formatFile = (str: string, ext: string) => {
 
 export const dirExist = (dir: string): boolean => {
 	try {
-		if (existsSync(dir)) {
-			return true;
-		} else {
-			return false;
-		}
+		return existsSync(dir);
 	} catch (e) {
 		return false;
 	}
