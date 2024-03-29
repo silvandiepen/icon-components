@@ -101,6 +101,8 @@ export const getFileList = async (
 
 		const { width, height } = getSizes(fileData);
 
+		file = removeFix(file, settings);
+
 		filelist.push({
 			og_name: file,
 			name,
