@@ -100,10 +100,7 @@ export const getFileList = async (
 		const style = getStyleData(settings, name, fileData);
 
 		const { width, height } = getSizes(fileData);
-
-		console.log(settings.removeAffix, settings.removePrefix, settings.removeString);
-		// file = removeFix(file, settings);
-
+		
 		const fixedFileName = removeFix(basename(file), settings);
 
 		filelist.push({
