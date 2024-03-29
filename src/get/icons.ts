@@ -34,8 +34,8 @@ export const getFiles = async (
 
 		const templates = await getFileTemplates(settings).then((result) => result);
 
-		if (settings.filter) files = files.filter((file) => file.name.includes(settings.filter));
-
+		if(settings.filter) files = files.filter((file) => file.og_name.includes(settings.filter));
+		
 		return { ...settings, files: files, templates: templates };
 	} catch (err) {
 		console.log(err);
@@ -100,7 +100,7 @@ export const getFileList = async (
 		const style = getStyleData(settings, name, fileData);
 
 		const { width, height } = getSizes(fileData);
-		
+
 		const fixedFileName = removeFix(basename(file), settings);
 
 		filelist.push({
