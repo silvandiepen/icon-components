@@ -1,6 +1,7 @@
 import { basename, join, extname } from 'path';
 import { blockErrors, blockLineSuccess, blockMid } from 'cli-block';
-import { PascalCase, kebabCase, upperSnakeCase } from '@sil/case';
+import { PascalCase, kebabCase } from '@sil/case';
+import { CONST_CASE } from '@/helpers';
 const { readdir, readFile, lstat } = require('fs').promises;
 import ejs from 'ejs';
 
@@ -106,7 +107,7 @@ export const buildLists = async (
 					...settings,
 					PascalCase,
 					kebabCase,
-					upperSnakeCase
+					upperSnakeCase: CONST_CASE
 				})
 			});
 		});
@@ -124,7 +125,7 @@ export const writeLists = async (
 		// console.log(file);
 		await writeAFile(settings, {
 			...file,
-			name: basename(file.name).replace(extname(file.name),'')
+			name: basename(file.name).replace(extname(file.name), '')
 		});
 		blockLineSuccess(file.name);
 	});

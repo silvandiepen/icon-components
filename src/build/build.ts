@@ -1,7 +1,10 @@
 import { join, dirname } from 'path';
 const { mkdir, stat, writeFile } = require('fs').promises;
 import { render } from 'ejs';
-import { kebabCase, PascalCase, upperSnakeCase } from '@sil/case';
+import { kebabCase, PascalCase } from '@sil/case';
+import { CONST_CASE } from '@/helpers';
+
+
 
 import {
 	red, yellow, blue, bold,
@@ -92,7 +95,7 @@ export const CombineTemplateWithData = async (
 		...helpers,
 		PascalCase,
 		kebabCase,
-		upperSnakeCase
+		upperSnakeCase: CONST_CASE
 	});
 };
 
@@ -118,8 +121,7 @@ const buildComponent = async function (
 			});
 
 			blockLineSuccess(
-				`${file.name}${blue(getExtension(template.file))}${
-					file.style ? ` ${blue('+ style')}` : ''
+				`${file.name}${blue(getExtension(template.file))}${file.style ? ` ${blue('+ style')}` : ''
 				}`
 			);
 
@@ -181,10 +183,9 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 			blockMid(`Warnings`);
 			blockRowLine([
 				'src',
-				`${yellow().italic(settings.src)} ${
-					red("Your source folder doesn't contain any") +
-					red().bold(' .svg ') +
-					red('files.')
+				`${yellow().italic(settings.src)} ${red("Your source folder doesn't contain any") +
+				red().bold(' .svg ') +
+				red('files.')
 				}`,
 				''
 			]);
@@ -230,7 +231,7 @@ export const buildComponents = async (
 export const buildFiles = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {
-	
+
 	await startBuild(settings);
 	await buildComponents(settings);
 	return settings;

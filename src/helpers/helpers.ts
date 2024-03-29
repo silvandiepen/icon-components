@@ -3,7 +3,7 @@ const { mkdir } = require('fs').promises;
 import { existsSync } from 'fs';
 
 import { format } from 'prettier';
-import { kebabCase } from '@sil/case';
+import { kebabCase, upperSnakeCase } from '@sil/case';
 
 export const WAIT = async (time: number = 0) => {
 	return new Promise((resolve) => {
@@ -178,3 +178,14 @@ export const dirExist = (dir: string): boolean => {
 		return false;
 	}
 };
+
+
+export const CONST_CASE = (str: string): string => {
+	const ConvertedString = upperSnakeCase(str);
+	// Check if the first character is a number, in that case we need to return the string with a _ in front. 
+	if (!isNaN(parseInt(ConvertedString.charAt(0)))) {
+		return `_${ConvertedString}`;
+	}
+	return ConvertedString;
+
+}
