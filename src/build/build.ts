@@ -158,25 +158,28 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 		const showSettings = {
 			destination: settings.dest,
 			source: settings.src,
-			prefix: settings.prefix,
 			template: settings.template ? settings.template : null,
-			optimize: settings.optimize,
-			removeOld: settings.removeOld,
-			removeAttrs: settings.removeAttrs,
-			removeTags: settings.removeTags,
-			removeStyle: settings.removeStyle,
-			list: settings.list ? settings.list : defaultSettings.list,
-			listTemplate: settings.listTemplate ? settings.listTemplate : defaultSettings.listTemplate,
-			index: settings.index ? settings.index : defaultSettings.index,
-			indexTemplate: settings.indexTemplate ? settings.indexTemplate : defaultSettings.indexTemplate,
-			types: settings.types ? settings.types : defaultSettings.types,
-			typesTemplate: settings.typesTemplate ? settings.typesTemplate : defaultSettings.typesTemplate,
-			parentIndex: settings.parentIndex ? settings.parentIndex : defaultSettings.parentIndex,
-			totalFiles: settings.files.length,
-			iconFolder: settings.iconFolder ? settings.iconFolder : defaultSettings.iconFolder,
-			inRoot: settings.inRoot ? settings.inRoot : defaultSettings.inRoot,
-			filter: settings.filter ? settings.filter : defaultSettings.filter
 		};
+		if (settings.removeAttrs.length > 0) showSettings['removeAttrs'] = settings.removeAttrs;
+		if (settings.removeTags.length > 0) showSettings['removeTags'] = settings.removeTags;
+		if (settings.removeStyle) showSettings['removeStyle'] = settings.removeStyle;
+		if (settings.prefix) showSettings['prefix'] = settings.prefix;
+		if (settings.optimize) showSettings['optimize'] = settings.optimize;
+		if (settings.stripStyle) showSettings['stripStyle'] = settings.stripStyle;
+		if (settings.removeOld) showSettings['removeOld'] = settings.removeOld;
+		if (settings.removeAffix) showSettings['removeAffix'] = settings.removeAffix;
+		if (settings.removeString) showSettings['removeString'] = settings.removeString;
+		if (settings.removePrefix) showSettings['removePrefix'] = settings.removePrefix;
+		if (settings.list) showSettings['list'] = settings.list;
+		if (settings.listTemplate.length) showSettings['listTemplate'] = settings.listTemplate;
+		if (settings.index) showSettings['index'] = settings.index;
+		if (settings.indexTemplate.length) showSettings['indexTemplate'] = settings.indexTemplate;
+		if (settings.types) showSettings['types'] = settings.types;
+		if (settings.typesTemplate.length) showSettings['typesTemplate'] = settings.typesTemplate;
+		if (settings.parentIndex) showSettings['parentIndex'] = settings.parentIndex;
+		if (settings.iconFolder) showSettings['iconFolder'] = settings.iconFolder;
+		if (settings.inRoot) showSettings['inRoot'] = settings.inRoot;
+		if (settings.filter) showSettings['filter'] = settings.filter;
 
 		await blockSettings(showSettings);
 
