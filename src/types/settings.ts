@@ -50,6 +50,8 @@ export interface SettingsType {
 	optimize: boolean;
 	removeOld: boolean;
 	removePrefix: string;
+	removeAffix: string;
+	removeString: string;
 	inRoot: boolean;
 	stripStyle: boolean;
 	files?: FilesType[];

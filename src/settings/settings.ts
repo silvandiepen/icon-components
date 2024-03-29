@@ -13,6 +13,8 @@ export const defaultSettings: SettingsType = {
 	copy: [],
 	removeOld: false,
 	removePrefix: '',
+	removeAffix: '',
+	removeString: '',
 	stripStyle: false,
 	prefix: '',
 	list: false,
@@ -83,7 +85,9 @@ export const settings = (): SettingsType => {
 			alias: 'removeStyle'
 		},
 		ro: { type: 'boolean', default: defaultSettings.removeOld, alias: 'removeOld' },
-		rp: { type: 'string', default: defaultSettings.removePrefix, alias: 'removePrefix' },
+		rmPrx: { type: 'string', default: defaultSettings.removePrefix, alias: 'removePrefix' },
+		rmAfx: { type: 'string', default: defaultSettings.removeAffix, alias: 'removeAffix' },
+		rmStr: { type: 'string', default: defaultSettings.removeString, alias: 'removeString' },
 		ss: { type: 'boolean', default: defaultSettings.stripStyle, alias: 'stripStyle' },
 		svg: { type: 'boolean', default: defaultSettings.svgOnly, alias: 'svgOnly' },
 		idx: {
@@ -148,7 +152,9 @@ export const settings = (): SettingsType => {
 		inRoot: cs.ir,
 		copy: cs.c,
 		removeOld: cs.ro,
-		removePrefix: cs.rp,
+		removePrefix: cs.rmPre,
+		removeAffix: cs.rmAff,
+		removeString: cs.rmStr,
 		stripStyle: cs.ss,
 		prefix: cs.p,
 		list: cs.lt.filter(Boolean).length > 0 ? true : cs.l, // If the listTemplate is set, the list is true otherwise, set the value of list.

@@ -68,6 +68,21 @@ export const getSizes = (file: string): { width: number; height: number } => {
 	};
 };
 
+
+const removeFix = (str: string, settings: SettingsType): string => {
+	// Remove settings.removePrefix from the start of the file name
+	if (str.startsWith(settings.removePrefix)) {
+		str = str.replace(settings.removePrefix, '');
+	}
+	if (str.endsWith(settings.removeAffix)) {
+		str = str.replace(settings.removeAffix, '');
+	}
+	if (str.includes(settings.removeString)) {
+		str = str.replace(settings.removeString, '');
+	}
+	return str;
+}
+
 export const getFileList = async (
 	settings: SettingsType
 ): Promise<FilesType[]> => {
@@ -92,7 +107,10 @@ export const getFileList = async (
 			fileData__clean_attrs,
 			settings.removeTags
 		);
-		const name = kebabCase(fileName(file)).replace(settings.removePrefix, '');
+
+
+
+		const name = removeFix(kebabCase(fileName(file)), settings);
 		const style = getStyleData(settings, name, fileData);
 
 		const { width, height } = getSizes(fileData);
