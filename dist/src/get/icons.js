@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFileList = exports.getFiles = exports.getData = void 0;
+exports.getFileList = exports.getSizes = exports.getFileData = exports.getFiles = exports.getData = void 0;
 const path_1 = require("path");
 const cli_block_1 = require("cli-block");
 const fs = require('fs').promises;
@@ -37,6 +37,7 @@ const getFileData = async (filedata, srcFileName) => {
         console.warn(err);
     }
 };
+exports.getFileData = getFileData;
 /*
   Get A list of all the files and their data.
 */
@@ -52,19 +53,20 @@ const getSizes = (file) => {
         height: parseInt(viewBox[3], 10)
     };
 };
+exports.getSizes = getSizes;
 const getFileList = async (settings) => {
     let files = await fs.readdir(settings.src);
     let filelist = [];
     await (0, helpers_1.asyncForEach)(files, async (file) => {
         if ((0, path_1.extname)(file) !== '.svg')
             return;
-        const fileData = await getFileData(settings, file).then(helpers_1.svgOnly);
+        const fileData = await (0, exports.getFileData)(settings, file).then(helpers_1.svgOnly);
         const fileData__clean_attrs = await (0, helpers_1.asyncRemoveAttrs)(settings.svgOnly ? (0, helpers_1.svgOnly)(fileData) : fileData, settings.removeAttrs);
         const fileData__clean_tags = await (0, helpers_1.asyncRemoveTags)(settings.svgOnly ? (0, helpers_1.svgOnly)(fileData) : fileData, settings.removeTags);
         const fileData__clean_both = await (0, helpers_1.asyncRemoveTags)(fileData__clean_attrs, settings.removeTags);
         const name = (0, case_1.kebabCase)((0, helpers_1.fileName)(file)).replace(settings.removePrefix, '');
         const style = (0, styles_1.getStyleData)(settings, name, fileData);
-        const { width, height } = getSizes(fileData);
+        const { width, height } = (0, exports.getSizes)(fileData);
         filelist.push({
             og_name: file,
             name,
