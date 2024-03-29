@@ -35,7 +35,7 @@ _scripts/icon-components_
 ```bash
 #!/bin/bash
 
-node node_modules/icon-components/dist/cli.js \
+node node_modules/icon-components/dist/src/cli.js \
     --src assets/icons \
     --dest src/components/icons \
     --type react"
@@ -48,7 +48,7 @@ node node_modules/icon-components/dist/cli.js \
 ```bash
 #!/bin/bash
 
-node node_modules/icon-components/dist/cli.js \
+node node_modules/icon-components/dist/src/cli.js \
     --src assets/icons \
     --dest src/components/icons \
     --template templates/templateFile.tsx.template
@@ -59,7 +59,7 @@ node node_modules/icon-components/dist/cli.js \
 ```bash
 #!/bin/bash
 
-node node_modules/icon-components/dist/cli.js \
+node node_modules/icon-components/dist/src/cli.js \
     --src assets/icons \
     --dest src/components/icons \
     --template templates/

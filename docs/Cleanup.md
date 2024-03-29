@@ -14,7 +14,7 @@ In this case, all svg's will be stripped from their g (group) and style elements
 ```bash
 #!/bin/bash
 
-node node_modules/icon-components/dist/cli.js \
+node node_modules/icon-components/dist/src/cli.js \
     --src assets/icons \
     --dest src/components/icons \
     --template templates/ \

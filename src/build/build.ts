@@ -229,7 +229,6 @@ export const buildFiles = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {
 	
-	console.log(`buildFiles`, settings)
 	await startBuild(settings);
 	await buildComponents(settings);
 	return settings;

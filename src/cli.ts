@@ -16,7 +16,6 @@ import { settings } from '@/settings';
 		});
 };
 
-// console.log('hiii');
 getData(settings())
 	.then(buildFiles)
 	.then(async (s) => {

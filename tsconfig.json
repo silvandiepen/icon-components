@@ -7,10 +7,17 @@
 		"sourceMap": true,
 		"outDir": "dist",
 		"declaration": true,
+		"baseUrl": "src",
+		"jsx": "preserve",
 		"paths": {
-			"@": ["./src/"],
-			"@/*": ["./src/*"]
-		}
+			"@": ["./"],
+			"@/*": ["./*"]
+		},
+		"plugins": [
+			{
+			  "transform": "@zerollup/ts-transform-paths"
+			}
+		  ]
 	},
 	"lib": ["es2015"],
 	"exclude": ["node_modules", "temp", "dist"]
