@@ -4,6 +4,7 @@ import { existsSync } from 'fs';
 
 import { format } from 'prettier';
 import { kebabCase, upperSnakeCase } from '@sil/case';
+import { SettingsType } from '@/types';
 
 export const WAIT = async (time: number = 0) => {
 	return new Promise((resolve) => {
@@ -71,8 +72,8 @@ export const asyncRemoveAttrs = async (
 	return str;
 };
 
-export const removeStyle = (str:string):string=>{
-	return str.replace(/<style.*?>.*?<\/style>/ig,'');
+export const removeStyle = (str: string): string => {
+	return str.replace(/<style.*?>.*?<\/style>/ig, '');
 }
 
 export const svgOnly = (str: string): string => {
@@ -184,4 +185,20 @@ export const CONST_CASE = (str: string): string => {
 	}
 	return ConvertedString;
 
+}
+
+
+
+export const removeFix = (str: string, settings: SettingsType): string => {
+	// Remove settings.removePrefix from the start of the file name
+	if (str.startsWith(settings.removePrefix)) {
+		str = str.replace(settings.removePrefix, '');
+	}
+	if (str.endsWith(settings.removeAffix)) {
+		str = str.replace(settings.removeAffix, '');
+	}
+	if (str.includes(settings.removeString)) {
+		str = str.replace(settings.removeString, '');
+	}
+	return str;
 }

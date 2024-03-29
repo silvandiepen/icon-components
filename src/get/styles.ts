@@ -3,7 +3,7 @@ import { join, extname } from 'path';
 import { kebabCase } from '@sil/case';
 
 import { SettingsType, StyleFilesType } from '@/types';
-import { asyncForEach, fileName, getTagData, dirExist } from '@/helpers';
+import { asyncForEach, fileName, getTagData, dirExist, removeFix } from '@/helpers';
 
 export const getStyleData = (
 	settings: SettingsType,
@@ -41,7 +41,7 @@ export const getStyleFileList = async (
 		});
 
 		filelist.push({
-			name: kebabCase(fileName(file)).replace(settings.removePrefix, ''),
+			name: removeFix(kebabCase(fileName(file)),settings),
 			extension: extname(file),
 			data: fileData || ''
 		});
