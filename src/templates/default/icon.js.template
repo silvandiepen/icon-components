@@ -1,0 +1,3 @@
+const Icon<%= componentName %> = `<%- data %>`;
+
+export default Icon<%= componentName %>;

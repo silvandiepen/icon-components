@@ -18,7 +18,6 @@ node dist/cli.js \
     --src test/assets/icons \
     --dest temp/external/icons \
     --prefix list-icon \
-    --template src/templates/stencil \
     --remove-old \
     --optimize
 
@@ -29,7 +28,6 @@ node dist/cli.js \
     --src test/assets/icons \
     --dest temp/external/icons \
     --prefix list-icon \
-    --type react \
     --remove-old \
     --optimize
 
@@ -40,6 +38,5 @@ node dist/cli.js \
     --src test/assets/icons \
     --dest temp/external/icons \
     --prefix list-icon \
-    --type stencil \
     --remove-old \
     --optimize

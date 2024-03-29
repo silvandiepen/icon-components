@@ -59,7 +59,6 @@ export interface SettingsType {
 	removeAttrs: Array<string>;
 	removeStyle: boolean;
 	svgOnly: boolean;
-	type: string;
 	copy: string[];
 	template: string;
 	templates?: Array<TemplateFileType>;

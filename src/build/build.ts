@@ -1,10 +1,10 @@
 import { join, dirname } from 'path';
 const { mkdir, stat, writeFile } = require('fs').promises;
 import { render } from 'ejs';
-import { red, yellow, blue, bold } from "cli-block";
 import { kebabCase, PascalCase, upperSnakeCase } from '@sil/case';
 
 import {
+	red, yellow, blue, bold,
 	blockHeader,
 	blockLineError,
 	blockLineSuccess,
@@ -12,6 +12,8 @@ import {
 	blockRowLine,
 	blockSettings
 } from 'cli-block';
+
+import { defaultSettings } from '@/settings';
 
 import * as helpers from '@/helpers';
 import {
@@ -155,22 +157,22 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 			destination: settings.dest,
 			source: settings.src,
 			prefix: settings.prefix,
-			template: settings.template ? settings.template : settings.type,
+			template: settings.template ? settings.template : null,
 			optimize: settings.optimize,
 			removeOld: settings.removeOld,
 			removeAttrs: settings.removeAttrs,
 			removeTags: settings.removeTags,
 			removeStyle: settings.removeStyle,
-			list: settings.list ? settings.list : false,
-			listTemplate: settings.listTemplate ? settings.listTemplate : false,
-			index: settings.index ? settings.index : false,
-			indexTemplate: settings.indexTemplate ? settings.indexTemplate : false,
-			types: settings.types ? settings.types : false,
-			typesTemplate: settings.typesTemplate ? settings.typesTemplate : false,
-			parentIndex: settings.parentIndex ? settings.parentIndex : false,
+			list: settings.list ? settings.list : defaultSettings.list,
+			listTemplate: settings.listTemplate ? settings.listTemplate : defaultSettings.listTemplate,
+			index: settings.index ? settings.index : defaultSettings.index,
+			indexTemplate: settings.indexTemplate ? settings.indexTemplate : defaultSettings.indexTemplate,
+			types: settings.types ? settings.types : defaultSettings.types,
+			typesTemplate: settings.typesTemplate ? settings.typesTemplate : defaultSettings.typesTemplate,
+			parentIndex: settings.parentIndex ? settings.parentIndex : defaultSettings.parentIndex,
 			totalFiles: settings.files.length,
-			iconFolder: settings.iconFolder ? settings.iconFolder : false,
-			inRoot: settings.inRoot ? settings.inRoot : false
+			iconFolder: settings.iconFolder ? settings.iconFolder : defaultSettings.iconFolder,
+			inRoot: settings.inRoot ? settings.inRoot : defaultSettings.inRoot,
 		};
 
 		await blockSettings(showSettings);

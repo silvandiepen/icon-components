@@ -8,6 +8,7 @@ node dist/cli.js \
     --dest temp/external/icons/ \
     --prefix icon \
     --template test/template/external-template.js \
-    --remove-old --optimize
+    --remove-old \
+    --optimize
 
 exit 0

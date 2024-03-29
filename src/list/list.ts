@@ -26,7 +26,8 @@ const getLocalTemplates = async (dir: string): Promise<TemplateFileType[]> => {
 
 		return templates;
 	} catch (error) {
-		blockErrors(["Couldn't get the template ", error]);
+		console.log(error);
+		// blockErrors(["Couldn't get the template ", error]);
 	}
 };
 
@@ -83,7 +84,7 @@ export const getListTemplates = async (
 	}
 
 	if (listTemplate[0] == null || listTemplate.length < 1) {
-		const templateDir = `../../src/templates/${type}`;
+		const templateDir = `../src/templates/${type}`;
 		return await getLocalTemplates(templateDir);
 	}
 

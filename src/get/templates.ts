@@ -7,31 +7,31 @@ import { asyncForEach } from '@/helpers';
   When there is no Template given, but a type. The templates will be gotten from the package.
 */
 
-const getLocalTemplates = async (
-	settings: SettingsType
-): Promise<TemplateFileType[]> => {
-	if (!settings.type) return;
+// const getLocalTemplates = async (
+// 	settings: SettingsType
+// ): Promise<TemplateFileType[]> => {
+// 	if (!settings.type) return;
 
-	let templates: any = [];
-	try {
-		let localTemplateDir = await fs.readdir(
-			path.join(__dirname, '../../src/templates', settings.type)
-		);
+// 	let templates: any = [];
+// 	try {
+// 		let localTemplateDir = await fs.readdir(
+// 			path.join(__dirname, '../../src/templates', settings.type)
+// 		);
 
-		await asyncForEach(localTemplateDir, async (template: string) => {
-			let fileData = await fs.readFile(
-				path.join(__dirname, '../../src/templates/', settings.type, template)
-			);
-			templates.push({
-				file: template,
-				data: fileData.toString()
-			});
-		});
-		return templates;
-	} catch (err) {
-		console.error('Type does not exist');
-	}
-};
+// 		await asyncForEach(localTemplateDir, async (template: string) => {
+// 			let fileData = await fs.readFile(
+// 				path.join(__dirname, '../../src/templates/', settings.type, template)
+// 			);
+// 			templates.push({
+// 				file: template,
+// 				data: fileData.toString()
+// 			});
+// 		});
+// 		return templates;
+// 	} catch (err) {
+// 		console.error('Type does not exist');
+// 	}
+// };
 
 /*
   Get all templates.
@@ -41,7 +41,9 @@ export const getFileTemplates = async (
 	settings: SettingsType
 ): Promise<TemplateFileType[]> => {
 	if (settings.template == null) {
-		return await getLocalTemplates(settings);
+		console.error('You need to define a template');
+		// return await getLocalTemplates(settings);
+		settings.template = 'src/templates/default';
 	}
 
 	let templates = [];

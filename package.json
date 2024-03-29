@@ -7,17 +7,14 @@
 	"scripts": {
 		"test": "npm run build && npm run test:jest && npm run test:all",
 		"test:jest": "jest --verbose",
-		"test:typescript": "sh test/scripts/typescript.sh",
 		"test:external": "sh test/scripts/external.sh",
-		"test:react": "sh test/scripts/react.sh",
-		"test:stencil": "sh test/scripts/stencil.sh",
 		"test:lists": "sh test/scripts/lists.sh",
 		"test:templates": "sh test/scripts/templates.sh",
 		"test:cleanup": "sh test/scripts/cleanup.sh",
 		"test:copy": "sh test/scripts/copy.sh",
 		"test:prependline": "sh test/scripts/prependLine.sh",
 		"test:iconfolder": "sh test/scripts/iconFolder.sh",
-		"test:all": "npm run test:lists && npm run test:templates && npm run test:cleanup && npm run test:react && npm run test:stencil && npm run test:external && npm run test:copy && npm run test:prependline && npm run test:iconfolder",
+		"test:all": "npm run test:lists && npm run test:templates && npm run test:cleanup && npm run test:external && npm run test:copy && npm run test:prependline && npm run test:iconfolder",
 		"build": "tsup",
 		"lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
 		"lint:fix": "eslint --ext .js,.ts --ignore-path .gitignore . --fix",
@@ -31,7 +28,6 @@
 		"url": "git+https://github.com/silvandiepen/icon-components.git"
 	},
 	"keywords": [
-		"stencil",
 		"icons",
 		"svg",
 		"components",
