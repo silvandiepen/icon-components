@@ -3,7 +3,7 @@ const { mkdir } = require('fs').promises;
 import { existsSync } from 'fs';
 
 import { format } from 'prettier';
-import { kebabCase, snakeCase } from '@sil/case';
+import { kebabCase } from '@sil/case';
 
 export const WAIT = async (time: number = 0) => {
 	return new Promise((resolve) => {

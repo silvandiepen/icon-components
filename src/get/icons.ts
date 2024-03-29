@@ -1,9 +1,10 @@
 import { join, basename, extname } from 'path';
+import { blockLineError } from 'cli-block';
 const fs = require('fs').promises;
 import { kebabCase, PascalCase } from '@sil/case';
 
-import { getStyles, getStyleData } from './styles';
-import { SettingsType, FilesType, FilesDataType } from '../types';
+import { getStyles, getStyleData } from '@/get/styles';
+import { SettingsType, FilesType, FilesDataType } from '@/types';
 import {
 	asyncForEach,
 	fileName,
@@ -13,9 +14,8 @@ import {
 	asyncRemoveTags,
 	svgOnly,
 	getAttrData
-} from '../helpers';
-import { getFileTemplates } from './templates';
-import { blockLineError } from 'cli-block';
+} from '@/helpers';
+import { getFileTemplates } from '@/get/templates';
 
 export const getData = async (
 	settings: SettingsType
@@ -29,9 +29,11 @@ export const getFiles = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {
 	try {
-		const files = await getFileList(settings).then((result) => result);
+		let files = await getFileList(settings).then((result) => result);
 
 		const templates = await getFileTemplates(settings).then((result) => result);
+
+		if (settings.filter) files = files.filter((file) => file.name.includes(settings.filter));
 
 		return { ...settings, files: files, templates: templates };
 	} catch (err) {
@@ -39,7 +41,7 @@ export const getFiles = async (
 	}
 };
 
-const getFileData = async (filedata: FilesDataType, srcFileName: string) => {
+export const getFileData = async (filedata: FilesDataType, srcFileName: string) => {
 	try {
 		return fs.readFile(join(filedata.src, srcFileName)).then((file) => {
 			return file.toString();
@@ -52,7 +54,7 @@ const getFileData = async (filedata: FilesDataType, srcFileName: string) => {
 /*
   Get A list of all the files and their data. 
 */
-const getSizes = (file: string): { width: number; height: number } => {
+export const getSizes = (file: string): { width: number; height: number } => {
 	const viewBox: string[] = getAttrData(file, 'viewbox')
 		.replace(/[^\d. ]/g, '')
 		.split(' ');

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFileTemplates = void 0;
 const path_1 = __importDefault(require("path"));
 const fs = require('fs').promises;
-const helpers_1 = require("../helpers");
+const helpers_1 = require("@/helpers");
 /*
   When there is no Template given, but a type. The templates will be gotten from the package.
 */

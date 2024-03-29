@@ -1,2 +1,2 @@
-export * from './settings';
-export * from './data';
+export * from '@/types/settings';
+export * from '@/types/data';

@@ -1,7 +1,7 @@
 import path from 'path';
 const fs = require('fs').promises;
-import { SettingsType, TemplateFileType } from '../types';
-import { asyncForEach } from '../helpers';
+import { SettingsType, TemplateFileType } from '@/types';
+import { asyncForEach } from '@/helpers';
 
 /*
   When there is no Template given, but a type. The templates will be gotten from the package.

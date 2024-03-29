@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFileList = exports.getFiles = exports.getData = void 0;
 const path_1 = require("path");
+const cli_block_1 = require("cli-block");
 const fs = require('fs').promises;
 const case_1 = require("@sil/case");
-const styles_1 = require("./styles");
-const helpers_1 = require("../helpers");
-const templates_1 = require("./templates");
-const cli_block_1 = require("cli-block");
+const styles_1 = require("@/get/styles");
+const helpers_1 = require("@/helpers");
+const templates_1 = require("@/get/templates");
 const getData = async (settings) => {
     settings = await (0, styles_1.getStyles)(settings);
     settings = await (0, exports.getFiles)(settings);
@@ -16,8 +16,10 @@ const getData = async (settings) => {
 exports.getData = getData;
 const getFiles = async (settings) => {
     try {
-        const files = await (0, exports.getFileList)(settings).then((result) => result);
+        let files = await (0, exports.getFileList)(settings).then((result) => result);
         const templates = await (0, templates_1.getFileTemplates)(settings).then((result) => result);
+        if (settings.filter)
+            files = files.filter((file) => file.name.includes(settings.filter));
         return { ...settings, files: files, templates: templates };
     }
     catch (err) {

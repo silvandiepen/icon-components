@@ -5,11 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const rimraf_1 = __importDefault(require("rimraf"));
-const get_1 = require("./get");
-const build_1 = require("./build");
-const list_1 = require("./list");
-const settings_1 = require("./settings");
 const cli_block_1 = require("cli-block");
+const get_1 = require("@/get");
+const build_1 = require("@/build");
+const list_1 = require("@/list");
+const settings_1 = require("@/settings");
 // If remove old is set, the destination folder will be removed in order to be sure all files are new.
 () => {
     (0, settings_1.settings)().removeOld &&

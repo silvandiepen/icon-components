@@ -1,8 +1,10 @@
-import { asyncForEach, createAFolder } from '../helpers';
-import { SettingsType } from '../types';
+
 import { lstat, copyFile } from 'fs/promises';
-import { basename, dirname, join } from 'path';
+import { basename, join } from 'path';
 import { blockLineSuccess } from 'cli-block';
+
+import { asyncForEach } from '@/helpers';
+import { SettingsType } from '@/types';
 
 export const copyFiles = async (settings: SettingsType): Promise<void> => {
 	await asyncForEach(settings.copy, async (item: string) => {

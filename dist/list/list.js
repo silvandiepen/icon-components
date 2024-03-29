@@ -5,12 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createListType = exports.writeLists = exports.buildLists = exports.getListTemplates = void 0;
 const path_1 = require("path");
+const cli_block_1 = require("cli-block");
+const case_1 = require("@sil/case");
 const { readdir, readFile, lstat } = require('fs').promises;
 const ejs_1 = __importDefault(require("ejs"));
-const helpers_1 = require("../helpers");
-const cli_block_1 = require("cli-block");
-const build_1 = require("../build");
-const case_1 = require("@sil/case");
+const helpers_1 = require("@/helpers");
+const build_1 = require("@/build");
 /*
   When there is no Template given, but a type. The templates will be gotten from the package.
 */

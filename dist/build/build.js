@@ -27,11 +27,11 @@ exports.buildFiles = exports.buildComponents = exports.startBuild = exports.Comb
 const path_1 = require("path");
 const { mkdir, stat, writeFile } = require('fs').promises;
 const ejs_1 = require("ejs");
-const kleur_1 = require("kleur");
 const cli_block_1 = require("cli-block");
-const helpers = __importStar(require("../helpers"));
-const helpers_1 = require("../helpers");
 const case_1 = require("@sil/case");
+const cli_block_2 = require("cli-block");
+const helpers = __importStar(require("@/helpers"));
+const helpers_1 = require("@/helpers");
 const packageJson = require('../../package.json');
 /*
 
@@ -101,7 +101,7 @@ const buildComponent = async function (settings, file) {
                 name: (0, case_1.kebabCase)((0, helpers_1.fileName)(file.name)),
                 dest: settings.dest
             });
-            (0, cli_block_1.blockLineSuccess)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))}${file.style ? ` ${(0, kleur_1.blue)('+ style')}` : ''}`);
+            (0, cli_block_2.blockLineSuccess)(`${file.name}${(0, cli_block_1.blue)((0, helpers_1.getExtension)(template.file))}${file.style ? ` ${(0, cli_block_1.blue)('+ style')}` : ''}`);
             if (!(!settings.inRoot && settings.parentIndex))
                 return;
             const indexData = `export * from "./${file.name}";`;
@@ -114,7 +114,7 @@ const buildComponent = async function (settings, file) {
             });
         }
         catch (err) {
-            (0, cli_block_1.blockLineError)(`${file.name}${(0, kleur_1.blue)((0, helpers_1.getExtension)(template.file))} ${err}`);
+            (0, cli_block_2.blockLineError)(`${file.name}${(0, cli_block_1.blue)((0, helpers_1.getExtension)(template.file))} ${err}`);
         }
     });
 };
@@ -125,8 +125,8 @@ const buildComponent = async function (settings, file) {
     */
 const startBuild = async (settings) => {
     // Log it all\
-    (0, cli_block_1.blockHeader)(`Generating Icons - ${packageJson.version}`);
-    (0, cli_block_1.blockMid)(`Settings`);
+    (0, cli_block_2.blockHeader)(`Generating Icons - ${packageJson.version}`);
+    (0, cli_block_2.blockMid)(`Settings`);
     if (settings.src && settings.dest) {
         const showSettings = {
             destination: settings.dest,
@@ -149,14 +149,14 @@ const startBuild = async (settings) => {
             iconFolder: settings.iconFolder ? settings.iconFolder : false,
             inRoot: settings.inRoot ? settings.inRoot : false
         };
-        await (0, cli_block_1.blockSettings)(showSettings);
+        await (0, cli_block_2.blockSettings)(showSettings);
         if (settings.files.length < 1) {
-            (0, cli_block_1.blockMid)(`Warnings`);
-            (0, cli_block_1.blockRowLine)([
+            (0, cli_block_2.blockMid)(`Warnings`);
+            (0, cli_block_2.blockRowLine)([
                 'src',
-                `${(0, kleur_1.yellow)().italic(settings.src)} ${(0, kleur_1.red)("Your source folder doesn't contain any") +
-                    (0, kleur_1.red)().bold(' .svg ') +
-                    (0, kleur_1.red)('files.')}`,
+                `${(0, cli_block_1.yellow)().italic(settings.src)} ${(0, cli_block_1.red)("Your source folder doesn't contain any") +
+                    (0, cli_block_1.red)().bold(' .svg ') +
+                    (0, cli_block_1.red)('files.')}`,
                 ''
             ]);
         }
@@ -165,7 +165,7 @@ const startBuild = async (settings) => {
 exports.startBuild = startBuild;
 const buildComponents = async (settings) => {
     if (settings.files.length > 0) {
-        (0, cli_block_1.blockMid)(`${(0, kleur_1.bold)('Files')} ${(0, kleur_1.blue)().bold('(' + settings.files.length + ')')}`);
+        (0, cli_block_2.blockMid)(`${(0, cli_block_1.bold)('Files')} ${(0, cli_block_1.blue)().bold('(' + settings.files.length + ')')}`);
         await (0, helpers_1.asyncForEach)(settings.files, async (file) => {
             let newFolder = (0, path_1.join)(settings.dest);
             if (settings.iconFolder && !settings.inRoot)
@@ -187,6 +187,7 @@ exports.buildComponents = buildComponents;
 
     */
 const buildFiles = async (settings) => {
+    console.log(`buildFiles`, settings);
     await (0, exports.startBuild)(settings);
     await (0, exports.buildComponents)(settings);
     return settings;

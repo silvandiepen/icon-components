@@ -1,4 +1,4 @@
-import { SettingsType, StyleFilesType } from '../types';
+import { SettingsType, StyleFilesType } from '@/types';
 export declare const getStyleData: (settings: SettingsType, name: string, filedata: string) => {
     data: string;
     ext: string;

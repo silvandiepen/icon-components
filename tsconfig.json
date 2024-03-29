@@ -6,7 +6,12 @@
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"outDir": "dist",
-		"declaration": true
+		"declaration": true,
+		"baseUrl": ".",
+		"paths": {
+			"@": ["./src/"],
+			"@/*": ["./src/*"]
+		}
 	},
 	"lib": ["es2015"],
 	"exclude": ["node_modules", "temp", "dist"]

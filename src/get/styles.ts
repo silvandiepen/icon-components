@@ -2,8 +2,8 @@ const fs = require('fs').promises;
 import { join, extname } from 'path';
 import { kebabCase } from '@sil/case';
 
-import { SettingsType, StyleFilesType } from '../types';
-import { asyncForEach, fileName, getTagData, dirExist } from '../helpers';
+import { SettingsType, StyleFilesType } from '@/types';
+import { asyncForEach, fileName, getTagData, dirExist } from '@/helpers';
 
 export const getStyleData = (
 	settings: SettingsType,

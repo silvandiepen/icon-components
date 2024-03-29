@@ -1,12 +1,12 @@
 import { basename, join, extname } from 'path';
-const { readdir, readFile, lstat } = require('fs').promises;
-
-import ejs from 'ejs';
-import { asyncForEach, getExtension, fileName } from '../helpers';
-import { SettingsType, TemplateFileType, ListFilesType } from '../types';
 import { blockErrors, blockLineSuccess, blockMid } from 'cli-block';
-import { writeAFile } from '../build';
 import { PascalCase, kebabCase, upperSnakeCase } from '@sil/case';
+const { readdir, readFile, lstat } = require('fs').promises;
+import ejs from 'ejs';
+
+import { asyncForEach, getExtension, fileName } from '@/helpers';
+import { SettingsType, TemplateFileType, ListFilesType } from '@/types';
+import { writeAFile } from '@/build';
 /*
   When there is no Template given, but a type. The templates will be gotten from the package.
 */

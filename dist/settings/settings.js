@@ -3,104 +3,138 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.settings = void 0;
+exports.settings = exports.defaultSettings = void 0;
 // @ts-nocheck
 const yargs_1 = __importDefault(require("yargs"));
+exports.defaultSettings = {
+    src: '',
+    dest: '',
+    styleDir: '',
+    optimize: true,
+    template: null,
+    inRoot: false,
+    copy: [],
+    removeOld: false,
+    removePrefix: '',
+    stripStyle: false,
+    prefix: '',
+    list: false,
+    listTemplate: [],
+    type: '',
+    removeStyle: false,
+    removeAttrs: ['fill', 'id', 'class'],
+    removeTags: ['svg'],
+    svgOnly: false,
+    index: false,
+    indexTemplate: [],
+    types: false,
+    typesTemplate: [],
+    parentIndex: false,
+    prependLine: '',
+    iconFolder: '',
+    filter: ''
+};
 const settings = () => {
     const cs = yargs_1.default.options({
-        src: { required: true, type: 'string', default: null, alias: 'source' },
+        src: { required: true, type: 'string', default: exports.defaultSettings.src, alias: 'source' },
         dest: {
             required: true,
             type: 'string',
-            default: null,
+            default: exports.defaultSettings.dest,
             alias: 'destination'
         },
-        sd: { required: true, type: 'string', default: '', alias: 'styleDir' },
-        o: { required: false, type: 'boolean', default: true, alias: 'optimize' },
-        t: { required: false, type: 'string', default: null, alias: 'template' },
-        p: { required: false, type: 'string', default: '', alias: 'prefix' },
-        c: { required: false, type: 'array', default: [], alias: 'copy' },
+        sd: { required: true, type: 'string', default: exports.defaultSettings.styleDir, alias: 'styleDir' },
+        o: { required: false, type: 'boolean', default: exports.defaultSettings.optimize, alias: 'optimize' },
+        t: { required: false, type: 'string', default: exports.defaultSettings.template, alias: 'template' },
+        p: { required: false, type: 'string', default: exports.defaultSettings.prefix, alias: 'prefix' },
+        c: { required: false, type: 'array', default: exports.defaultSettings.copy, alias: 'copy' },
         l: {
             required: false,
             type: 'boolean',
-            default: false,
+            default: exports.defaultSettings.list,
             alias: 'list'
         },
         lt: {
             required: false,
             type: 'array',
-            default: [],
+            default: exports.defaultSettings.listTemplate,
             alias: 'listTemplate'
         },
-        ir: { required: false, type: 'boolean', default: false, alias: 'inRoot' },
+        ir: { required: false, type: 'boolean', default: exports.defaultSettings.inRoot, alias: 'inRoot' },
         type: {
             required: false,
             type: 'string',
-            default: null
+            default: exports.defaultSettings.type,
         },
         ra: {
             required: false,
             type: 'array',
-            default: ['fill', 'id', 'class'],
+            default: exports.defaultSettings.removeAttrs,
             alias: 'removeAttrs'
         },
         rt: {
             required: false,
             type: 'array',
-            default: ['svg'],
+            default: exports.defaultSettings.removeTags,
             alias: 'removeTags'
         },
         rs: {
             required: false,
             type: 'boolean',
-            default: false,
+            default: exports.defaultSettings.removeStyle,
             alias: 'removeStyle'
         },
-        ro: { type: 'boolean', default: false, alias: 'removeOld' },
-        rp: { type: 'string', default: '', alias: 'removePrefix' },
-        ss: { type: 'boolean', default: false, alias: 'stripStyle' },
-        svg: { type: 'boolean', default: false, alias: 'svgOnly' },
+        ro: { type: 'boolean', default: exports.defaultSettings.removeOld, alias: 'removeOld' },
+        rp: { type: 'string', default: exports.defaultSettings.removePrefix, alias: 'removePrefix' },
+        ss: { type: 'boolean', default: exports.defaultSettings.stripStyle, alias: 'stripStyle' },
+        svg: { type: 'boolean', default: exports.defaultSettings.svgOnly, alias: 'svgOnly' },
         idx: {
             required: false,
             type: 'boolean',
-            default: false,
+            default: exports.defaultSettings.index,
             alias: 'index'
         },
         idxt: {
             required: false,
             type: 'array',
-            default: [],
+            default: exports.defaultSettings.indexTemplate,
             alias: 'indexTemplate'
         },
         tps: {
             required: false,
             type: 'boolean',
-            default: false,
+            default: exports.defaultSettings.types,
             alias: 'types'
         },
         tpst: {
             required: false,
             type: 'array',
-            default: [],
+            default: exports.defaultSettings.typesTemplate,
             alias: 'typesTemplate'
         },
         pidx: {
             required: false,
             type: 'boolean',
-            default: false,
+            default: exports.defaultSettings.parentIndex,
             alias: 'parentIndex'
         },
         ppl: {
             required: false,
             type: 'string',
-            default: '',
+            default: exports.defaultSettings.prependLine,
             alias: 'prependLine'
         },
         if: {
             required: false,
             type: 'string',
-            default: '',
+            default: exports.defaultSettings.iconFolder,
             alias: 'iconFolder'
+        },
+        ft: {
+            required: false,
+            type: 'string',
+            default: exports.defaultSettings.filter,
+            alias: 'filter'
         }
     }).argv;
     return {
@@ -128,7 +162,8 @@ const settings = () => {
         typesTemplate: cs.tpst,
         parentIndex: cs.pidx,
         prependLine: cs.ppl,
-        iconFolder: cs.if
+        iconFolder: cs.if,
+        filter: cs.ft
     };
 };
 exports.settings = settings;

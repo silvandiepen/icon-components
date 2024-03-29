@@ -75,4 +75,5 @@ export interface SettingsType {
 	parentIndex: boolean;
 	prependLine: string;
 	iconFolder: string;
+	filter: string;
 }

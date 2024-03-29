@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.copyFiles = void 0;
-const helpers_1 = require("../helpers");
 const promises_1 = require("fs/promises");
 const path_1 = require("path");
 const cli_block_1 = require("cli-block");
+const helpers_1 = require("@/helpers");
 const copyFiles = async (settings) => {
     await (0, helpers_1.asyncForEach)(settings.copy, async (item) => {
         const baseFile = item.includes('=') ? item.split('=')[0] : item;

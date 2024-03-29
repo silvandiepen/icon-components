@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 import rimraf from 'rimraf';
-
-import { getData } from './get';
-import { buildFiles, copyFiles } from './build';
-import { createListType } from './list';
-
-import { settings } from './settings';
 import { blockFooter } from 'cli-block';
-import { copyFileSync } from 'fs';
+
+import { getData } from '@/get';
+import { buildFiles, copyFiles } from '@/build';
+import { createListType } from '@/list';
+
+import { settings } from '@/settings';
 
 // If remove old is set, the destination folder will be removed in order to be sure all files are new.
 () => {

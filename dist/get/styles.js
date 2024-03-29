@@ -4,7 +4,7 @@ exports.getStyles = exports.getStyleFileList = exports.getStyleData = void 0;
 const fs = require('fs').promises;
 const path_1 = require("path");
 const case_1 = require("@sil/case");
-const helpers_1 = require("../helpers");
+const helpers_1 = require("@/helpers");
 const getStyleData = (settings, name, filedata) => {
     const tagData = (0, helpers_1.getTagData)(filedata, 'style');
     const cssFile = settings.styles

@@ -1,9 +1,10 @@
 import { join, dirname } from 'path';
 const { mkdir, stat, writeFile } = require('fs').promises;
 import { render } from 'ejs';
-import { red, yellow, blue, bold } from 'kleur';
+import { red, yellow, blue, bold } from "cli-block";
+import { kebabCase, PascalCase, upperSnakeCase } from '@sil/case';
+
 import {
-	blockErrors,
 	blockHeader,
 	blockLineError,
 	blockLineSuccess,
@@ -12,7 +13,7 @@ import {
 	blockSettings
 } from 'cli-block';
 
-import * as helpers from '../helpers';
+import * as helpers from '@/helpers';
 import {
 	fileName,
 	asyncForEach,
@@ -20,15 +21,14 @@ import {
 	WAIT,
 	createAFolder,
 	formatFile
-} from '../helpers';
-import { kebabCase, PascalCase, upperSnakeCase } from '@sil/case';
+} from '@/helpers';
 
 import {
 	SettingsType,
 	FilesType,
 	TemplateFileType,
 	WriteFileType
-} from '../types';
+} from '@/types';
 
 const packageJson = require('../../package.json');
 
@@ -228,6 +228,8 @@ export const buildComponents = async (
 export const buildFiles = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {
+	
+	console.log(`buildFiles`, settings)
 	await startBuild(settings);
 	await buildComponents(settings);
 	return settings;
