@@ -101,15 +101,18 @@ export const getFileList = async (
 
 		const { width, height } = getSizes(fileData);
 
-		file = removeFix(file, settings);
+		console.log(settings.removeAffix, settings.removePrefix, settings.removeString);
+		// file = removeFix(file, settings);
+
+		const fixedFileName = removeFix(basename(file), settings);
 
 		filelist.push({
 			og_name: file,
 			name,
-			title: PascalCase(basename(file)),
-			title_lowercase: basename(file).toLowerCase(),
-			fileName: prefixedName(file, settings.prefix),
-			componentName: PascalCase(prefixedName(file, settings.prefix)),
+			title: PascalCase(fixedFileName),
+			title_lowercase: fixedFileName.toLowerCase(),
+			fileName: prefixedName(fixedFileName, settings.prefix),
+			componentName: PascalCase(prefixedName(fixedFileName, settings.prefix)),
 			data: settings.removeStyle ? removeStyle(fileData) : fileData,
 			data_clean: {
 				attrs: settings.removeStyle
