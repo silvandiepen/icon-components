@@ -17,13 +17,15 @@ import { writeAFile } from '@/build';
 const getLocalTemplates = async (dir: string): Promise<TemplateFileType[]> => {
 	let templates: any = [];
 	try {
-		const exists = await dirExists(dir);
+
+		const localDir = join(__dirname, dir);
+		const exists = await dirExists(localDir);
 		if(!exists) {
-			blockLineError(`The directory ${dir} does not exist`);
+			blockLineError(`The directory ${localDir} does not exist`);
 			return;
 		}
 
-		let localTemplateDir = await readdir(join(__dirname, dir));
+		let localTemplateDir = await readdir(localDir);
 
 		await asyncForEach(localTemplateDir, async (template: string) => {
 			let fileData = await readFile(join(__dirname, dir, template));

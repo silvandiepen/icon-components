@@ -22,7 +22,8 @@
 		"docs": "npx gieter",
 		"docs:local": "node ../gieter/dist/index.js",
 		"dev": "tsc -w",
-		"prepublishOnly": "npm run test"
+		"prepublishOnly": "npm run test",
+		"yolo:publish": "npm run build && git commit -am \"yolo\" && npm version patch && npm publish --access public && git push --follow-tags"
 	},
 	"repository": {
 		"type": "git",
