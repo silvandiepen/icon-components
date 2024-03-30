@@ -153,6 +153,19 @@ const buildComponent = async function (
 
 	*/
 
+const getShowSettings = (settings: SettingsType): Partial<SettingsType> => {
+	const show: Partial<SettingsType> = {};
+	Object.keys(settings).forEach((key) => {
+		const value = settings[key];
+		if (typeof value === 'object' && value.length > 0) {
+			show[key] = value;
+		} else if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+			value && (show[key] = value);
+		}
+	});
+	return show;
+}
+
 export const startBuild = async (settings: SettingsType): Promise<void> => {
 	// Log it all\
 
@@ -160,31 +173,7 @@ export const startBuild = async (settings: SettingsType): Promise<void> => {
 	blockMid(`Settings`);
 
 	if (settings.src && settings.dest) {
-		const showSettings = {
-			dest: settings.dest,
-			src: settings.src,
-			template: settings.template ? settings.template : null,
-		};
-		if (settings.removeAttrs.length > 0) showSettings['removeAttrs'] = settings.removeAttrs;
-		if (settings.removeTags.length > 0) showSettings['removeTags'] = settings.removeTags;
-		if (settings.removeStyle) showSettings['removeStyle'] = settings.removeStyle;
-		if (settings.prefix) showSettings['prefix'] = settings.prefix;
-		if (settings.optimize) showSettings['optimize'] = settings.optimize;
-		if (settings.stripStyle) showSettings['stripStyle'] = settings.stripStyle;
-		if (settings.removeOld) showSettings['removeOld'] = settings.removeOld;
-		if (settings.removeAffix) showSettings['removeAffix'] = settings.removeAffix;
-		if (settings.removeString) showSettings['removeString'] = settings.removeString;
-		if (settings.removePrefix) showSettings['removePrefix'] = settings.removePrefix;
-		if (settings.list) showSettings['list'] = settings.list;
-		if (settings.listTemplate.length) showSettings['listTemplate'] = settings.listTemplate;
-		if (settings.index) showSettings['index'] = settings.index;
-		if (settings.indexTemplate.length) showSettings['indexTemplate'] = settings.indexTemplate;
-		if (settings.types) showSettings['types'] = settings.types;
-		if (settings.typesTemplate.length) showSettings['typesTemplate'] = settings.typesTemplate;
-		if (settings.parentIndex) showSettings['parentIndex'] = settings.parentIndex;
-		if (settings.iconFolder) showSettings['iconFolder'] = settings.iconFolder;
-		if (settings.inRoot) showSettings['inRoot'] = settings.inRoot;
-		if (settings.filter) showSettings['filter'] = settings.filter;
+		const showSettings = { ...getShowSettings(settings), files: settings.files.length };
 
 		await blockSettings(showSettings);
 
