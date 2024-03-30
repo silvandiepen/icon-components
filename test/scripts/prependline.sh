@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-echo "> 01: Copy"
+echo "> 01: Prepend Line"
 
 node dist/cli.js \
     --src test/assets/icons/ \
