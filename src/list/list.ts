@@ -1,7 +1,7 @@
 import { basename, join, extname } from 'path';
-import { blockErrors, blockLineSuccess, blockMid } from 'cli-block';
+import { blockErrors, blockLineError, blockLineSuccess, blockMid } from 'cli-block';
 import { PascalCase, kebabCase } from '@sil/case';
-import { CONST_CASE } from '@/helpers';
+import { CONST_CASE, dirExists } from '@/helpers';
 const { readdir, readFile, lstat } = require('fs').promises;
 import ejs from 'ejs';
 
@@ -12,9 +12,17 @@ import { writeAFile } from '@/build';
   When there is no Template given, but a type. The templates will be gotten from the package.
 */
 
+
+
 const getLocalTemplates = async (dir: string): Promise<TemplateFileType[]> => {
 	let templates: any = [];
 	try {
+		const exists = await dirExists(dir);
+		if(!exists) {
+			blockLineError(`The directory ${dir} does not exist`);
+			return;
+		}
+
 		let localTemplateDir = await readdir(join(__dirname, dir));
 
 		await asyncForEach(localTemplateDir, async (template: string) => {

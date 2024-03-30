@@ -5,6 +5,7 @@ import { existsSync } from 'fs';
 import { format } from 'prettier';
 import { kebabCase, upperSnakeCase } from '@sil/case';
 import { SettingsType } from '@/types';
+import { lstat } from 'fs/promises';
 
 export const WAIT = async (time: number = 0) => {
 	return new Promise((resolve) => {
@@ -115,6 +116,16 @@ export const createAFolder = async (dir: string): Promise<void> => {
 	}
 	return;
 };
+
+export const dirExists = async (dir: string): Promise<boolean> => {
+	try {
+		await lstat(dir);
+		return true;
+	} catch (error) {
+		return false;
+	}
+}
+
 
 export const getTagData = (str: string, tag: string): string => {
 	const regex = new RegExp(`<${tag}>(.|\n)*?<\/${tag}>`, 'gi');
