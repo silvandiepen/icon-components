@@ -13,8 +13,21 @@
     "test:script": "npm run build:test && sh test/run.sh",
     "test:scripts": "npm run build:test && sh test/run-all.sh"
   },
-  "author": "Sil van Diepen",
-  "license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/silvandiepen/icon-components.git"
+	},
+	"keywords": [
+		"icons",
+		"svg",
+		"components",
+		"generate"
+	],
+	"author": "Sil van Diepen",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/silvandiepen/icon-components/issues"
+	},
   "devDependencies": {
     "@types/ejs": "^3.1.5",
     "@types/jest": "^29.5.12",
