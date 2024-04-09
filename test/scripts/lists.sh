@@ -5,7 +5,7 @@ echo "> 01: No list"
 
 node dist/cli.js \
    --src test/assets/icons/ \
-    --dest temp/external/icons/ \
+    --dest temp/lists/icons/ \
     --remove-old
    
 
@@ -66,13 +66,14 @@ node dist/cli.js \
 #     --index true \
 #     --remove-old \
 
-# echo "\n> 07: Basic Index generation : explicit true"
+echo "\n> 07: Basic Index generation : explicit true"
 
-# node dist/cli.js \
-#     --src test/assets/icons \
-#     --dest temp/external/icons \
-#     --template test/template/external-template.js \
-#     --indexTemplate src/templates/index \
-#     --remove-old \
+node dist/cli.js \
+    --src test/assets/icons \
+    --dest temp/lists/icons \
+    --template test/template/external-template.js \
+    --index true \
+    --indexTemplate src/templates/index \
+    --remove-old \
     
 exit 0
