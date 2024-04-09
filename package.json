@@ -1,80 +1,39 @@
 {
-	"name": "icon-components",
-	"version": "1.9.24",
-	"description": "Generate Icon Components",
-	"main": "index.js",
-	"bin": "dist/cli.js",
-	"scripts": {
-		"test": "npm run build && npm run test:jest && npm run test:all",
-		"test:jest": "jest --verbose",
-		"test:external": "sh test/scripts/external.sh",
-		"test:lists": "sh test/scripts/lists.sh",
-		"test:templates": "sh test/scripts/templates.sh",
-		"test:cleanup": "sh test/scripts/cleanup.sh",
-		"test:copy": "sh test/scripts/copy.sh",
-		"test:remove": "sh test/scripts/remove.sh",
-		"test:prependline": "sh test/scripts/prependLine.sh",
-		"test:iconfolder": "sh test/scripts/iconFolder.sh",
-		"test:all": "npm run test:lists && npm run test:remove && npm run test:templates && npm run test:cleanup && npm run test:external && npm run test:copy && npm run test:prependline && npm run test:iconfolder",
-		"build": "tsup",
-		"lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
-		"lint:fix": "eslint --ext .js,.ts --ignore-path .gitignore . --fix",
-		"docs": "npx gieter",
-		"docs:local": "node ../gieter/dist/index.js",
-		"dev": "tsc -w",
-		"prepublishOnly": "npm run test",
-		"yolo:publish": "npm run build && git commit -am \"yolo\" && npm version patch && npm publish --access public && git push --follow-tags"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/silvandiepen/icon-components.git"
-	},
-	"keywords": [
-		"icons",
-		"svg",
-		"components",
-		"generate"
-	],
-	"author": "Sil van Diepen",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/silvandiepen/icon-components/issues"
-	},
-	"homepage": "https://github.com/silvandiepen/icon-components#readme",
-	"dependencies": {
-		"@sil/args": "^0.1.0",
-		"@sil/case": "^0.0.3",
-		"cli-block": "^1.3.8",
-		"ejs": "^3.1.8",
-		"kleur": "^4.1.5",
-		"mkdirp": "^1.0.4",
-		"prettier": "^2.7.1",
-		"rimraf": "^3.0.2",
-		"svgo": "^2.8.0"
-	},
-	"devDependencies": {
-		"@types/ejs": "^3.1.1",
-		"@types/jest": "^28.1.6",
-		"@types/node": "^18.6.2",
-		"@types/svgo": "^2.6.3",
-		"@typescript-eslint/eslint-plugin": "^5.31.0",
-		"@typescript-eslint/parser": "^5.31.0",
-		"@zerollup/ts-transform-paths": "^1.7.18",
-		"chai": "^4.3.6",
-		"eslint": "^8.20.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-import": "^2.26.0",
-		"eslint-plugin-prettier": "^4.2.1",
-		"jest": "^28.1.3",
-		"ts-jest": "^28.0.7",
-		"ts-node": "^10.9.2",
-		"tsc-alias": "^1.8.8",
-		"tslint": "^6.1.1",
-		"tsup": "^8.0.2",
-		"typescript": "^4.7.4"
-	},
-	"engines": {
-		"npm": ">=7.0.0",
-		"node": ">=16.0.0"
-	}
+  "name": "icon-components",
+  "version": "2.0.0-beta.0",
+  "description": "Icon Components",
+  "main": "index.js",
+  "bin": "dist/index.js",
+  "scripts": {
+    "build": "tsup",
+    "build:test": "tsc test/tests/*.ts --outDir dist-test",
+    "build:ts": "tsc -init",
+    "test": "npm run test:unit && npm run test:scripts",
+    "test:unit": "npm run build && jest",
+    "test:script": "npm run build:test && sh test/run.sh",
+    "test:scripts": "npm run build:test && sh test/run-all.sh"
+  },
+  "author": "Sil van Diepen",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.2",
+    "@types/svgo": "^3.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@sil/args": "^0.2.1",
+    "@sil/case": "^0.2.0",
+    "@sil/test": "^0.0.6",
+    "cli-block": "^1.4.3",
+    "ejs": "^3.1.9",
+    "mkdirp": "^3.0.1",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "svg": "^0.1.0"
+  }
 }

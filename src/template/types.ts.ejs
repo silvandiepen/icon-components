@@ -1,0 +1,5 @@
+export const Icons = {
+    <% files.forEach(function(file,index) { %>
+     <%= constCase(file.meta.fileName) %>: "<%= file.meta.fileName %>"<% if(index < files.length -1){ %>,<% } %>
+    <% }); %>
+};

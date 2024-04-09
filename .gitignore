@@ -1,7 +1,5 @@
-/node_modules
-/components
+node_modules
+/dist
+/dist-test
 /temp
-/public
-.vscode
-.cache
 .DS_Store

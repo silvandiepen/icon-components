@@ -1,0 +1,12 @@
+{
+    "icons": {<% files.forEach(function(file,index) { %>
+        "<%= file.meta.fileName %>": {
+            "meta": {
+                "width": "<%= file.meta %>",
+                "height": "<%= file.meta.height %>",
+                "viewBox": "<%= file.meta.viewBox %>"
+            },
+            "style": "<%= removeNewLines(file.style || '') %>",
+            "svg": "<%- removeNewLines(escapeQuotes(file.content)) %>"}<% if(index < files.length -1){ %>,<% } %>
+    <% }); %>}
+}

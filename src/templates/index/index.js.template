@@ -1,3 +1,0 @@
-<% files.forEach(function(file,index) { %>
-export * from "<%= file.name %>";<% }); 
--%>

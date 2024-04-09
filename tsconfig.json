@@ -12,13 +12,7 @@
 		"paths": {
 			"@": ["./"],
 			"@/*": ["./*"]
-		},
-		"plugins": [
-			{
-			  "transform": "@zerollup/ts-transform-paths"
-			}
-		  ]
+		}
 	},
-	"lib": ["es2015"],
-	"exclude": ["node_modules", "temp", "dist"]
+	"exclude": ["node_modules", "temp", "dist", "template"]
 }

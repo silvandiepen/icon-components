@@ -1,49 +1,55 @@
----
-icon: 🖼️
----
-
 # Templates
 
-## Using a custom template
 
-At the moment, one command can have one custom template file. The template file can be created in your own project and be used in the CLI.
-
-In the template you can use EJS template strings. The file which will be written will have the same extension as your template file and be written in the set `--dest`.
-
-#### Available options
-
-| Option           | description                                            |
-| ---------------- | ------------------------------------------------------ |
-| og_name          | Original name of the file                              |
-| name             | Name of the Svg Icon                                   |
-| title            | Title of the Svg Icon in PascalCase                    |
-| title_lowercase  | A lowercase version of the title                       |
-| componentName    | A PascalCase version of the title                      |
-| data             | The svg icon file data                                 |
-| data_clean.attrs | Data with all (specified) attributes removed.          |
-| data_clean.tags  | Data with all (specified) tags removed.                |
-| data_clean.both  | Data with all (specified) attributes and tags removed. |
-| style            | returns an object with { data, extension }             |
-
-#### Extension .template
-
-You can, if you want. Add `.template` at the end of the file, because it won't be a valid javascript file anyway. The `.template` part will be automatically removed.
-
-For instance; your template file is called. `my-icon-template.js.template` In this case. The files will have `.js` extension.
+Here a few example templates which can be used to create your components.
 
 
-## Creating lists
 
-In many cases it can come in handy to also create a list of all components. This can be created by setting `--list`. If set, it will create a default list. It can also contain a path to a template, in that case the template will be used for the list.
+### Lists
 
-Default template for list;
+Generate an index file for your Icons;
+
+```ejs
+<% files.forEach(function(file,index) { %>
+export * from "<%= file.meta.fileName %>";<% }); 
+-%>
+```
+
+Generate a basic JSON list with just the icon names;
+
 
 ```ejs
 {
     "icons": [<% files.forEach(function(file,index) { %>
-        "<%= file %>"<% if(index < files.length -1){ %>,<% } %>
+        "<%= file.meta.fileName %>"<% if(index < files.length -1){ %>,<% } %>
     <% }); %>]
 }
 ```
 
-You can create your own list template by setting the first argument to `--list` a path to the template. In that case that template will be used for the list and written in the default destination folder.
+
+Generate a Types Typescript file `types.ts`
+
+```ejs
+export const Icons = {
+    <% files.forEach(function(file,index) { %>
+     <%= constCase(file.meta.fileName) %>: "<%= file.meta.fileName %>"<% if(index < files.length -1){ %>,<% } %>
+    <% }); %>
+};
+```
+
+
+Generate a JSON file with all svg data; `allIcons.json`
+```ejs
+{
+    "icons": {<% files.forEach(function(file,index) { %>
+        "<%= file.meta.fileName %>": {
+            "meta": {
+                "width": "<%= file.meta %>",
+                "height": "<%= file.meta.height %>",
+                "viewBox": "<%= file.meta.viewBox %>"
+            },
+            "style": "<%= removeNewLines(file.style || '') %>",
+            "svg": "<%- removeNewLines(escapeQuotes(file.content)) %>"}<% if(index < files.length -1){ %>,<% } %>
+    <% }); %>}
+}
+```
