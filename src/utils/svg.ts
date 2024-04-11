@@ -13,14 +13,40 @@ export const fixJsx = (content: string): string => {
 
     return svg;
 }
+export const svgOnly = (content: string): string | null => {
+    // Regular expression to match everything between <svg> and </svg> tags
+    const regex = /<svg[^>]*>[\s\S]*<\/svg>/i;
+
+    // Executing the regex on the content
+    const match = regex.exec(content);
+
+    if (!match) {
+        // If no match is found, return null
+        return null;
+    }
+
+    // Extract the matched content
+    const svgContent = match[0].trim().replace(/>\s+</g, "><");
+    
+    return svgContent;
+}
 
 export const svgDataOnly = (content: string): string => {
-    // Need to get all the contentn between the <svg></svg>, the opening svg can have alot of attributes. 
-    const start = content.indexOf("<svg");
-    const end = content.indexOf(">", start);
-    const svg = content.slice(start, end + 1);
+    // Regular expression to match everything between <svg> and </svg> tags
+    const regex = /<svg[^>]*>([\s\S]*)<\/svg>/i;
 
-    return svg;
+    // Executing the regex on the content
+    const match = regex.exec(content);
+
+    if (!match || !match[1]) {
+        // If no match is found or the content between <svg> tags is empty, return null
+        return null;
+    }
+
+    // Extract the matched content between <svg> tags
+    const svgContent = match[1].trim();
+
+    return svgContent;
 }
 
 

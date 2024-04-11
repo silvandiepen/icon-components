@@ -1,7 +1,7 @@
 import { Payload, File, TemplateType, Template, ResultFile, ResultList } from "@/types";
 import { createFile } from "../system";
 import { constCase } from "@sil/case";
-import { asyncForEach, fixJsx, svgDataOnly, removeNewLines, escapeQuotes } from "@/utils";
+import { asyncForEach, fixJsx, svgDataOnly, removeNewLines, escapeQuotes, safeComponentName } from "@/utils";
 import { join } from "path";
 import { render } from "ejs";
 
@@ -28,7 +28,8 @@ export const renderLists = async (args: {
                 constCase,
                 svgDataOnly,
                 removeNewLines,
-                escapeQuotes
+                escapeQuotes,
+                safeComponentName
             });
         } catch (e) {
             console.log(e);

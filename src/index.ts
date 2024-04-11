@@ -1,5 +1,5 @@
-
-import { blockFooter, blockHeader, blockLineError, blockLineSuccess, blockMid, blockRowLine, blockSettings, blue, bold, green } from "cli-block";
+#!/usr/bin/env node
+import { blockFooter, blockHeader, blockLine, blockLineError, blockLineSuccess, blockMid, blockRowLine, blockSettings, blue, bold, dim, green } from "cli-block";
 
 import { getSettings } from "@/build/settings";
 import { getFiles } from "@/build/system";
@@ -43,7 +43,7 @@ const { settings } = getSettings();
         if (r.error.length) r.error.forEach((err) => blockLineError(err));
 
         Object.values(r.data).forEach((file) => {
-            blockRowLine([`${file.meta.ogFileName}`, `${blue(bold(file.meta.componentName))}`, file.style ? green(' + style') : '']);
+            blockLine(`${file.meta.ogFileName} ${dim('→')} ${blue(bold(file.meta.componentName))} ${file.style ? green(' + style') : ''}`);
         });
 
 

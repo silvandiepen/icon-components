@@ -1,8 +1,29 @@
 import { Payload, File, TemplateType, Template, ResultFile } from "@/types";
 import { createFile } from "../system";
-import { asyncForEach, escapeQuotes, fixJsx, svgDataOnly, removeNewLines } from "@/utils";
+import { asyncForEach, escapeQuotes, fixJsx, svgDataOnly, removeNewLines, safeComponentName } from "@/utils";
 import { join } from "path";
 import ejs from "ejs";
+
+
+const removeTemplate = (name: string) => {
+    return name.replace('.template', '').replace('.ejs', '');
+}
+const replaceMeta = (name: string, meta: File['meta']) => {
+    let done = false;
+    let newName = name;
+
+    while (!done) {
+        const replaceKey = newName.match(/\[(.*?)\]/)?.[1] || '';
+        if (replaceKey && meta[replaceKey]) {
+            newName = newName.replace(`[${replaceKey}]`, meta[replaceKey]);
+        } else {
+            done = true;
+        }
+    }
+    return newName;
+}
+
+
 
 
 const getComponentFileName = (args: {
@@ -10,17 +31,9 @@ const getComponentFileName = (args: {
     template: Template
 }) => {
 
+    const name = replaceMeta(removeTemplate(args.file.meta.fileName), args.file.meta);
 
-    // Get the string between [ and ]
-    const replaceKey = args.template.name.match(/\[(.*?)\]/)?.[1] || '';
-    let name = args.file.meta.fileName;
-
-    if (replaceKey && args.file.meta[replaceKey]) {
-
-        name = args.template.name.replace('.template', '').replace('.ejs','').replace(`[${replaceKey}]`, args.file.meta[replaceKey]);
-    }
-
-    return name;
+    return name+args.template.extension;
 
 }
 
@@ -41,7 +54,8 @@ export const renderComponents = async (args: {
                 fixJsx,
                 svgDataOnly,
                 removeNewLines,
-                escapeQuotes
+                escapeQuotes,
+                safeComponentName
             }),
         }
     });

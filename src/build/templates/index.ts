@@ -1,5 +1,5 @@
 import { type Payload, type Template, TemplateType } from "@/types";
-import { getFile } from "@/build/system";
+import { fileExists, getFile } from "@/build/system";
 import { toArray } from "@/utils";
 import { extname, join } from "path";
 
@@ -35,7 +35,23 @@ export const getTemplate = async (type: TemplateType, payload: Payload): Promise
              [templateFile, newFileName] = template.split('=');
         }
 
-        const templateFilePath = join(__dirname, "../", templateFile);
+        let templateFilePath = join(__dirname, "../", templateFile);
+        const localTemplateFilePath = join(process.cwd(), templateFile);
+
+        const exists = await fileExists(templateFilePath);
+        const localExists = await fileExists(localTemplateFilePath);
+
+        if (!exists && !localExists) {
+            templateErrors.push(`Template file does not exist: ${templateFile}`);
+            continue;
+        }
+        
+        if(localExists){
+            templateFilePath = localTemplateFilePath;
+        }
+
+        
+
 
         const { data, error } = await getFile(templateFilePath, payload);
 
