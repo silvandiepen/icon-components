@@ -1,6 +1,6 @@
 import { Payload, File, TemplateType, Template, ResultFile } from "@/types";
 import { createFile } from "../system";
-import { asyncForEach, escapeQuotes, fixJsx, svgDataOnly, removeNewLines, safeComponentName } from "@/utils";
+import { asyncForEach, escapeQuotes, fixJsx, svgDataOnly, removeNewLines, safeComponentName, svgOnly } from "@/utils";
 import { join } from "path";
 import ejs from "ejs";
 
@@ -52,6 +52,7 @@ export const renderComponents = async (args: {
                 ...args.file.meta,
                 svg: args.file.content,
                 fixJsx,
+                svgOnly,
                 svgDataOnly,
                 removeNewLines,
                 escapeQuotes,
