@@ -47,7 +47,7 @@ default: ``
 --template src/icons/templates/component.tsx.template
 ```
 
-<!-- 
+<!--
 ### templates?: Array<TemplateFileType>;
 
 Choose a predefined template
@@ -63,25 +63,87 @@ default: ``
 
 ## Index
 
-### index: boolean;
+### index
 
-### indexTemplate: string[];
+Generate an index file for all components.
 
-<!-- ### indexTemplates?: Array<TemplateFileType>; -->
+type: `boolean`
+default: `false`
+
+**usage example**
+
+```bash
+--index true
+```
+
+### indexTemplate
+
+Specify custom template files for the index.
+
+type: `string[]`
+default: `[]`
+
+**usage example**
+
+```bash
+--indexTemplate path/to/index.template
+```
 
 ## List
 
-### list: boolean;
+### list
 
-### listTemplate: string[];
+Generate a list file of all components.
 
-<!-- ### listTemplates?: Array<TemplateFileType>; -->
+type: `boolean`
+default: `false`
+
+**usage example**
+
+```bash
+--list true
+```
+
+### listTemplate
+
+Specify custom template files for the list.
+
+type: `string[]`
+default: `[]`
+
+**usage example**
+
+```bash
+--listTemplate path/to/list.template
+```
 
 ## Types
 
-### types: boolean;
+### types
 
-### typesTemplate: string[];
+Generate TypeScript type definitions.
+
+type: `boolean`
+default: `false`
+
+**usage example**
+
+```bash
+--types true
+```
+
+### typesTemplate
+
+Specify custom template files for type definitions.
+
+type: `string[]`
+default: `[]`
+
+**usage example**
+
+```bash
+--typesTemplate path/to/types.template
+```
 
 <!-- ### typesTemplates?: Array<TemplateFileType>; -->
 
@@ -179,9 +241,9 @@ default: ``
 --removeTags fill, style
 ```
 
-### svgOnly: boolean;
+### svgOnly
 
-Get the only the SVG data from a svg file.
+Get only the SVG data from a svg file.
 
 type: `boolean`
 default: `false`
@@ -189,7 +251,72 @@ default: `false`
 **usage example**
 
 ```bash
---removeTags fill, style
+--svgOnly true
+```
+
+### removeStyle
+
+Remove style attributes from SVG.
+
+type: `boolean`
+default: `false`
+
+**usage example**
+
+```bash
+--removeStyle true
+```
+
+### removeString
+
+Remove a specific string from file names.
+
+type: `string`
+default: `""`
+
+**usage example**
+
+```bash
+--removeString "unwanted-"
+```
+
+### removeAffix
+
+Remove a specific affix from file names.
+
+type: `string`
+default: `""`
+
+**usage example**
+
+```bash
+--removeAffix "-suffix"
+```
+
+### iconFolder
+
+Specify a custom folder name for icons.
+
+type: `string`
+default: `""`
+
+**usage example**
+
+```bash
+--iconFolder "custom-icons"
+```
+
+### filter
+
+Filter icons by name pattern.
+
+type: `string`
+default: `""`
+
+**usage example**
+
+```bash
+--filter "social-*"
 ```
 
 <!--

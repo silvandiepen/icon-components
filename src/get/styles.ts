@@ -5,6 +5,13 @@ import { kebabCase } from '@sil/case';
 import { SettingsType, StyleFilesType } from '@/types';
 import { asyncForEach, fileName, getTagData, dirExist, removeFix } from '@/helpers';
 
+/**
+ * Retrieves style data for a given component.
+ * @param {SettingsType} settings - The settings object containing style configuration
+ * @param {string} name - The name of the component
+ * @param {string} filedata - The file content containing style data
+ * @returns {{ data: string; ext: string }} An object containing style data and extension
+ */
 export const getStyleData = (
 	settings: SettingsType,
 	name: string,
@@ -22,6 +29,11 @@ export const getStyleData = (
 	};
 };
 
+/**
+ * Retrieves a list of style files from the specified directory.
+ * @param {SettingsType} settings - The settings object containing style directory configuration
+ * @returns {Promise<StyleFilesType[]>} A promise that resolves with an array of style file objects
+ */
 export const getStyleFileList = async (
 	settings: SettingsType
 ): Promise<StyleFilesType[]> => {
@@ -49,6 +61,11 @@ export const getStyleFileList = async (
 	return filelist;
 };
 
+/**
+ * Processes and adds style information to the settings object.
+ * @param {SettingsType} settings - The settings object to be updated with styles
+ * @returns {Promise<SettingsType>} A promise that resolves with the updated settings object
+ */
 export const getStyles = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {

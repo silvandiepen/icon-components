@@ -14,7 +14,13 @@ import { writeAFile } from '@/build';
 
 
 
+/**
+ * Retrieves template files from a local directory.
+ * @param {string} dir - The directory path to search for templates
+ * @returns {Promise<TemplateFileType[]>} A promise that resolves with an array of template files
+ */
 const getLocalTemplates = async (dir: string): Promise<TemplateFileType[]> => {
+
 	let templates: any = [];
 	try {
 
@@ -42,7 +48,13 @@ const getLocalTemplates = async (dir: string): Promise<TemplateFileType[]> => {
 	}
 };
 
+/**
+ * Retrieves template files from specified locations.
+ * @param {any} list - The list of template file locations
+ * @returns {Promise<TemplateFileType[]>} A promise that resolves with an array of template files
+ */
 const getTemplateFiles = async (list): Promise<TemplateFileType[]> => {
+
 	let templates = [];
 
 	await asyncForEach(list, async (templateFile) => {
@@ -77,6 +89,12 @@ const getTemplateFiles = async (list): Promise<TemplateFileType[]> => {
 	return templates;
 };
 
+/**
+ * Gets list templates based on the specified type.
+ * @param {SettingsType} settings - The settings object containing configuration options
+ * @param {string} [type='list'] - The type of templates to retrieve (list, index, or types)
+ * @returns {Promise<TemplateFileType[]>} A promise that resolves with an array of template files
+ */
 export const getListTemplates = async (
 	settings: SettingsType,
 	type: string = 'list'
@@ -102,6 +120,12 @@ export const getListTemplates = async (
 	return await getTemplateFiles(listTemplate);
 };
 
+/**
+ * Builds list files using the provided templates and settings.
+ * @param {SettingsType} settings - The settings object containing configuration options
+ * @param {TemplateFileType[]} templates - The array of templates to use for building
+ * @returns {Promise<ListFilesType[]>} A promise that resolves with an array of built list files
+ */
 export const buildLists = async (
 	settings: SettingsType,
 	templates: TemplateFileType[]
@@ -127,6 +151,12 @@ export const buildLists = async (
 	return files;
 };
 
+/**
+ * Writes list files to the filesystem.
+ * @param {SettingsType} settings - The settings object containing configuration options
+ * @param {ListFilesType[]} lists - The array of list files to write
+ * @returns {Promise<void>} A promise that resolves when all files are written
+ */
 export const writeLists = async (
 	settings: SettingsType,
 	lists: ListFilesType[]
@@ -141,6 +171,12 @@ export const writeLists = async (
 	});
 };
 
+/**
+ * Creates a specific type of list (list, index, or types).
+ * @param {SettingsType} settings - The settings object containing configuration options
+ * @param {string} [type='list'] - The type of list to create
+ * @returns {Promise<void>} A promise that resolves when the list is created
+ */
 export const createListType = async (
 	settings: SettingsType,
 	type: string = 'list'

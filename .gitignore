@@ -5,3 +5,5 @@
 .vscode
 .cache
 .DS_Store
+/dist
+/dist-test

@@ -7,13 +7,22 @@ import { asyncForEach } from '@/helpers';
 import { SettingsType } from '@/types';
 
 
+/**
+ * Converts a string or array of strings into a normalized array.
+ * @param {string | string[]} input - The input to be converted
+ * @returns {string[]} An array of trimmed strings
+ */
 const toArray = (input: string | string[]) => {
 	if (typeof input === 'string') return input.split(',').map((item) => item.trim());
 	return input.map((item) => item.trim());
-
 }
 
 
+/**
+ * Copies files specified in the settings to their target destinations.
+ * @param {SettingsType} settings - The settings object containing copy configuration
+ * @returns {Promise<void>} A promise that resolves when all files are copied
+ */
 export const copyFiles = async (settings: SettingsType): Promise<void> => {
 
 	const copyArray = toArray(settings.copy);

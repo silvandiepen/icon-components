@@ -42,7 +42,13 @@ const packageJson = require('../../package.json');
 	Create the path if it doesn't exist.
 
 	*/
+/**
+ * Creates a directory path if it doesn't exist.
+ * @param {string} filePath - The file path for which to create the directory structure
+ * @returns {Promise<boolean|void>} Returns true if directory exists, otherwise creates it
+ */
 const makePath = async (filePath: string) => {
+
 	const directoryName = dirname(filePath);
 	if ((await stat(directoryName)).isDirectory()) {
 		return true;
@@ -85,7 +91,7 @@ export const writeAFile = async (
 };
 /*
 
-	Build/Combine the template with the data using EJS 
+	Build/Combine the template with the data using EJS
 
 	*/
 

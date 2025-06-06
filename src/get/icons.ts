@@ -18,6 +18,11 @@ import {
 } from '@/helpers';
 import { getFileTemplates } from '@/get/templates';
 
+/**
+ * Retrieves and processes data for icon generation.
+ * @param {SettingsType} settings - The settings object containing configuration options
+ * @returns {Promise<SettingsType>} A promise that resolves with the updated settings including styles and files
+ */
 export const getData = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {
@@ -26,6 +31,11 @@ export const getData = async (
 	return settings;
 };
 
+/**
+ * Retrieves and processes the list of icon files.
+ * @param {SettingsType} settings - The settings object containing configuration options
+ * @returns {Promise<SettingsType>} A promise that resolves with the updated settings including files and templates
+ */
 export const getFiles = async (
 	settings: SettingsType
 ): Promise<SettingsType> => {
@@ -35,13 +45,19 @@ export const getFiles = async (
 		const templates = await getFileTemplates(settings).then((result) => result);
 
 		if(settings.filter) files = files.filter((file) => file.og_name.includes(settings.filter));
-		
+
 		return { ...settings, files: files, templates: templates };
 	} catch (err) {
 		console.log(err);
 	}
 };
 
+/**
+ * Reads and returns the content of a file.
+ * @param {FilesDataType} filedata - The file data object containing source directory
+ * @param {string} srcFileName - The name of the source file to read
+ * @returns {Promise<string>} A promise that resolves with the file content as string
+ */
 export const getFileData = async (filedata: FilesDataType, srcFileName: string) => {
 	try {
 		return fs.readFile(join(filedata.src, srcFileName)).then((file) => {
@@ -53,7 +69,7 @@ export const getFileData = async (filedata: FilesDataType, srcFileName: string) 
 };
 
 /*
-  Get A list of all the files and their data. 
+  Get A list of all the files and their data.
 */
 export const getSizes = (file: string): { width: number; height: number } => {
 	const viewBox: string[] = getAttrData(file, 'viewbox')
